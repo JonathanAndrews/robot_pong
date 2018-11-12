@@ -1,8 +1,8 @@
 import numpy as np
 
 class Ball:
-    def __init__(self, position_x, position_y, velocity_x, velocity_y, radius,
-                 canvas_width, canvas_height):
+    def __init__(self, position_x, position_y, velocity_x, velocity_y, radius=5,
+                 canvas_width=900, canvas_height=600):
         self.position = np.array([position_x, position_y])
         self.velocity = np.array([velocity_x, velocity_y])
         self.radius = radius
