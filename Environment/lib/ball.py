@@ -9,8 +9,8 @@ class Ball:
         self.canvas = np.array([canvas_width, canvas_height])
 
     def step(self):
-        self.check_collisions()
         self.position += self.velocity
+        self.check_collisions()
 
     def check_collisions(self):
         for i in [0,1]:
