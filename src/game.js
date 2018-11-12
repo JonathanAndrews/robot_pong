@@ -1,9 +1,11 @@
-var Game = function(paddle = new Paddle(document.getElementById('myCanvas'))) {
+var Game = function(paddle, ball) {
   this.paddle = paddle;
+  this.ball = ball;
 }
 
 Game.prototype.run = function () {
   this.paddle.draw()
+  this.ball.draw()
 }
 
-module.exports = Game
+module.exports = Game;

@@ -7,7 +7,10 @@ describe('Game', function() {
     stubPaddle = {
       draw: jest.fn()
     };
-    pongGame = new Game(stubPaddle);
+    stubBall = {
+      draw: jest.fn()
+    };
+    pongGame = new Game(stubPaddle, stubBall);
   })
 
   test('calls draw on the paddle object', () => {
