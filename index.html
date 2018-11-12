@@ -12,21 +12,17 @@
 
 <canvas id="myCanvas" width="900" height="600"></canvas>
 
+<script src='src/paddle.js'></script>
+<script src='src/game.js'></script>
 <script>
-  var canvas = document.getElementById('myCanvas')
-  var ctx = canvas.getContext('2d')
+  var game = new Game;
+  game.run();
 
-  ctx.beginPath();
-  ctx.rect(200,40,10,80);
-  ctx.fillStyle = '#FFFFFF';
-  ctx.fill();
-  ctx.closePath();
-
-  ctx.beginPath();
-  ctx.arc(100, 90, 10, 0, Math.PI*2, false);
-  ctx.fillStyle = "white";
-  ctx.fill();
-  ctx.closePath();
+  // ctx.beginPath();
+  // ctx.arc(100, 90, 10, 0, Math.PI*2, false);
+  // ctx.fillStyle = "white";
+  // ctx.fill();
+  // ctx.closePath();
 
 
 </script>
