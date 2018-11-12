@@ -1,5 +1,22 @@
 {
   "scripts": {
     "test": "jest"
+  },
+  "name": "robot_pong",
+  "description": "Play pong against a Reinforcement Learning AI.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camjw/robot_pong.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/camjw/robot_pong/issues"
+  },
+  "homepage": "https://github.com/camjw/robot_pong#readme",
+  "devDependencies": {
+    "jest": "^23.6.0"
   }
 }
