@@ -12,3 +12,13 @@ To lint run:
 ```
 pylint simple lib
 ```
+
+# Generating requirements
+```
+pip freeze > requirements.txt
+```
+
+# Installing requirements
+```
+pip install -r requirements.txt
+```

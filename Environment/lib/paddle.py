@@ -1,11 +1,11 @@
 import numpy as np
 
+
 class Paddle:
-    def __init__(self, position, player, velocity, thickness, speed=1,
+    def __init__(self, position, player, thickness, speed=1,
                  length=20, canvas_width=900, canvas_height=600):
         self.position = np.array([player * (canvas_width - thickness),
                                   position])
-        self.velocity = np.array([0, velocity])
         self.thickness = thickness
         self.length = length
         self.canvas = np.array([canvas_width, canvas_height])

@@ -5,8 +5,8 @@ from lib.paddle import *
 class BallTest(unittest.TestCase):
 
     def setUp(self):
-        self.paddle = Paddle(20, 0, 0, 10, speed=10)
-        self.colliding_paddle = Paddle(573, 0, 0, 10, speed=10)
+        self.paddle = Paddle(20, 0, 0, 10)
+        self.colliding_paddle = Paddle(573, 0, 0, 10)
 
     def test_step(self):
         self.paddle.step(action=-1)
