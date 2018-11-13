@@ -4,3 +4,4 @@ Environment/lib/__pycache__
 Environment/test/__pycache__
 *.pyc
 .coverage
+node_modules/

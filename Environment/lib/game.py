@@ -23,19 +23,19 @@ class Game:
         self.right_paddle.step(right_action)
 
     def check_ball_paddle_collision(self):
-        self.check_left_ball_paddle_collision()
-        self.check_right_ball_paddle_collision()
+        self.check_ball_left_paddle_collision()
+        self.check_ball_right_paddle_collision()
 
-    def check_left_ball_paddle_collision(self):
+    def check_ball_left_paddle_collision(self):
         if ((self.ball.position[0] - self.ball.radius <= self.left_paddle.thickness)
-           && (self.left_paddle.position[1] <= self.ball.position[1] <= self.left_paddle.position[1] + self.left_paddle.length)
-           && (self.ball.velocity[0] <= 0)):
+           and (self.left_paddle.position[1] <= self.ball.position[1] <= self.left_paddle.position[1] + self.left_paddle.length)
+           and (self.ball.velocity[0] <= 0)):
             self.ball.velocity[0] *= -1
 
-    def check_right_ball_paddle_collision(self):
-        if ((self.ball.position[0] + self.ball.radius <= self.right_paddle.position[0])
-           && (self.right_paddle.position[1] <= self.ball.position[1] <= self.right_paddle.position[1] + self.right_paddle.length)
-           && (self.ball.velocity[0] >= 0)):
+    def check_ball_right_paddle_collision(self):
+        if ((self.ball.position[0] + self.ball.radius >= self.right_paddle.position[0])
+           and (self.right_paddle.position[1] <= self.ball.position[1] <= self.right_paddle.position[1] + self.right_paddle.length)
+           and (self.ball.velocity[0] >= 0)):
             self.ball.velocity[0] *= -1
 
     def reset_ball_position(self):
