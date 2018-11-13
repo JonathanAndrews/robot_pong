@@ -11,7 +11,10 @@ describe('Game', function() {
       draw: jest.fn(),
       moveBall: jest.fn()
     };
-    pongGame = new Game(stubPaddle, stubBall);
+    stubCanvas = {
+      clear: jest.fn()
+    };
+    pongGame = new Game(stubPaddle, stubBall, stubCanvas);
   })
 
   test('calls draw on the paddle object', () => {

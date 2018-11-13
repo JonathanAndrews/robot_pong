@@ -13,13 +13,15 @@
 <canvas id="myCanvas" width="900" height="600"></canvas>
 
 <script src='src/ball.js'></script>
+<script src='src/canvas.js'></script>
 <script src='src/paddle.js'></script>
 <script src='src/game.js'></script>
 <script>
   paddle = new Paddle(document.getElementById('myCanvas'))
   ball = new Ball(document.getElementById('myCanvas'))
+  canvas = new Canvas(document.getElementById('myCanvas'))
 
-  var game = new Game(paddle, ball);
+  var game = new Game(paddle, ball, canvas);
 
   setInterval(game.run, 10)
 
