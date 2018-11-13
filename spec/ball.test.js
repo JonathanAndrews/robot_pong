@@ -49,7 +49,7 @@ describe('Ball', () => {
     it('should reverse velocity, if ball hits top wall', () => {
       const ball = new Ball(stubCanvas);
       ball.position.y = 5;
-      ball.velocity.dy = -2
+      ball.velocity.dy = -2;
       ball.moveBall();
       expect(ball.velocity.dy).toEqual(2);
     });

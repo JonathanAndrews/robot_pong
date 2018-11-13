@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "./node_modules/.bin/eslint ."
   },
   "name": "robot_pong",
   "description": "Play pong against a Reinforcement Learning AI.",
