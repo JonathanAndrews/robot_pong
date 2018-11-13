@@ -28,9 +28,6 @@ Ball.prototype.wallCollision = function wallCollision() {
 };
 
 Ball.prototype.paddleCollision = function (paddle, paddleLength) {
-  console.log(paddle);
-  console.log(this.position.y);
-  console.log(paddle);
   if ((this.position.x <= 25)&&((this.position.y >= paddle) && (this.position.y <= paddle+paddleLength))) {
     this.velocity.dx *= -1
   }
