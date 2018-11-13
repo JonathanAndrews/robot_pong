@@ -8,7 +8,8 @@ describe('Game', function() {
       draw: jest.fn()
     };
     stubBall = {
-      draw: jest.fn()
+      draw: jest.fn(),
+      moveBall: jest.fn()
     };
     pongGame = new Game(stubPaddle, stubBall);
   })

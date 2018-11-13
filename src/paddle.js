@@ -12,4 +12,6 @@ Paddle.prototype.draw = function(ctx = this.context) {
   ctx.closePath();
 }
 
-module.exports = Paddle;
+if (typeof module !== 'undefined' && module.hasOwnProperty('exports')) {
+  module.exports = Paddle;
+}

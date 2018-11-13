@@ -26,4 +26,10 @@ describe('Ball', function() {
     expect(stubContext.closePath).toHaveBeenCalledTimes(1);
     expect(stubContext.fillStyle).toEqual('#FFFFFF')
   })
+
+  it('should change position', () => {
+    const ball = new Ball(stubCanvas);
+    ball.moveBall();
+    expect(ball.position).toEqual( { x: 455, y: 305 } );
+  })
 })
