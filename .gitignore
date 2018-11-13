@@ -2,4 +2,5 @@ Environment/.coverage
 Environment/__pycache__
 Environment/lib/__pycache__
 Environment/test/__pycache__
-*.pyc 
+*.pyc
+.coverage
