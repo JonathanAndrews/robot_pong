@@ -16,6 +16,7 @@ class Game:
         self.step_components(left_action, right_action)
         if self.check_for_goals():
             self.reset_ball_position()
+        self.time_remaining -= 1
 
     def step_components(self, left_action, right_action):
         self.ball.step()

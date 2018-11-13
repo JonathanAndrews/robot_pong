@@ -16,6 +16,7 @@ class GameTest(unittest.TestCase):
         self.game.ball.step.assert_called()
         self.game.left_paddle.step.assert_called()
         self.game.right_paddle.step.assert_called()
+        self.assertEqual(self.game.time_remaining, 99)
 
     def test_goal_response(self):
         self.game.ball.check_for_goals.return_value = [1,0]
