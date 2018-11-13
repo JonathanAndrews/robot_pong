@@ -27,8 +27,13 @@ Ball.prototype.wallCollision = function wallCollision() {
   }
 };
 
-Ball.prototype.paddleCollision = function () {
-  this.velocity.dx *= -1;
+Ball.prototype.paddleCollision = function (paddle, paddleLength) {
+  console.log(paddle);
+  console.log(this.position.y);
+  console.log(paddle);
+  if ((this.position.x <= 25)&&((this.position.y >= paddle) && (this.position.y <= paddle+paddleLength))) {
+    this.velocity.dx *= -1
+  }
 };
 
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
