@@ -3,7 +3,7 @@ const Ball = function Ball(canvas) {
   this.position = { x: 450, y: 300 };
   this.canvas = canvas;
   this.context = this.canvas.getContext('2d');
-  this.velocity = { dx: -2, dy: 2 };
+  this.velocity = { dx: 2, dy: 2 };
 };
 
 Ball.prototype.draw = function draw(ctx = this.context) {
@@ -27,10 +27,8 @@ Ball.prototype.wallCollision = function wallCollision() {
   }
 };
 
-Ball.prototype.paddleCollision = function (paddle, paddleLength) {
-  if ((this.position.x <= 25)&&((this.position.y >= paddle) && (this.position.y <= paddle+paddleLength))) {
+Ball.prototype.paddleCollision = function () {
     this.velocity.dx *= -1
-  }
 };
 
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
