@@ -17,11 +17,12 @@
 <script src='src/paddle.js'></script>
 <script src='src/game.js'></script>
 <script>
-  paddle = new Paddle(document.getElementById('myCanvas'))
+  player_paddle = new Paddle(document.getElementById('myCanvas'), 0)
+  ai_paddle = new Paddle(document.getElementById('myCanvas'), 1)
   ball = new Ball(document.getElementById('myCanvas'))
   canvas = new Canvas(document.getElementById('myCanvas'))
 
-  var game = new Game(paddle, ball, canvas);
+  var game = new Game(player_paddle, ai_paddle, ball, canvas);
 
   setInterval(game.run, 10)
 
