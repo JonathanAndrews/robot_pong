@@ -17,6 +17,19 @@ class Game:
         if self.check_for_goals():
             self.reset_ball_position()
         self.time_remaining -= 1
+        ai_inputs = {
+            'user-paddle-y': self.left_paddle.position,
+            'user-paddle-dy': self.left_paddle.speed,
+            'comp-paddle-y': self.right_paddle.position,
+            'comp-paddle-dy': self.right_paddle.speed,
+            'ball-position-x': self.ball.position_x,
+            'ball-position-y': self.ball.position_y,
+            'ball-velocity-dx': self.ball.velocity_x,
+            'ball-velocity-dy': self.ball.velocity_y,
+            'time-remaining': self.time_remaining,
+            'score': self.score[0] - self.score[1]
+        }
+        return ai_inputs
 
     def step_components(self, left_action, right_action):
         self.ball.step()
