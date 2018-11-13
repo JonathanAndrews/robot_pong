@@ -3,7 +3,8 @@ from lib.ball import *
 from lib.paddle import *
 
 class Game:
-    def __init__(self, total_game_time, refresh_time, canvas_width=900, canvas_height=600, paddle_type=Paddle, ball_type=Ball):
+    def __init__(self, total_game_time, refresh_time, canvas_width=900,
+                 canvas_height=600, paddle_type=Paddle, ball_type=Ball):
         self.canvas = np.array([canvas_width, canvas_height])
         self.left_paddle = paddle_type(290, 0, 10)
         self.right_paddle = paddle_type(290, 1, 10)
