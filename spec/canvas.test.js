@@ -1,22 +1,21 @@
-const Canvas = require('../src/canvas')
+const Canvas = require('../src/canvas');
 
-describe('Canvas', function() {
-
+describe('Canvas', () => {
   let stubContext;
   let stubCanvas;
 
   beforeEach(() => {
     stubContext = {
-      clearRect: jest.fn()
+      clearRect: jest.fn(),
     };
     stubCanvas = {
-      getContext: jest.fn(() => stubContext)
+      getContext: jest.fn(() => stubContext),
     };
-  })
+  });
 
   it('clears the canvas', () => {
     const canvas = new Canvas(stubCanvas);
-    canvas.clear()
+    canvas.clear();
     expect(stubContext.clearRect).toHaveBeenCalledTimes(1);
-  })
-})
+  });
+});
