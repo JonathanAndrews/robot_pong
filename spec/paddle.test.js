@@ -25,4 +25,16 @@ describe('Paddle', () => {
     expect(stubContext.closePath).toHaveBeenCalledTimes(1);
     expect(stubContext.fillStyle).toEqual('#FFFFFF');
   });
+
+  it('for Player has x-position of 10', () => {
+    const paddle1 = new Paddle(stubCanvas, 0);
+    paddle1.draw();
+    expect(paddle1.xPosition).toEqual(10);
+  });
+
+  it('for Player has x-position of 880 ', () => {
+    const paddle2 = new Paddle(stubCanvas, 1);
+    paddle2.draw();
+    expect(paddle2.xPosition).toEqual(880);
+  });
 });
