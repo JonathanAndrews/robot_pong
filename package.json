@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "lint": "./node_modules/.bin/eslint ."
   },
   "name": "robot_pong",
@@ -22,5 +22,8 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
     "jest": "^23.6.0"
+  },
+  "jest": {
+    "verbose": true
   }
 }
