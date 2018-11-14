@@ -8,3 +8,4 @@ install:
 
 script:
   - (cd environment/ && python -m unittest discover)
+  - (cd neural/ && python -m unittest discover)

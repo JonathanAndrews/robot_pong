@@ -1,3 +1,5 @@
+Run these commands from either `environment` or `neural`.
+
 # Coverage
 
 To get coverage reports run the following command:
