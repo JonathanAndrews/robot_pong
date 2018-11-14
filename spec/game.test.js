@@ -30,6 +30,7 @@ describe('Game', () => {
       paddleCollision: jest.fn(),
       position: { x: 450, y: 300 },
       RADIUS: 5,
+      reset: jest.fn(),
     };
     stubCanvas = {
       clear: jest.fn(),
@@ -125,16 +126,28 @@ describe('Game', () => {
   });
 
   describe('checkForGoal', () => {
-    it('should increase player score by one if x-position < -BallRadius', () => {
-      pongGame.ball.position.x = -10
-      pongGame.checkForGoal()
-      expect(pongGame.score).toEqual([1,0]) 
-    })
+    it('should increase ai score by one if x-position < -BallRadius', () => {
+      pongGame.ball.position.x = -10;
+      pongGame.checkForGoal();
+      expect(pongGame.score).toEqual([0, 1]);
+    });
 
     it('should increase player score by one if x-position > CanvasWidth + BallRadius', () => {
-      pongGame.ball.position.x = 910
-      pongGame.checkForGoal()
-      expect(pongGame.score).toEqual([0,1]) 
-    })
-  })
+      pongGame.ball.position.x = 910;
+      pongGame.checkForGoal();
+      expect(pongGame.score).toEqual([1, 0]);
+    });
+
+    it('if player scores, tells the ball to reset position', () => {
+      pongGame.ball.position.x = 910;
+      pongGame.checkForGoal();
+      expect(pongGame.ball.reset).toHaveBeenCalledTimes(1);
+    });
+
+    it('if ai scores, tells the ball to reset position', () => {
+      pongGame.ball.position.x = -10;
+      pongGame.checkForGoal();
+      expect(pongGame.ball.reset).toHaveBeenCalledTimes(1);
+    });
+  });
 });

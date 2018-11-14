@@ -1,11 +1,11 @@
-const Game = function Game(playerPaddle, aiPaddle, ball, canvas) {
+const Game = function Game(playerPaddle, aiPaddle, ball, canvasDisplay) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
-  this.canvas = canvas;
+  this.canvasDisplay = canvasDisplay;
   this.upButton = false;
   this.downButton = false;
-  this.score = [0, 0]
+  this.score = [0, 0];
   that = this;
 };
 
@@ -16,7 +16,7 @@ Game.prototype.checkPaddleCollision = function checkPaddleCollision() {
 };
 
 Game.prototype.run = function run() {
-  this.canvas.clear();
+  this.canvasDisplay.clear();
   that.playerPaddle.draw();
   that.aiPaddle.draw();
   this.ball.draw();
@@ -45,11 +45,13 @@ Game.prototype.keyUpHandler = function keyUpHandler(e) {
 
 Game.prototype.checkForGoal = function checkForGoal() {
   if (this.ball.position.x < -this.ball.RADIUS) {
-    this.score[0] += 1
-  } else if (this.ball.position.x > this.canvas.width + this.ball.RADIUS) {
-    this.score[1] +=1
+    this.score[1] += 1;
+    this.ball.reset();
+  } else if (this.ball.position.x > this.canvasDisplay.width + this.ball.RADIUS) {
+    this.score[0] +=1;
+    this.ball.reset();
   }
-}
+};
 
 
 // Player Paddle Collision Methods

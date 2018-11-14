@@ -31,6 +31,11 @@ Ball.prototype.paddleCollision = function paddleCollision() {
   this.velocity.dx *= -1;
 };
 
+Ball.prototype.reset = function reset() {
+  this.position = { x: 450, y: 300 };
+  this.velocity = { dx: 2, dy: 2 };
+};
+
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
   module.exports = Ball;
 }
