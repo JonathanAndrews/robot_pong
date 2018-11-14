@@ -63,8 +63,5 @@ class Game:
         return sum(self.ball.check_for_goals())
 
     def is_game_over(self):
-        print ("hello")
-        print(self.time_remaining)
-        print (self.game_over)
         if self.time_remaining <= 0:
             self.game_over = True
