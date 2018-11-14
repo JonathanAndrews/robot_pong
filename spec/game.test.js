@@ -29,9 +29,11 @@ describe('Game', () => {
       moveBall: jest.fn(),
       paddleCollision: jest.fn(),
       position: { x: 450, y: 300 },
+      RADIUS: 5,
     };
     stubCanvas = {
       clear: jest.fn(),
+      width: 900,
     };
     pongGame = new Game(stubPlayerPaddle, stubAiPaddle, stubBall, stubCanvas);
   });
@@ -121,4 +123,18 @@ describe('Game', () => {
       expect(pongGame.downButton).toEqual(true);
     });
   });
+
+  describe('checkForGoal', () => {
+    it('should increase player score by one if x-position < -BallRadius', () => {
+      pongGame.ball.position.x = -10
+      pongGame.checkForGoal()
+      expect(pongGame.score).toEqual([1,0]) 
+    })
+
+    it('should increase player score by one if x-position > CanvasWidth + BallRadius', () => {
+      pongGame.ball.position.x = 910
+      pongGame.checkForGoal()
+      expect(pongGame.score).toEqual([0,1]) 
+    })
+  })
 });
