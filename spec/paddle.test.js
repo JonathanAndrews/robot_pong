@@ -37,4 +37,32 @@ describe('Paddle', () => {
     paddle2.draw();
     expect(paddle2.xPosition).toEqual(880);
   });
+
+  describe('moveUp', function(){
+    it('increases the yPosition when passed true statement', function(){
+      const paddle = new Paddle(stubCanvas);
+      paddle.moveUp(true);
+      expect(paddle.yPosition).toEqual(416);
+    })
+
+    it('doesnt change the yPosition when passed false statement', function(){
+      const paddle = new Paddle(stubCanvas);
+      paddle.moveUp(false);
+      expect(paddle.yPosition).toEqual(420);
+    })
+  })
+
+  describe('moveDown', function(){
+    it('decreases the yPosition when passed true statement', function(){
+      const paddle = new Paddle(stubCanvas);
+      paddle.moveDown(true);
+      expect(paddle.yPosition).toEqual(424);
+    })
+
+    it('doesnt change the yPosition when passed false statement', function(){
+      const paddle = new Paddle(stubCanvas);
+      paddle.moveDown(false);
+      expect(paddle.yPosition).toEqual(420);
+    })
+  })
 });

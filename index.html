@@ -24,6 +24,9 @@
 
   var game = new Game(player_paddle, ai_paddle, ball, canvas);
 
+  document.addEventListener('keydown',game.keyDownHandler,false);
+  document.addEventListener('keyup',game.keyUpHandler,false);
+
   setInterval(game.run, 10)
 
 
