@@ -13,6 +13,7 @@ describe('Paddle', () => {
     };
     stubCanvas = {
       getContext: jest.fn(() => stubContext),
+      height: 900
     };
   });
 
@@ -50,6 +51,13 @@ describe('Paddle', () => {
       paddle.moveUp(false);
       expect(paddle.yPosition).toEqual(420);
     });
+
+    it('the paddle has an upper boundary', () => {
+      const paddle = new Paddle(stubCanvas);
+      paddle.yPosition = -10
+      paddle.moveUp(true);
+      expect(paddle.yPosition).toEqual(0);
+    });
   });
 
   describe('moveDown', () => {
@@ -63,6 +71,13 @@ describe('Paddle', () => {
       const paddle = new Paddle(stubCanvas);
       paddle.moveDown(false);
       expect(paddle.yPosition).toEqual(420);
+    });
+
+    it('the paddle has a lower boundary', () => {
+      const paddle = new Paddle(stubCanvas);
+      paddle.yPosition = 910
+      paddle.moveDown(true);
+      expect(paddle.yPosition).toEqual(820);
     });
   });
 });
