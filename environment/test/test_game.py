@@ -44,3 +44,8 @@ class GameTest(unittest.TestCase):
         self.game.right_paddle.length = 20
         self.game.check_ball_paddle_collision()
         self.assertTrue((self.game.ball.velocity == np.array([-1,0])).all())
+
+    def test_is_game_won(self):
+        for i in range (101):
+            self.game.step()
+        self.assertEqual(self.game.game_over, True)

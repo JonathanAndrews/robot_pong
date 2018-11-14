@@ -12,8 +12,10 @@ class Game:
         self.time_remaining = total_game_time
         self.refresh_time = refresh_time
         self.score = np.array([0, 0])
+        self.game_over = False
 
     def step(self, left_action=0, right_action=0):
+        self.is_game_over()
         self.step_components(left_action, right_action)
         if self.check_for_goals():
             self.reset_ball_position()
@@ -59,3 +61,10 @@ class Game:
     def check_for_goals(self):
         self.score += np.array(self.ball.check_for_goals())
         return sum(self.ball.check_for_goals())
+
+    def is_game_over(self):
+        print ("hello")
+        print(self.time_remaining)
+        print (self.game_over)
+        if self.time_remaining <= 0:
+            self.game_over = True
