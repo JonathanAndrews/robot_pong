@@ -54,4 +54,13 @@ describe('Ball', () => {
       expect(ball.velocity.dy).toEqual(2);
     });
   });
+
+  describe('Paddle collision', () => {
+    it('reverses the horizontal velocity', () => {
+      const ball = new Ball(stubCanvas);
+      expect(ball.velocity.dx).toEqual(2);
+      ball.paddleCollision();
+      expect(ball.velocity.dx).toEqual(-2);
+    });
+  });
 });

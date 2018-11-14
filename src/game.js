@@ -3,8 +3,8 @@ const Game = function Game(playerPaddle, aiPaddle, ball, canvas) {
   this.aiPaddle = aiPaddle;
   this.ball = ball;
   this.canvas = canvas;
-  this.upButton = false
-  this.downButton = false
+  this.upButton = false;
+  this.downButton = false;
   that = this;
 };
 
@@ -20,26 +20,26 @@ Game.prototype.run = function run() {
   that.aiPaddle.draw();
   this.ball.draw();
   this.ball.moveBall();
-  that.playerPaddle.moveUp(that.upButton)
-  that.playerPaddle.moveDown(that.downButton)
+  that.playerPaddle.moveUp(that.upButton);
+  that.playerPaddle.moveDown(that.downButton);
   that.checkPaddleCollision();
 };
 
 Game.prototype.keyDownHandler = function(e) {
-  if (e.keyCode == 38) {
+  if (e.keyCode === 38) {
     that.upButton = true;
-  } else if (e.keyCode == 40) {
+  } else if (e.keyCode === 40) {
     that.downButton = true;
   }
-}
+};
 
 Game.prototype.keyUpHandler = function(e) {
-  if (e.keyCode == 38) {
+  if (e.keyCode === 38) {
     that.upButton = false;
-  } else if (e.keyCode == 40) {
+  } else if (e.keyCode === 40) {
     that.downButton = false;
   }
-}
+};
 
 
 // Player Paddle Collision Methods

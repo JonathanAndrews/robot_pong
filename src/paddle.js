@@ -1,6 +1,6 @@
 const Paddle = function Paddle(canvas, playerType) {
   this.DIMENSIONS = { height: 80, width: 10 };
-  this.SPEED = 4
+  this.SPEED = 4;
   this.yPosition = 420;
   this.canvas = canvas;
   this.context = this.canvas.getContext('2d');
@@ -19,13 +19,13 @@ Paddle.prototype.draw = function draw(ctx = this.context) {
   ctx.closePath();
 };
 
-Paddle.prototype.moveUp = function (truthy) {
+Paddle.prototype.moveUp = function moveUp(truthy) {
   if (truthy) {
     this.yPosition -= this.SPEED;
   }
 };
 
-Paddle.prototype.moveDown = function (truthy) {
+Paddle.prototype.moveDown = function moveDown(truthy) {
   if (truthy) {
     this.yPosition += this.SPEED;
   }
