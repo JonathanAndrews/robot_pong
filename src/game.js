@@ -25,7 +25,7 @@ Game.prototype.run = function run() {
   that.checkPaddleCollision();
 };
 
-Game.prototype.keyDownHandler = function(e) {
+Game.prototype.keyDownHandler = function (e) {
   if (e.keyCode === 38) {
     that.upButton = true;
   } else if (e.keyCode === 40) {
@@ -33,7 +33,7 @@ Game.prototype.keyDownHandler = function(e) {
   }
 };
 
-Game.prototype.keyUpHandler = function(e) {
+Game.prototype.keyUpHandler = function (e) {
   if (e.keyCode === 38) {
     that.upButton = false;
   } else if (e.keyCode === 40) {
