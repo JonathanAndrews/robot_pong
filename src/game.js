@@ -1,4 +1,4 @@
-const Game = function Game(totalIntervals = 120000, playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface) {
+const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 120000) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
@@ -22,9 +22,9 @@ Game.prototype.checkPaddleCollision = function checkPaddleCollision() {
 };
 
 Game.prototype.run = function run() {
-  this.isGameOver();
-  ai_inputs = this.getAIInputs();
-  move = this.aiInterface.getMove(ai_inputs);
+  that.isGameOver();
+  ai_inputs = that.getAIInputs();
+  move = that.aiInterface.getMove(ai_inputs);
   this.canvasDisplay.clear();
   that.playerPaddle.draw();
   that.aiPaddle.draw();
@@ -79,7 +79,7 @@ Game.prototype.checkForGoal = function checkForGoal() {
   }
 };
 
-Game.prototype.isGameOver = function gameOver() {
+Game.prototype.isGameOver = function isGameOver() {
   if (this.intervalRemaining <= 0) {
     this.gameOver = true;
   }

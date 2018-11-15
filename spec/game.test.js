@@ -43,7 +43,7 @@ describe('Game', () => {
     stubAiInterface = {
       getMove: jest.fn(),
     }
-    pongGame = new Game(120000, stubPlayerPaddle, stubAiPaddle, stubBall, stubCanvas, stubAiInterface);
+    pongGame = new Game(stubPlayerPaddle, stubAiPaddle, stubBall, stubCanvas, stubAiInterface, 120000);
   });
 
   it('calls checkPaddleCollision on the paddle object', () => {
