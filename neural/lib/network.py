@@ -45,15 +45,15 @@ class Network:
                                     [hidden_weight for hidden_weight in hidden_weights.values()] +
                                     [hidden_bias for hidden_bias in hidden_biases.values()])
         self.neural_output = tf.matmul(layers[self.no_hidden_layers - 1], last_weights) + last_biases
+        self.variable_initializer = tf.global_variables_initializer()
 
     def define_utilities(self):
         self.loss = tf.losses.mean_squared_error(self.neural_output, self.q_values)
         self.optimizer = tf.train.AdamOptimizer(learning_rate=0.001).minimize(self.loss)
-        self.variable_initializer = tf.global_variables_initializer()
     
     def single_prediction(self, inputs, session):
         return session.run(self.neural_output, feed_dict={
-            self.states: tf.transpose(inputs),
+            self.states: inputs.reshape(1, self.no_inputs),
             self.dropout: self.keep_prob
         })
 
