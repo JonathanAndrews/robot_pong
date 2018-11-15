@@ -15,6 +15,7 @@ describe('Game', () => {
       xPosition: 10,
       moveUp: jest.fn(),
       moveDown: jest.fn(),
+      SPEED: 1.5,
     };
     stubAiPaddle = {
       draw: jest.fn(),
@@ -23,12 +24,15 @@ describe('Game', () => {
       xPosition: 880,
       moveUp: jest.fn(),
       moveDown: jest.fn(),
+      SPEED: 1.5,
+      movePaddle: jest.fn(),
     };
     stubBall = {
       draw: jest.fn(),
       moveBall: jest.fn(),
       paddleCollision: jest.fn(),
       position: { x: 450, y: 300 },
+      velocity: { dx: 2.2, dy: 2 },
       RADIUS: 5,
       reset: jest.fn(),
     };
@@ -36,7 +40,10 @@ describe('Game', () => {
       clear: jest.fn(),
       width: 900,
     };
-    pongGame = new Game(120000, stubPlayerPaddle, stubAiPaddle, stubBall, stubCanvas);
+    stubAiInterface = {
+      getMove: jest.fn(),
+    }
+    pongGame = new Game(120000, stubPlayerPaddle, stubAiPaddle, stubBall, stubCanvas, stubAiInterface);
   });
 
   it('calls checkPaddleCollision on the paddle object', () => {
@@ -61,6 +68,26 @@ describe('Game', () => {
     it('should not call paddleCollision method if no collision', () => {
       pongGame.checkPaddleCollision();
       expect(pongGame.ball.paddleCollision).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('getAIInputs', () => {
+    it('should return a hash', () => {
+      expect(pongGame.getAIInputs()).toBeInstanceOf(Object)
+    });
+
+    it('returns expected hash', () => {
+      let ai_inputs = pongGame.getAIInputs()
+      expect(ai_inputs['user-paddle-y']).toEqual(420)
+      expect(ai_inputs['user-paddle-dy']).toEqual(1.5)
+      expect(ai_inputs['comp-paddle-y']).toEqual(420)
+      expect(ai_inputs['comp-paddle-dy']).toEqual(1.5)
+      expect(ai_inputs['ball-position-x']).toEqual(450)
+      expect(ai_inputs['ball-position-y']).toEqual(300)
+      expect(ai_inputs['ball-velocity-dx']).toEqual(2.2)
+      expect(ai_inputs['ball-velocity-dy']).toEqual(2)
+      expect(ai_inputs['time-remaining']).toEqual(120000)
+      expect(ai_inputs['score']).toEqual(0)
     });
   });
 
