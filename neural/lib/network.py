@@ -56,5 +56,9 @@ class Network:
             self.states: inputs.reshape(1, self.no_inputs),
             self.dropout: self.keep_prob
         })
-
-
+    
+    def batch_prediction(self, inputs, session):
+        return session.run(self.neural_output, feed_dict={
+            self.states: inputs,
+            self.dropout: self.keep_prob
+        })

@@ -32,6 +32,13 @@ class NetworkTest(unittest.TestCase):
         array = np.array([1,2])
         prediction = self.network.single_prediction(array, test_session)
         self.assertEqual(self.network.no_actions, len(prediction[0]))
+    
+    def test_batch_prediction(self):
+        test_session = tf.Session()
+        test_session.run(self.network.variable_initializer)
+        array = np.array([[1,2],[3,4]])
+        prediction = self.network.batch_prediction(array, test_session)
+        self.assertEqual(len(array), len(prediction))
 
             
 
