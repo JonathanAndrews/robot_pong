@@ -27,9 +27,9 @@ Ball.prototype.wallCollision = function wallCollision() {
   }
 };
 
-Ball.prototype.paddleCollision = function paddleCollision(paddleY, paddleHeight) {
+Ball.prototype.paddleCollision = function paddleCollision(paddleLocationY, paddleHeight) {
   this.velocity.dx *= -1;
-  const random = (this.position.y - paddleY) / paddleHeight;
+  const random = (this.position.y - paddleLocationY) / paddleHeight;
   this.velocity.dy = -4 * (0.5 - random);
 };
 
