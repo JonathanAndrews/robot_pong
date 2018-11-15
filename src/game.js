@@ -63,8 +63,8 @@ Game.prototype._isPlayerPaddleCollision = function _isPlayerPaddleCollision() {
 };
 
 Game.prototype._isBallWithinRangeOfPlayer = function _isBallWithinRangeOfPlayer() {
-  return (this.ball.position.x
-          === this.playerPaddle.DIMENSIONS.width + this.playerPaddle.xPosition);
+  return (this.ball.position.x >= this.playerPaddle.xPosition
+          && this.ball.position.x <= this.playerPaddle.DIMENSIONS.width + this.playerPaddle.xPosition);
 };
 
 Game.prototype._isPlayerInPosition = function _isPlayerInPosition() {
@@ -88,7 +88,7 @@ Game.prototype._isAiPaddleCollision = function _isAiPaddleCollision() {
 };
 
 Game.prototype._isBallWithinRangeOfAi = function _isBallWithinRangeOfAi() {
-  return (this.ball.position.x === this.aiPaddle.xPosition);
+  return (this.ball.position.x + this.ball.RADIUS >= this.aiPaddle.xPosition && this.ball.position.x + this.ball.RADIUS <= this.aiPaddle.xPosition + this.aiPaddle.DIMENSIONS.width);
 };
 
 Game.prototype._isAiInPosition = function _isAiInPosition() {
@@ -102,7 +102,6 @@ Game.prototype._isBallWithinLowerBoundOfAiPaddle = function _isBallWithinLowerBo
 Game.prototype._isBallWithinUpperBoundOfAiPaddle = function _isBallWithinUpperBoundOfAiPaddle() {
   return (this.aiPaddle.yPosition <= this.ball.position.y);
 };
-
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
   module.exports = Game;
 }
