@@ -22,6 +22,7 @@ Game.prototype.checkPaddleCollision = function checkPaddleCollision() {
 
 Game.prototype.run = function run() {
   this.isGameOver();
+  // move = aiInterface.getMove([10 parameters])
   this.canvasDisplay.clear();
   that.playerPaddle.draw();
   that.aiPaddle.draw();
@@ -29,6 +30,7 @@ Game.prototype.run = function run() {
   this.ball.moveBall();
   that.playerPaddle.moveUp(that.upButton);
   that.playerPaddle.moveDown(that.downButton);
+  // that.aiPaddle.AIMove(move);
   that.checkPaddleCollision();
   that.checkForGoal();
   this.intervalRemaining -= 1;

@@ -21,17 +21,20 @@ Paddle.prototype.draw = function draw(ctx = this.context) {
 
 Paddle.prototype.moveUp = function moveUp(truthy) {
   if (truthy) {
-    this.yPosition -= this.SPEED;
-    this.checkBoundaries();
+    this.movePaddle(-1)
   }
 };
 
 Paddle.prototype.moveDown = function moveDown(truthy) {
   if (truthy) {
-    this.yPosition += this.SPEED;
-    this.checkBoundaries();
+    this.movePaddle(1)
   }
 };
+
+Paddle.prototype.movePaddle = function movePaddle(direction) {
+  this.yPosition += direction * this.SPEED;
+  this.checkBoundaries();
+}
 
 Paddle.prototype.checkBoundaries = function checkBoundaries() {
   if (this.yPosition <= 0) {
