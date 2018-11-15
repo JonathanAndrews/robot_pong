@@ -77,7 +77,7 @@ describe('Paddle', () => {
       const paddle = new Paddle(stubCanvas);
       paddle.yPosition = 910;
       paddle.moveDown(true);
-      expect(paddle.yPosition).toEqual(820);
+      expect(paddle.yPosition).toEqual(900 - paddle.DIMENSIONS.height);
     });
   });
 });
