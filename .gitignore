@@ -9,3 +9,4 @@ neural/test/__pycache__
 *.pyc
 .coverage
 node_modules/
+coverage/
