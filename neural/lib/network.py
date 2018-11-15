@@ -15,7 +15,6 @@ class Network:
     def define_model(self):
         self.define_placeholders()
         self.define_variables()
-        self.define_utilities()
 
     def define_placeholders(self):
         self.states = tf.placeholder(shape=[None, self.no_inputs],
@@ -39,26 +38,31 @@ class Network:
         layers = {}
         layers[0] = tf.nn.tanh(tf.matmul(self.states, first_weights) + first_biases)
         for i in range(self.no_hidden_layers - 1):
-            layers[i + 1] = tf.nn.tanh(tf.matmul(layers[i], hidden_weights[i]) + hidden_biases[i])
+            layers[i + 1] = tf.nn.dropout(tf.nn.tanh(tf.matmul(layers[i], hidden_weights[i]) + hidden_biases[i]), self.dropout)
 
         self.saver = tf.train.Saver([first_weights, first_biases, last_weights, last_biases] +
                                     [hidden_weight for hidden_weight in hidden_weights.values()] +
                                     [hidden_bias for hidden_bias in hidden_biases.values()])
         self.neural_output = tf.matmul(layers[self.no_hidden_layers - 1], last_weights) + last_biases
-        self.variable_initializer = tf.global_variables_initializer()
-
-    def define_utilities(self):
         self.loss = tf.losses.mean_squared_error(self.neural_output, self.q_values)
         self.optimizer = tf.train.AdamOptimizer(learning_rate=0.001).minimize(self.loss)
-    
+        self.variable_initializer = tf.global_variables_initializer()
+
     def single_prediction(self, inputs, session):
         return session.run(self.neural_output, feed_dict={
             self.states: inputs.reshape(1, self.no_inputs),
-            self.dropout: self.keep_prob
+            self.dropout: 1.0
         })
-    
+
     def batch_prediction(self, inputs, session):
         return session.run(self.neural_output, feed_dict={
             self.states: inputs,
+            self.dropout: self.keep_prob
+        })
+
+    def batch_train(self, inputs, outputs, session):
+        return session.run(self.optimizer, feed_dict={
+            self.states: inputs,
+            self.q_values: outputs,
             self.dropout: self.keep_prob
         })
