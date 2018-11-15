@@ -10,8 +10,10 @@ const Game = function Game(playerPaddle, aiPaddle, ball, canvasDisplay) {
 };
 
 Game.prototype.checkPaddleCollision = function checkPaddleCollision() {
-  if (this._isPlayerPaddleCollision() || this._isAiPaddleCollision()) {
-    this.ball.paddleCollision();
+  if (this._isPlayerPaddleCollision()) {
+    this.ball.paddleCollision(this.playerPaddle.yPosition, this.playerPaddle.DIMENSIONS.height)
+  } else if (this._isAiPaddleCollision()) {
+    this.ball.paddleCollision(this.aiPaddle.yPosition, this.aiPaddle.DIMENSIONS.height);
   }
 };
 

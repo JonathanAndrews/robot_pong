@@ -43,7 +43,7 @@ describe('Paddle', () => {
     it('increases the yPosition when passed true statement', () => {
       const paddle = new Paddle(stubCanvas);
       paddle.moveUp(true);
-      expect(paddle.yPosition).toEqual(416);
+      expect(paddle.yPosition).toEqual(418.5);
     });
 
     it('doesnt change the yPosition when passed false statement', () => {
@@ -64,7 +64,7 @@ describe('Paddle', () => {
     it('decreases the yPosition when passed true statement', () => {
       const paddle = new Paddle(stubCanvas);
       paddle.moveDown(true);
-      expect(paddle.yPosition).toEqual(424);
+      expect(paddle.yPosition).toEqual(421.5);
     });
 
     it('doesnt change the yPosition when passed false statement', () => {

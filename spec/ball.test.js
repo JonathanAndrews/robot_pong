@@ -4,6 +4,7 @@ describe('Ball', () => {
   let stubContext;
   let stubCanvas;
   let ball;
+  let PADDLEHEIGHT;
 
   beforeEach(() => {
     stubContext = {
@@ -16,6 +17,7 @@ describe('Ball', () => {
       getContext: jest.fn(() => stubContext),
     };
     ball = new Ball(stubCanvas);
+    PADDLEHEIGHT = 10;
   });
 
   it('calls beginPath on ctx', () => {
@@ -29,7 +31,7 @@ describe('Ball', () => {
 
   it('should change position', () => {
     ball.moveBall();
-    expect(ball.position).toEqual({ x: 452, y: 302 });
+    expect(ball.position).toEqual({ x: 452.2, y: 302 });
   });
 
   describe('Wall collision', () => {
@@ -54,9 +56,23 @@ describe('Ball', () => {
 
   describe('Paddle collision', () => {
     it('reverses the horizontal velocity', () => {
-      expect(ball.velocity.dx).toEqual(2);
-      ball.paddleCollision();
-      expect(ball.velocity.dx).toEqual(-2);
+      expect(ball.velocity.dx).toEqual(2.2);
+      ball.paddleCollision(12, PADDLEHEIGHT);
+      expect(ball.velocity.dx).toEqual(-2.2);
+    });
+
+    it('changes the vertical velocity', () => {
+      ball.position.y = 18
+      expect(ball.velocity.dy).toEqual(2);
+      ball.paddleCollision(12, PADDLEHEIGHT);
+      expect(ball.velocity.dy).toBeCloseTo(-0.8, 2);
+    });
+
+    it('changes the vertical velocity in a different way', () => {
+      ball.position.y = 18
+      expect(ball.velocity.dy).toEqual(2);
+      ball.paddleCollision(16, PADDLEHEIGHT);
+      expect(ball.velocity.dy).toEqual(2.4);
     });
   });
 
