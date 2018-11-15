@@ -62,14 +62,14 @@ describe('Ball', () => {
     });
 
     it('changes the vertical velocity', () => {
-      ball.position.y = 18
+      ball.position.y = 18;
       expect(ball.velocity.dy).toEqual(2);
       ball.paddleCollision(12, PADDLEHEIGHT);
       expect(ball.velocity.dy).toBeCloseTo(0.4, 1);
     });
 
     it('changes the vertical velocity in a different way', () => {
-      ball.position.y = 18
+      ball.position.y = 18;
       expect(ball.velocity.dy).toEqual(2);
       ball.paddleCollision(16, PADDLEHEIGHT);
       expect(ball.velocity.dy).toEqual(-1.2);

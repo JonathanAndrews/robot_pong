@@ -1,4 +1,4 @@
-const Game = function Game(totalIntervals=120000, playerPaddle, aiPaddle, ball, canvasDisplay) {
+const Game = function Game(totalIntervals = 120000, playerPaddle, aiPaddle, ball, canvasDisplay) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
@@ -14,7 +14,7 @@ const Game = function Game(totalIntervals=120000, playerPaddle, aiPaddle, ball, 
 
 Game.prototype.checkPaddleCollision = function checkPaddleCollision() {
   if (this._isPlayerPaddleCollision()) {
-    this.ball.paddleCollision(this.playerPaddle.yPosition, this.playerPaddle.DIMENSIONS.height)
+    this.ball.paddleCollision(this.playerPaddle.yPosition, this.playerPaddle.DIMENSIONS.height);
   } else if (this._isAiPaddleCollision()) {
     this.ball.paddleCollision(this.aiPaddle.yPosition, this.aiPaddle.DIMENSIONS.height);
   }
@@ -55,7 +55,7 @@ Game.prototype.checkForGoal = function checkForGoal() {
     this.score[1] += 1;
     this.ball.reset();
   } else if (this.ball.position.x > this.canvasDisplay.width + this.ball.RADIUS) {
-    this.score[0] +=1;
+    this.score[0] += 1;
     this.ball.reset();
   }
 };
@@ -64,7 +64,7 @@ Game.prototype.isGameOver = function gameOver() {
   if (this.intervalRemaining <= 0) {
     this.gameOver = true;
   }
-}
+};
 
 
 // Player Paddle Collision Methods
@@ -99,7 +99,8 @@ Game.prototype._isAiPaddleCollision = function _isAiPaddleCollision() {
 };
 
 Game.prototype._isBallWithinRangeOfAi = function _isBallWithinRangeOfAi() {
-  return (this.ball.position.x + this.ball.RADIUS >= this.aiPaddle.xPosition && this.ball.position.x + this.ball.RADIUS <= this.aiPaddle.xPosition + this.aiPaddle.DIMENSIONS.width);
+  return (this.ball.position.x + this.ball.RADIUS >= this.aiPaddle.xPosition
+          && this.ball.position.x + this.ball.RADIUS <= this.aiPaddle.xPosition + this.aiPaddle.DIMENSIONS.width);
 };
 
 Game.prototype._isAiInPosition = function _isAiInPosition() {

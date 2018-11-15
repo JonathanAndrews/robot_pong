@@ -36,7 +36,7 @@ Paddle.prototype.moveDown = function moveDown(truthy) {
 Paddle.prototype.checkBoundaries = function checkBoundaries() {
   if (this.yPosition <= 0) {
     this.yPosition = 0;
-  } else if (this.yPosition + this.DIMENSIONS.height >= this.canvas.height ) {
+  } else if (this.yPosition + this.DIMENSIONS.height >= this.canvas.height) {
     this.yPosition = this.canvas.height - this.DIMENSIONS.height;
   }
 };

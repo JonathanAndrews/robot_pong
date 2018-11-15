@@ -155,12 +155,12 @@ describe('Game', () => {
     it('should be false when number of intervals is positive', () => {
       pongGame.run();
       expect(pongGame.gameOver).toEqual(false);
-    })
+    });
 
     it('should be true when number of intervals is 0 or negative', () => {
-      pongGame.intervalRemaining = 0
-      pongGame.run()
+      pongGame.intervalRemaining = 0;
+      pongGame.run();
       expect(pongGame.gameOver).toEqual(true);
-    })
-  })
+    });
+  });
 });
