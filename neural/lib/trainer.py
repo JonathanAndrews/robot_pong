@@ -37,11 +37,11 @@ class Trainer:
             self.add_sample(user_state, new_user_state, reward, user_action, done) # ONLY WANT THE NUMBER
             self.update_epsilon()
             self.train_model()
-            if done:
-                break
-
+            
             user_state = new_user_state
             competitor_state = self.game.return_competitor_state()
+            if done:
+                break
 
     def user_action(self, state):
         if random.random() < self.epsilon:
