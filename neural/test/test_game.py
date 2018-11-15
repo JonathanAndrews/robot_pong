@@ -10,6 +10,13 @@ class GameTest(unittest.TestCase):
         ballMock = mock.Mock()
         self.game = Game(100, 1, paddle_type=paddleMock, ball_type=ballMock)
         self.game.ball.check_for_goals.return_value = [0,0]
+        self.game.ball.position = np.array([8, 100])
+        self.game.ball.velocity = np.array([-1, -2])
+        self.game.left_paddle.position = np.array([0, 90])
+        self.game.right_paddle.position = np.array([505, 90])
+        self.game.left_paddle.speed = 1
+        self.game.right_paddle.speed = 1
+
 
     def test_step(self):
         self.game.step()
@@ -25,24 +32,27 @@ class GameTest(unittest.TestCase):
 
     def test_left_ball_paddle_collision(self):
         self.game.ball.position = np.array([8, 100])
-        self.game.ball.velocity = np.array([-1, 0])
+        self.game.ball.velocity = np.array([-1, 1])
         self.game.ball.radius = 10
         self.game.left_paddle.position = np.array([0, 90])
         self.game.left_paddle.thickness = 10
         self.game.left_paddle.length = 10
         self.game.right_paddle.position = np.array([505, 90])
         self.game.check_ball_paddle_collision()
-        self.assertTrue((self.game.ball.velocity == np.array([1,0])).all())
+        print(self.game.ball.velocity)
+        self.assertTrue((self.game.ball.velocity == np.array([1,2])).all())
 
     def test_right_ball_paddle_collision(self):
         self.game.ball.position = np.array([500, 100])
-        self.game.ball.velocity = np.array([1, 0])
+        self.game.ball.velocity = np.array([1, -2])
         self.game.ball.radius = 10
         self.game.left_paddle.position = np.array([0, 90])
         self.game.right_paddle.position = np.array([505, 90])
         self.game.right_paddle.thickness = 10
         self.game.right_paddle.length = 20
+        print("        dddddddddddddd")
         self.game.check_ball_paddle_collision()
+        print(self.game.ball.velocity)
         self.assertTrue((self.game.ball.velocity == np.array([-1,0])).all())
 
     def test_is_game_won(self):

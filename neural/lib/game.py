@@ -25,10 +25,10 @@ class Game:
             'user-paddle-dy': self.left_paddle.speed,
             'comp-paddle-y': self.right_paddle.position,
             'comp-paddle-dy': self.right_paddle.speed,
-            'ball-position-x': self.ball.position_x,
-            'ball-position-y': self.ball.position_y,
-            'ball-velocity-dx': self.ball.velocity_x,
-            'ball-velocity-dy': self.ball.velocity_y,
+            'ball-position-x': self.ball.position[0],
+            'ball-position-y': self.ball.position[1],
+            'ball-velocity-dx': self.ball.velocity[0],
+            'ball-velocity-dy': self.ball.velocity[1],
             'time-remaining': self.time_remaining,
             'score': self.score[0] - self.score[1]
         }
@@ -48,12 +48,16 @@ class Game:
            and (self.left_paddle.position[1] <= self.ball.position[1] <= self.left_paddle.position[1] + self.left_paddle.length)
            and (self.ball.velocity[0] <= 0)):
             self.ball.velocity[0] *= -1
+            where_on_paddle = ((self.ball.position[1] - self.left_paddle.position[1])/ self.left_paddle.length)
+            self.ball.velocity[1] = -4 * ( 0.5 - where_on_paddle)
 
     def check_ball_right_paddle_collision(self):
         if ((self.ball.position[0] + self.ball.radius >= self.right_paddle.position[0])
            and (self.right_paddle.position[1] <= self.ball.position[1] <= self.right_paddle.position[1] + self.right_paddle.length)
            and (self.ball.velocity[0] >= 0)):
             self.ball.velocity[0] *= -1
+            where_on_paddle = ((self.ball.position[1] - self.right_paddle.position[1])/ self.right_paddle.length)
+            self.ball.velocity[1] = -4 * ( 0.5 - where_on_paddle)
 
     def reset_ball_position(self):
         self.ball.reset_position()
