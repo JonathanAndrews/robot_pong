@@ -3,8 +3,8 @@ from lib.ball import *
 from lib.paddle import *
 
 class Game:
-    POSSIBLE_MOVES = [1, 0, -1]
-    
+    POSSIBLE_MOVES = [-1, 0, 1]
+
     def __init__(self, total_game_time, refresh_time, canvas_width=900,
                  canvas_height=600, paddle_type=Paddle, ball_type=Ball):
         self.canvas = np.array([canvas_width, canvas_height])
@@ -15,6 +15,7 @@ class Game:
         self.refresh_time = refresh_time
         self.score = np.array([0, 0])
         self.game_over = False
+        self.initial_values = [total_game_time, refresh_time]
 
     def step(self, left_action=0, right_action=0):
         self.is_game_over()
@@ -57,14 +58,14 @@ class Game:
 
     def return_user_state(self):
         ai_inputs = {
-            'user-paddle-y': self.left_paddle.position,
-            'user-paddle-dy': self.left_paddle.speed,
-            'comp-paddle-y': self.right_paddle.position,
-            'comp-paddle-dy': self.right_paddle.speed,
-            'ball-position-x': self.ball.position_x,
-            'ball-position-y': self.ball.position_y,
-            'ball-velocity-dx': self.ball.velocity_x,
-            'ball-velocity-dy': self.ball.velocity_y,
+            'user-paddle-y': self.left_paddle.position[1],
+            'user-paddle-dy': self.left_paddle.velocity[1],
+            'comp-paddle-y': self.right_paddle.position[1],
+            'comp-paddle-dy': self.right_paddle.velocity[1],
+            'ball-position-x': self.ball.position[0],
+            'ball-position-y': self.ball.position[1],
+            'ball-velocity-dx': self.ball.velocity[0],
+            'ball-velocity-dy': self.ball.velocity[1],
             'time-remaining': self.time_remaining,
             'score': self.score[0] - self.score[1]
         }
@@ -72,15 +73,21 @@ class Game:
 
     def return_competitor_state(self):
         ai_inputs = {
-            'comp-paddle-y': self.left_paddle.position,
-            'comp-paddle-dy': self.left_paddle.speed,
-            'user-paddle-y': self.right_paddle.position,
-            'user-paddle-dy': self.right_paddle.speed,
-            'ball-position-x': self.canvas[0] - self.ball.position_x,
-            'ball-position-y': self.ball.position_y,
-            'ball-velocity-dx': -self.ball.velocity_x,
-            'ball-velocity-dy': self.ball.velocity_y,
+            'comp-paddle-y': self.left_paddle.position[1],
+            'comp-paddle-dy': self.left_paddle.velocity[1],
+            'user-paddle-y': self.right_paddle.position[1],
+            'user-paddle-dy': self.right_paddle.velocity[1],
+            'ball-position-x': self.canvas[0] - self.ball.position[0],
+            'ball-position-y': self.ball.position[1],
+            'ball-velocity-dx': -self.ball.velocity[0],
+            'ball-velocity-dy': self.ball.velocity[1],
             'time-remaining': self.time_remaining,
             'score': self.score[1] - self.score[0]
         }
         return ai_inputs
+
+    def reset_game(self):
+        self.time_remaining, self.refresh_time = self.initial_values
+        self.game_over = False
+        self.score = np.array([0, 0])
+        self.reset_ball_position()

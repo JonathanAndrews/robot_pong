@@ -7,6 +7,12 @@ To get coverage reports run the following command:
 coverage run --source=lib -m unittest && coverage report
 ```
 
+To get readable reports run:
+```
+coverage html -d coverage_html
+```
+and then open `coverage_html/index.html` in the browser.
+
 # Linting
 
 To lint run:

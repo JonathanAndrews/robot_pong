@@ -7,5 +7,4 @@ install:
   - pip install -r environment/requirements.txt
 
 script:
-  - (cd environment/ && python -m unittest discover)
   - (cd neural/ && python -m unittest discover)

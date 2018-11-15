@@ -49,3 +49,51 @@ class GameTest(unittest.TestCase):
         for i in range (101):
             self.game.step()
         self.assertEqual(self.game.game_over, True)
+
+    def test_reset_game(self):
+        self.game.step()
+        self.game.reset_game()
+        test_values = [self.game.time_remaining, self.game.refresh_time, self.game.game_over, self.game.score[0], self.game.score[1]]
+        expected_values = [100, 1, False, 0, 0]
+        self.assertEqual(test_values, expected_values)
+
+    def test_possible_moves(self):
+        self.assertEqual(self.game.POSSIBLE_MOVES, [-1, 0, 1])
+
+    def test_return_user_state(self):
+        self.game.left_paddle.position = self.game.right_paddle.position = np.array([0,1])
+        self.game.left_paddle.velocity = self.game.right_paddle.velocity = np.array([0,1])
+        self.game.ball.position = self.game.ball.velocity = np.array([0,1])
+        output = self.game.return_user_state()
+        expected_output = {
+            'user-paddle-y': 1,
+            'user-paddle-dy': 1,
+            'comp-paddle-y': 1,
+            'comp-paddle-dy': 1,
+            'ball-position-x': 0,
+            'ball-position-y': 1,
+            'ball-velocity-dx': 0,
+            'ball-velocity-dy': 1,
+            'time-remaining': 100,
+            'score': 0
+        }
+        self.assertDictEqual(output, expected_output)
+
+    def test_return_competitor_state(self):
+        self.game.left_paddle.position = self.game.right_paddle.position = np.array([0,1])
+        self.game.left_paddle.velocity = self.game.right_paddle.velocity = np.array([0,1])
+        self.game.ball.position = self.game.ball.velocity = np.array([1,1])
+        output = self.game.return_competitor_state()
+        expected_output = {
+            'user-paddle-y': 1,
+            'user-paddle-dy': 1,
+            'comp-paddle-y': 1,
+            'comp-paddle-dy': 1,
+            'ball-position-x': 899,
+            'ball-position-y': 1,
+            'ball-velocity-dx': -1,
+            'ball-velocity-dy': 1,
+            'time-remaining': 100,
+            'score': 0
+        }
+        self.assertDictEqual(output, expected_output)
