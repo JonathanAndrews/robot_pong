@@ -10,7 +10,7 @@ describe('AI Interface', () => {
     describe('getMove', () => {
         it('takes a hash and returns an Integer', () => {
             let inputs = { some: "hash" };
-            expect(aiInterface.getMove(inputs)).toEqual(1 || 0 || -1);
+            expect((aiInterface.getMove(inputs) === (1 || 0 || -1))).toTrue;
         })
     })
 })
