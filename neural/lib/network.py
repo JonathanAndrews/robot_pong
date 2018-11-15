@@ -11,25 +11,12 @@ class Network:
         self.no_hidden_layers = no_hidden_layers
         self.keep_prob = keep_prob
 
-        # # Define the placeholders. These will become Tensorflow Placeholders.
-        # self.states = None
-        # self.actions = None
-        # self.q_values = None
-        #
-        # # The output operations. The predictions is going to be a Tensorflow layer,
-        # # the optimizer is going to be AdamOptimizer and variable_initializer is just a
-        # # variable which holds the Tensorflow global variable initalizer.
-        # self.predictions = None
-        # self.optimizer = None
-        # self.variable_initializer = None
-        #
-        # # Saves the neural network
-        # self.saver = None
-
         self.define_model()
 
     def define_model(self):
         self.define_placeholders()
+        self.define_variables()
+        self.define_utilities()
 
     def define_placeholders(self):
         self.states = tf.placeholder(shape=[None, self.no_inputs],
@@ -37,3 +24,30 @@ class Network:
         self.q_values = tf.placeholder(shape=[None, self.no_actions],
                                     dtype=tf.float32)
         self.dropout = tf.placeholder(dtype=tf.float32)
+
+    def define_variables(self):
+        first_weights = tf.Variable(tf.truncated_normal([self.no_inputs, self.hidden_layer_size]))
+        first_biases = tf.Variable(tf.zeros([self.hidden_layer_size]))
+        last_weights = tf.Variable(tf.truncated_normal([self.hidden_layer_size, self.no_actions]))
+        last_biases  = tf.Variable(tf.zeros([self.no_actions]))
+
+        hidden_weights = {}
+        hidden_biases = {}
+        for i in range(self.no_hidden_layers - 1):
+            hidden_weights[i] = tf.Variable(tf.truncated_normal([self.hidden_layer_size, self.hidden_layer_size]))
+            hidden_biases[i] = tf.Variable(tf.zeros([self.hidden_layer_size]))
+
+        layers = {}
+        layers[0] = tf.nn.tanh(tf.matmul(self.states, first_weights) + first_biases)
+        for i in range(self.no_hidden_layers - 1):
+            layers[i + 1] = tf.nn.tanh(tf.matmul(layers[i], hidden_weights[i]) + hidden_biases[i])
+
+        self.saver = tf.train.Saver([first_weights, first_biases, last_weights, last_biases] +
+                                    [hidden_weight for hidden_weight in hidden_weights.values()] +
+                                    [hidden_bias for hidden_bias in hidden_biases.values()])
+        self.neural_output = tf.matmul(layers[self.no_hidden_layers - 1], last_weights) + last_biases
+
+    def define_utilities(self):
+        self.loss = tf.losses.mean_squared_error(self.neural_output, self.q_values)
+        self.optimizer = tf.train.AdamOptimizer(learning_rate=0.001).minimize(self.loss)
+        self.variable_initializer = tf.global_variables_initializer()
