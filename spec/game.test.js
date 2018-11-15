@@ -36,7 +36,7 @@ describe('Game', () => {
       clear: jest.fn(),
       width: 900,
     };
-    pongGame = new Game(stubPlayerPaddle, stubAiPaddle, stubBall, stubCanvas);
+    pongGame = new Game(120000, stubPlayerPaddle, stubAiPaddle, stubBall, stubCanvas);
   });
 
   it('calls checkPaddleCollision on the paddle object', () => {
@@ -150,4 +150,17 @@ describe('Game', () => {
       expect(pongGame.ball.reset).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('isGameOver', () => {
+    it('should be false when number of intervals is positive', () => {
+      pongGame.run();
+      expect(pongGame.gameOver).toEqual(false);
+    })
+
+    it('should be true when number of intervals is 0 or negative', () => {
+      pongGame.intervalRemaining = 0
+      pongGame.run()
+      expect(pongGame.gameOver).toEqual(true);
+    })
+  })
 });

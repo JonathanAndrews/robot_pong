@@ -1,4 +1,4 @@
-const Game = function Game(playerPaddle, aiPaddle, ball, canvasDisplay) {
+const Game = function Game(totalIntervals=120000, playerPaddle, aiPaddle, ball, canvasDisplay) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
@@ -6,6 +6,9 @@ const Game = function Game(playerPaddle, aiPaddle, ball, canvasDisplay) {
   this.upButton = false;
   this.downButton = false;
   this.score = [0, 0];
+  this.totalIntervals = totalIntervals;
+  this.intervalRemaining = totalIntervals;
+  this.gameOver = false;
   that = this;
 };
 
@@ -18,6 +21,7 @@ Game.prototype.checkPaddleCollision = function checkPaddleCollision() {
 };
 
 Game.prototype.run = function run() {
+  this.isGameOver();
   this.canvasDisplay.clear();
   that.playerPaddle.draw();
   that.aiPaddle.draw();
@@ -27,6 +31,7 @@ Game.prototype.run = function run() {
   that.playerPaddle.moveDown(that.downButton);
   that.checkPaddleCollision();
   that.checkForGoal();
+  this.intervalRemaining -= 1;
 };
 
 Game.prototype.keyDownHandler = function keyDownHandler(e) {
@@ -54,6 +59,12 @@ Game.prototype.checkForGoal = function checkForGoal() {
     this.ball.reset();
   }
 };
+
+Game.prototype.isGameOver = function gameOver() {
+  if (this.intervalRemaining <= 0) {
+    this.gameOver = true;
+  }
+}
 
 
 // Player Paddle Collision Methods
