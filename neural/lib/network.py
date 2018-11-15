@@ -3,10 +3,9 @@ import tensorflow as tf
 class Network:
     '''The neural network. There are no ifs no buts just a neural network'''
 
-    def __init__(self, no_actions, no_inputs, batch_size, hidden_layer_size=100, no_hidden_layers=3, keep_prob=0.9):
+    def __init__(self, no_actions, no_inputs, hidden_layer_size=100, no_hidden_layers=3, keep_prob=0.9):
         self.no_actions = no_actions
         self.no_inputs = no_inputs
-        self.batch_size = batch_size
         self.hidden_layer_size = hidden_layer_size
         self.no_hidden_layers = no_hidden_layers
         self.keep_prob = keep_prob
@@ -51,3 +50,11 @@ class Network:
         self.loss = tf.losses.mean_squared_error(self.neural_output, self.q_values)
         self.optimizer = tf.train.AdamOptimizer(learning_rate=0.001).minimize(self.loss)
         self.variable_initializer = tf.global_variables_initializer()
+    
+    def single_prediction(self, inputs, session):
+        return session.run(self.neural_output, feed_dict={
+            self.states: tf.transpose(inputs),
+            self.dropout: self.keep_prob
+        })
+
+
