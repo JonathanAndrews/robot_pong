@@ -13,10 +13,15 @@
   "engines": {
     "node": "8.12.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "jest": "^23.6.0"
+  },
   "scripts": {
     "test": "jest --coverage",
-    "start": "node index.js"
+    "start": "node index.js",
     "lint": "./node_modules/.bin/eslint ."
   },
   "repository": {
@@ -29,12 +34,6 @@
     "url": "https://github.com/camjw/robot_pong/issues"
   },
   "homepage": "https://github.com/camjw/robot_pong#readme",
-  "devDependencies": {
-    "eslint": "^5.9.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "jest": "^23.6.0"
-  },
   "jest": {
     "verbose": true
   }

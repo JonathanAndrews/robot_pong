@@ -55,6 +55,7 @@ describe('Game', () => {
   describe('checkPaddleCollision', () => {
     it('should call paddleCollision method if collision with PlayerPaddle', () => {
       pongGame.ball.position = { x: 20, y: 420 };
+      pongGame.ball.velocity.dx = -2;
       pongGame.checkPaddleCollision();
       expect(pongGame.ball.paddleCollision).toHaveBeenCalledTimes(1);
     });
