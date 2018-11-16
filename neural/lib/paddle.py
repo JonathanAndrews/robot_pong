@@ -4,7 +4,7 @@ import numpy as np
 class Paddle:
     def __init__(self, position, player, thickness, speed=1,
                  length=20, canvas_width=900, canvas_height=600):
-        self.position = np.array([(player * (canvas_width - thickness)) + (10 - (player*20)),
+        self.position = np.array([(player * (canvas_width - thickness)) + (10 - (player * 20)),
                                   position])
         self.thickness = thickness
         self.length = length
