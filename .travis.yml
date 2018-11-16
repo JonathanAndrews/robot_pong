@@ -4,7 +4,7 @@ python:
   - "3.6"
 
 install:
-  - pip install -r environment/requirements.txt
+  - pip install -r neural/requirements.txt
 
 script:
-  - (cd environment/ && python -m unittest discover)
+  - (cd neural/ && python -m unittest discover)

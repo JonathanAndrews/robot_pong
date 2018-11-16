@@ -11,6 +11,7 @@ class Paddle:
         self.length = length
         self.canvas = np.array([canvas_width, canvas_height])
         self.speed = speed
+        self.velocty = np.array([0, 0])
 
     def step(self, action=0):
         self.velocity = self.speed * np.array([0, action])
