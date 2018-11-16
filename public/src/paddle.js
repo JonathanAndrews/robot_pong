@@ -1,5 +1,5 @@
 const Paddle = function Paddle(canvas, playerType) {
-  this.SPEED = 1.5;
+  this.SPEED = 6;
   this.DIMENSIONS = { height: 60, width: 10 };
   this.yPosition = 420;
   this.canvas = canvas;
