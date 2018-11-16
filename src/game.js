@@ -89,7 +89,7 @@ Game.prototype.isGameOver = function isGameOver() {
 // Player Paddle Collision Methods
 
 Game.prototype._isPlayerPaddleCollision = function _isPlayerPaddleCollision() {
-  return (this._isBallWithinRangeOfPlayer() && (this._isPlayerInPosition()));
+  return (this._isBallWithinRangeOfPlayer() && (this._isPlayerInPosition()) && (this.ball.velocity.dx <= 0));
 };
 
 Game.prototype._isBallWithinRangeOfPlayer = function _isBallWithinRangeOfPlayer() {
@@ -114,7 +114,7 @@ Game.prototype._isBallWithinUpperBoundOfPlayerPaddle = function _isBallWithinUpp
 // Ai Paddle Collision Methods
 
 Game.prototype._isAiPaddleCollision = function _isAiPaddleCollision() {
-  return (this._isBallWithinRangeOfAi() && (this._isAiInPosition()));
+  return (this._isBallWithinRangeOfAi() && (this._isAiInPosition()) && (this.ball.velocity.dx >= 0));
 };
 
 Game.prototype._isBallWithinRangeOfAi = function _isBallWithinRangeOfAi() {
