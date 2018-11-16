@@ -39,7 +39,7 @@ class Game:
            and (self.ball.velocity[0] <= 0)):
             self.ball.velocity[0] *= -1
             where_on_paddle = ((self.left_paddle.position[1] - self.ball.position[1])/ self.left_paddle.length)
-            self.ball.velocity[1] = - 4 * ( 0.5 + where_on_paddle)
+            self.update_ball_velocity(where_on_paddle)
 
     def check_ball_right_paddle_collision(self):
         if ((self.ball.position[0] + self.ball.radius >= self.right_paddle.position[0])
@@ -47,7 +47,10 @@ class Game:
            and (self.ball.velocity[0] >= 0)):
             self.ball.velocity[0] *= -1
             where_on_paddle = (( self.right_paddle.position[1] - self.ball.position[1])/ self.right_paddle.length)
-            self.ball.velocity[1] = - 4 * ( 0.5 + where_on_paddle)
+            self.update_ball_velocity(where_on_paddle)
+
+    def update_ball_velocity(self, where_on_paddle):
+        self.ball.velocity[1] = - 6 * ( 0.5 + where_on_paddle)
 
     def reset_ball_position(self):
         self.ball.reset_position()
