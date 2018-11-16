@@ -21,7 +21,7 @@
   },
   "scripts": {
     "test": "jest --coverage",
-    "start": "node index.js",
+    "start": "node ./app/index.js",
     "lint": "./node_modules/.bin/eslint ."
   },
   "repository": {
