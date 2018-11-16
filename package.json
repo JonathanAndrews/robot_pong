@@ -1,7 +1,7 @@
 {
   "name": "robot_pong",
   "version": "1.0.0",
-  "description": "",
+  "description": "Play pong against a Reinforcement Learning AI.",
   "main": "index.js",
   "dependencies": {
     "eslint": "^5.9.0",
@@ -15,8 +15,9 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage",
     "start": "node index.js"
+    "lint": "./node_modules/.bin/eslint ."
   },
   "repository": {
     "type": "git",
@@ -27,5 +28,14 @@
   "bugs": {
     "url": "https://github.com/camjw/robot_pong/issues"
   },
-  "homepage": "https://github.com/camjw/robot_pong#readme"
+  "homepage": "https://github.com/camjw/robot_pong#readme",
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "jest": "^23.6.0"
+  },
+  "jest": {
+    "verbose": true
+  }
 }
