@@ -31,19 +31,23 @@ describe('Ball', () => {
 
   it('should change position', () => {
     ball.moveBall();
-    expect(ball.position).toEqual({ x: 452.2, y: 302 });
+    dx = ball.velocity.dx
+    dy = ball.velocity.dy
+    expect(ball.position).toEqual({ x: 450 + dx, y: 300 + dy });
   });
 
   describe('Wall collision', () => {
     it('should not reverse vertical velocity, if ball does not hit wall', () => {
+      velocityY = ball.velocity.dy
       ball.moveBall();
-      expect(ball.velocity.dy).toEqual(2);
+      expect(ball.velocity.dy).toEqual(velocityY);
     });
 
     it('should reverse velocity, if ball hits bottom wall', () => {
       ball.position.y = 595;
+      velocityY = ball.velocity.dy
       ball.moveBall();
-      expect(ball.velocity.dy).toEqual(-2);
+      expect(ball.velocity.dy).toEqual(-velocityY);
     });
 
     it('should reverse velocity, if ball hits top wall', () => {
@@ -56,23 +60,26 @@ describe('Ball', () => {
 
   describe('Paddle collision', () => {
     it('reverses the horizontal velocity', () => {
-      expect(ball.velocity.dx).toEqual(2.2);
+      velocityY = ball.velocity.dy
+      expect(ball.velocity.dx).toEqual(velocityY);
       ball.paddleCollision(12, PADDLEHEIGHT);
-      expect(ball.velocity.dx).toEqual(-2.2);
+      expect(ball.velocity.dx).toEqual(-velocityY);
     });
 
     it('changes the vertical velocity', () => {
       ball.position.y = 18;
+      ball.velocity.dy = 2;
       expect(ball.velocity.dy).toEqual(2);
       ball.paddleCollision(12, PADDLEHEIGHT);
-      expect(ball.velocity.dy).toBeCloseTo(0.6, 1);
+      expect(ball.velocity.dy).toBeCloseTo(2.4, 1);
     });
 
     it('changes the vertical velocity in a different way', () => {
       ball.position.y = 18;
+      ball.velocity.dy = 2;
       expect(ball.velocity.dy).toEqual(2);
       ball.paddleCollision(16, PADDLEHEIGHT);
-      expect(ball.velocity.dy).toBeCloseTo(-1.8, 1);
+      expect(ball.velocity.dy).toBeCloseTo(-7.2, 1);
     });
   });
 
@@ -86,7 +93,7 @@ describe('Ball', () => {
     it('resets ball velocity', () => {
       ball.velocity = { dx: 20, dy: 50 };
       ball.reset();
-      expect(ball.velocity).toEqual({ dx: 2, dy: 2 });
+      expect(ball.velocity).toEqual(ball.initialVelocity);
     });
   });
 });
