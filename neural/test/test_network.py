@@ -29,14 +29,14 @@ class NetworkTest(unittest.TestCase):
     def test_single_prediction(self):
         test_session = tf.Session()
         test_session.run(self.network.variable_initializer)
-        array = np.array([1,2])
+        array = np.array([1, 2])
         prediction = self.network.single_prediction(array, test_session)
         self.assertEqual(self.network.no_actions, len(prediction[0]))
 
     def test_batch_prediction(self):
         test_session = tf.Session()
         test_session.run(self.network.variable_initializer)
-        array = np.array([[1,2],[3,4]])
+        array = np.array([[1, 2],[3, 4]])
         prediction = self.network.batch_prediction(array, test_session)
         self.assertEqual(len(array), len(prediction))
 
@@ -45,7 +45,7 @@ class NetworkTest(unittest.TestCase):
         test_session.run(self.network.variable_initializer)
         input = np.array([1,2])
         first_prediction = self.network.single_prediction(input, test_session)
-        training_inputs = np.array([[1,2], [3,4]])
+        training_inputs = np.array([[1, 2], [3, 4]])
         training_outputs = np.array([[0.1, 0.12], [0.323, 0.984]])
         self.network.batch_train(training_inputs, training_outputs, test_session)
         second_prediction = self.network.single_prediction(input, test_session)

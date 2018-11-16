@@ -3,6 +3,8 @@ environment/__pycache__
 environment/lib/__pycache__
 environment/test/__pycache__
 neural/.coverage
+neural/coverage_html
+
 neural/__pycache__
 neural/lib/__pycache__
 neural/test/__pycache__
