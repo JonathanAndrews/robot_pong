@@ -29,8 +29,8 @@ Ball.prototype.wallCollision = function wallCollision() {
 
 Ball.prototype.paddleCollision = function paddleCollision(paddleLocationY, paddleHeight) {
   this.velocity.dx *= -1;
-  const random = (this.position.y - paddleLocationY) / paddleHeight;
-  this.velocity.dy = -4 * (0.5 - random);
+  const whereOnPaddle = (this.position.y - paddleLocationY) / paddleHeight;
+  this.velocity.dy = -6 * (0.5 - whereOnPaddle);
 };
 
 Ball.prototype.reset = function reset() {
