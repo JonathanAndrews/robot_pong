@@ -69,5 +69,9 @@ class Network:
             self.dropout: self.keep_prob
         })
 
-    def load_network(self, filename):
+    def load_network(self, session, filename):
         pass
+
+    def save_network(self, session, filename):
+        save_path = self.saver.save(session, filename)
+        print("Model saved in path: %s" % save_path)

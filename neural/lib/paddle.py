@@ -1,6 +1,4 @@
-
 import numpy as np
-
 
 class Paddle:
     def __init__(self, position, player, thickness, speed=1,
@@ -11,7 +9,7 @@ class Paddle:
         self.length = length
         self.canvas = np.array([canvas_width, canvas_height])
         self.speed = speed
-        self.velocty = np.array([0, 0])
+        self.velocity = np.array([0, 0])
 
     def step(self, action=0):
         self.velocity = self.speed * np.array([0, action])

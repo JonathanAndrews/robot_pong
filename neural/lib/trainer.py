@@ -32,7 +32,7 @@ class Trainer:
             self.game.step(user_action, competitor_action)
             self.total_steps += 1
 
-            new_user_state = self.return_user_state()
+            new_user_state = self.game.return_user_state()
             reward = self.calculate_reward(new_user_state)
             done = self.game.game_over
 
@@ -66,6 +66,8 @@ class Trainer:
         return 0.0
 
     def add_sample(self, user_state, new_user_state, reward, action, done):
+        user_state = [component for component in user_state.values()]
+        new_user_state = [component for component in new_user_state.values()]
         if done:
             self.memory.add_memory((user_state, None, reward, action))
         else:
@@ -77,8 +79,9 @@ class Trainer:
     def train_model(self):
         batch = self.memory.sample_memory(self.batch_size)
         states = np.array([entry[0] for entry in batch])
-        new_states = np.array([entry[1] for entry in batch])
-        new_states[new_states == None] = 0
+        new_states = [entry[1] for entry in batch]
+        new_states = [[0] * self.network.no_inputs if v is None else v for v in new_states]
+        new_states = np.array(new_states)
 
         reward_predictions, next_reward_predictions = self.reward_predictions(states, new_states)
 
@@ -87,7 +90,6 @@ class Trainer:
 
         for index, element in enumerate(batch):
             state, new_state, reward, action = element[0], element[1], element[2], element[3]
-
             current_reward = reward_predictions[index]
 
             if new_state:
