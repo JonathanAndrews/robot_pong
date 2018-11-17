@@ -66,10 +66,10 @@ class GameTest(unittest.TestCase):
         self.game.ball.position = self.game.ball.velocity = np.array([0,1])
         output = self.game.return_champion_state()
         expected_output = {
-            'user-paddle-y': 1,
-            'user-paddle-dy': 1,
-            'comp-paddle-y': 1,
-            'comp-paddle-dy': 1,
+            'champion-paddle-y': 1,
+            'champion-paddle-dy': 1,
+            'competitor-paddle-y': 1,
+            'competitor-paddle-dy': 1,
             'ball-position-x': 0,
             'ball-position-y': 1,
             'ball-velocity-dx': 0,
@@ -85,10 +85,10 @@ class GameTest(unittest.TestCase):
         self.game.ball.position = self.game.ball.velocity = np.array([1,1])
         output = self.game.return_competitor_state()
         expected_output = {
-            'user-paddle-y': 1,
-            'user-paddle-dy': 1,
-            'comp-paddle-y': 1,
-            'comp-paddle-dy': 1,
+            'champion-paddle-y': 1,
+            'champion-paddle-dy': 1,
+            'competitor-paddle-y': 1,
+            'competitor-paddle-dy': 1,
             'ball-position-x': 899,
             'ball-position-y': 1,
             'ball-velocity-dx': -1,

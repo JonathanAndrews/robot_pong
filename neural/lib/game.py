@@ -67,31 +67,31 @@ class Game:
 
     def return_champion_state(self):
         ai_inputs = {
-            'user-paddle-y': self.left_paddle.position[1],
-            'user-paddle-dy': self.left_paddle.velocity[1],
-            'comp-paddle-y': self.right_paddle.position[1],
-            'comp-paddle-dy': self.right_paddle.velocity[1],
+            'champion-paddle-y': self.left_paddle.position[1],
+            'champion-paddle-dy': self.left_paddle.velocity[1],
+            'competitor-paddle-y': self.right_paddle.position[1],
+            'competitor-paddle-dy': self.right_paddle.velocity[1],
             'ball-position-x': self.ball.position[0],
             'ball-position-y': self.ball.position[1],
             'ball-velocity-dx': self.ball.velocity[0],
             'ball-velocity-dy': self.ball.velocity[1],
             'time-remaining': self.time_remaining,
-            'score': self.score[0] - self.score[1]
+            'score': self.score[1] - self.score[0]
         }
         return ai_inputs
 
     def return_competitor_state(self):
         ai_inputs = {
-            'comp-paddle-y': self.left_paddle.position[1],
-            'comp-paddle-dy': self.left_paddle.velocity[1],
-            'user-paddle-y': self.right_paddle.position[1],
-            'user-paddle-dy': self.right_paddle.velocity[1],
+            'champion-paddle-y': self.right_paddle.position[1],
+            'champion-paddle-dy': self.right_paddle.velocity[1],
+            'competitor-paddle-y': self.left_paddle.position[1],
+            'competitor-paddle-dy': self.left_paddle.velocity[1],
             'ball-position-x': self.canvas[0] - self.ball.position[0],
             'ball-position-y': self.ball.position[1],
             'ball-velocity-dx': -self.ball.velocity[0],
             'ball-velocity-dy': self.ball.velocity[1],
             'time-remaining': self.time_remaining,
-            'score': self.score[1] - self.score[0]
+            'score': self.score[0] - self.score[1]
         }
         return ai_inputs
 
