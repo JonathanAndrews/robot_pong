@@ -32,7 +32,53 @@ CanvasDisplay.prototype.drawTime = function (interval) {
   this.context.font = '20px Arial';
   this.context.strokeStyle = 'white';
   this.context.textAlign = 'center';
-  this.context.strokeText(interval, 800, 30);
+  this.context.fillText(interval, 800, 30);
+};
+
+CanvasDisplay.prototype.drawRobot = function () {
+  // robot's head
+  this.context.beginPath();
+  this.context.rect(140, 200, 180, 180)
+  this.context.strokeStyle = "rgba(255,255,255)";
+  this.context.lineWidth = 3;
+  this.context.stroke();
+
+  // robot's left eye
+  this.context.beginPath();
+  this.context.arc(200, 240, 18, 0, Math.PI*2, true)
+  this.context.strokeStyle = "rgba(255,255,255)";
+  this.context.lineWidth = 3;
+  this.context.stroke();
+
+  this.context.beginPath();
+  this.context.arc(200, 240, 6, 0, Math.PI*2, true)
+  this.context.fillStyle = "rgba(255,255,255)";
+  this.context.fill();
+
+  // robot's right eye
+  this.context.beginPath();
+  this.context.arc(260, 240, 18, 0, Math.PI*2, true)
+  this.context.strokeStyle = "rgba(255,255,255)";
+  this.context.lineWidth = 3;
+  this.context.stroke();
+
+  this.context.beginPath();
+  this.context.arc(260, 240, 6, 0, Math.PI*2, true)
+  this.context.fillStyle = "rgba(255,255,255)";
+  this.context.fill();
+
+  // antenna
+  this.context.beginPath();
+  this.context.rect(225, 160, 10, 40);
+  this.context.stokeStyle = "rgba(255,255,255)";
+  this.context.lineWidth = 3;
+  this.context.stroke();
+
+  this.context.beginPath();
+  this.context.arc(230, 140, 20, 0, Math.PI*2, true)
+  this.context.strokeStyle = "rgba(255,255,255)";
+  this.context.stroke();
+
 };
 
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {

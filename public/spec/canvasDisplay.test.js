@@ -46,18 +46,17 @@ describe('Canvas Display', () => {
       expect(stubContext.font).toEqual('20px Arial');
       expect(stubContext.strokeStyle).toEqual('white');
       expect(stubContext.textAlign).toEqual('center');
-    })
+    });
   });
 
   describe('drawTime', () => {
     it('gives the amount of time remaining', () => {
       const canvasDisplay = new CanvasDisplay(stubCanvas);
       canvasDisplay.drawTime();
-      expect(stubContext.strokeText).toHaveBeenCalledTimes(1);
+      expect(stubContext.fillText).toHaveBeenCalledTimes(1);
       expect(stubContext.font).toEqual('20px Arial');
       expect(stubContext.strokeStyle).toEqual('white');
       expect(stubContext.textAlign).toEqual('center');
-
-    })
-  })
+    });
+  });
 });

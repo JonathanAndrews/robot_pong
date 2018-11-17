@@ -1,4 +1,4 @@
-const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 300) {
+const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 3000) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
@@ -29,6 +29,7 @@ Game.prototype.run = function run() {
     move = that.aiInterface.getMove(ai_inputs);
     this.canvasDisplay.clear();
     this.canvasDisplay.drawLines();
+    this.canvasDisplay.drawRobot();
     this.canvasDisplay.drawTime(that.intervalRemaining);
     this.canvasDisplay.drawScores(that.score[0],that.score[1]);
     that.playerPaddle.draw();
@@ -38,7 +39,7 @@ Game.prototype.run = function run() {
     this.ball.accelerationAct(that.gravity);
     that.playerPaddle.moveUp(that.upButton);
     that.playerPaddle.moveDown(that.downButton);
-    that.aiPaddle.movePaddle(move)
+    that.aiPaddle.movePaddle(move);
     that.checkPaddleCollision();
     that.checkForGoal();
     that.intervalRemaining -= 1;
