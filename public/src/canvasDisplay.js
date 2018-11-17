@@ -27,6 +27,14 @@ CanvasDisplay.prototype.drawScores = function (playerScore, aiScore) {
   this.context.fillText(playerScore + " - " + aiScore, 50, 30);
 };
 
+CanvasDisplay.prototype.drawTime = function (interval) {
+  interval = Math.round(interval/50);
+  this.context.font = '20px Arial';
+  this.context.strokeStyle = 'white';
+  this.context.textAlign = 'center';
+  this.context.strokeText(interval, 800, 30);
+};
+
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
   module.exports = CanvasDisplay;
 }

@@ -1,4 +1,4 @@
-const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 120000) {
+const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 3000) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
@@ -23,24 +23,26 @@ Game.prototype.checkPaddleCollision = function checkPaddleCollision() {
 };
 
 Game.prototype.run = function run() {
-  console.log(that.score);
-  that.isGameOver();
-  ai_inputs = that.getAIInputs();
-  move = that.aiInterface.getMove(ai_inputs);
-  this.canvasDisplay.clear();
-  this.canvasDisplay.drawLines();
-  this.canvasDisplay.drawScores(that.score[0],that.score[1]);
-  that.playerPaddle.draw();
-  that.aiPaddle.draw();
-  this.ball.draw();
-  this.ball.moveBall();
-  this.ball.accelerationAct(that.gravity);
-  that.playerPaddle.moveUp(that.upButton);
-  that.playerPaddle.moveDown(that.downButton);
-  that.aiPaddle.movePaddle(move)
-  that.checkPaddleCollision();
-  that.checkForGoal();
-  this.intervalRemaining -= 1;
+  if (that.intervalRemaining > 0) {
+    that.isGameOver();
+    ai_inputs = that.getAIInputs();
+    move = that.aiInterface.getMove(ai_inputs);
+    this.canvasDisplay.clear();
+    this.canvasDisplay.drawLines();
+    this.canvasDisplay.drawTime(that.intervalRemaining);
+    this.canvasDisplay.drawScores(that.score[0],that.score[1]);
+    that.playerPaddle.draw();
+    that.aiPaddle.draw();
+    this.ball.draw();
+    this.ball.moveBall();
+    this.ball.accelerationAct(that.gravity);
+    that.playerPaddle.moveUp(that.upButton);
+    that.playerPaddle.moveDown(that.downButton);
+    that.aiPaddle.movePaddle(move)
+    that.checkPaddleCollision();
+    that.checkForGoal();
+    that.intervalRemaining -= 1;
+  }
 };
 
 Game.prototype.getAIInputs = function getAIInputs() {
