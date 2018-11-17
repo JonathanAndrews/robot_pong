@@ -53,3 +53,9 @@ Follow these steps in ipython to view the hyperparameter at location `trained_ne
 >    hyperparameters
 ```
 The last line will display the hyperparameter dictionary.
+
+# Viewing all attempted parameter sets
+
+```
+> python collate_all_attempts.py
+``` 
