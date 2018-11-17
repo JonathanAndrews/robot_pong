@@ -19,6 +19,14 @@ CanvasDisplay.prototype.drawLines = function drawLines() {
   }
 };
 
+CanvasDisplay.prototype.drawScores = function (playerScore, aiScore) {
+  this.context.font = '20px Arial';
+  this.context.strokeStyle = 'white';
+  this.context.textAlign = 'center';
+  this.context.strokeText('ROBOT FACE PONG', 450, 40);
+  this.context.fillText(playerScore + " - " + aiScore, 50, 30);
+};
+
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
   module.exports = CanvasDisplay;
 }

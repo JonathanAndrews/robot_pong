@@ -23,11 +23,13 @@ Game.prototype.checkPaddleCollision = function checkPaddleCollision() {
 };
 
 Game.prototype.run = function run() {
+  console.log(that.score);
   that.isGameOver();
   ai_inputs = that.getAIInputs();
   move = that.aiInterface.getMove(ai_inputs);
   this.canvasDisplay.clear();
   this.canvasDisplay.drawLines();
+  this.canvasDisplay.drawScores(that.score[0],that.score[1]);
   that.playerPaddle.draw();
   that.aiPaddle.draw();
   this.ball.draw();
