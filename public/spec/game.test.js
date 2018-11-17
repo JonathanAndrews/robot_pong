@@ -42,6 +42,7 @@ describe('Game', () => {
       clear: jest.fn(),
       drawLines: jest.fn(),
       drawScores: jest.fn(),
+      drawTime: jest.fn(),
       width: 900,
     };
     stubAiInterface = {

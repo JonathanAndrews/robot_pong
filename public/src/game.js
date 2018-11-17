@@ -1,4 +1,4 @@
-const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 3000) {
+const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 300) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
@@ -23,7 +23,7 @@ Game.prototype.checkPaddleCollision = function checkPaddleCollision() {
 };
 
 Game.prototype.run = function run() {
-  if (that.intervalRemaining > 0) {
+  if (that.intervalRemaining >= 0) {
     that.isGameOver();
     ai_inputs = that.getAIInputs();
     move = that.aiInterface.getMove(ai_inputs);
