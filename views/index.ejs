@@ -12,7 +12,8 @@
 <body>
 
 <canvas id="myCanvas" width="900" height="600"></canvas>
-<button id='colorChange'>add gravity</button>
+<button id='addGravity'>add gravity</button>
+<button id='removeGravity'>remove gravity</button>
 
 <script src='../src/aiInterface.js'></script>
 <script src='../src/ball.js'></script>
@@ -30,7 +31,8 @@
 
   document.addEventListener('keydown',game.keyDownHandler,false);
   document.addEventListener('keyup',game.keyUpHandler,false);
-  document.addEventListener('click', game.addGravity, false);
+  document.getElementById('addGravity').addEventListener('click', game.addGravity, false);
+  document.getElementById('removeGravity').addEventListener('click', game.removeGravity, false);
   setInterval(game.run, 20)
 
 

@@ -34,6 +34,7 @@ describe('Game', () => {
       position: { x: 450, y: 300 },
       velocity: { dx: 2.2, dy: 2 },
       accelerationAct: jest.fn(),
+      addGravity: jest.fn(),
       RADIUS: 5,
       reset: jest.fn(),
     };
@@ -207,4 +208,20 @@ describe('Game', () => {
       expect(pongGame.gameOver).toEqual(true);
     });
   });
+
+  describe('addGravity', () => {
+    it('sets game gravity to true', () => {
+      expect(pongGame.gravity).toEqual(false);
+      pongGame.addGravity();
+      expect(pongGame.gravity).toEqual(true);
+    })
+  })
+
+  describe('removeGravity', () => {
+    it('sets game gravity to false', () => {
+      pongGame.gravity = true;
+      pongGame.removeGravity();
+      expect(pongGame.gravity).toEqual(false);
+    })
+  })
 });

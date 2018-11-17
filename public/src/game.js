@@ -32,8 +32,7 @@ Game.prototype.run = function run() {
   that.aiPaddle.draw();
   this.ball.draw();
   this.ball.moveBall();
-  this.ball.addGravity(that.gravity)
-  this.ball.accelerationAct();
+  this.ball.accelerationAct(that.gravity);
   that.playerPaddle.moveUp(that.upButton);
   that.playerPaddle.moveDown(that.downButton);
   that.aiPaddle.movePaddle(move)
@@ -58,8 +57,11 @@ Game.prototype.getAIInputs = function getAIInputs() {
 };
 
 Game.prototype.addGravity = function addGravity() {
-  that.ball.addGravity();
   that.gravity = true;
+};
+
+Game.prototype.removeGravity = function removeGravity() {
+  that.gravity = false;
 };
 
 Game.prototype.keyDownHandler = function keyDownHandler(e) {

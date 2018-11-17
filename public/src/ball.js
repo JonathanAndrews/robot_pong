@@ -5,7 +5,7 @@ const Ball = function Ball(canvas) {
   this.context = this.canvas.getContext('2d');
   this.initialVelocity = { dx: 8, dy: 8 };
   this.velocity = { dx: 8, dy: 8 };
-  this.acceleration = { ddx: 0, ddy: 0}
+  this.acceleration = { ddx: 0, ddy: 0.2}
 };
 
 Ball.prototype.draw = function draw(ctx = this.context) {
@@ -40,14 +40,9 @@ Ball.prototype.reset = function reset() {
   this.velocity = this.initialVelocity;
 };
 
-Ball.prototype.accelerationAct = function () {
-  this.velocity.dy += this.acceleration.ddx
-};
-
-Ball.prototype.addGravity = function (click) {
-  console.log(click);
-  if (click) {
-    this.acceleration.ddx = 0.3;
+Ball.prototype.accelerationAct = function (gravity) {
+  if (gravity) {
+    this.velocity.dy += this.acceleration.ddy;
   }
 };
 
