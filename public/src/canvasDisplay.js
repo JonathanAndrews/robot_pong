@@ -45,25 +45,25 @@ CanvasDisplay.prototype.drawRobot = function () {
 
   // robot's left eye
   this.context.beginPath();
-  this.context.arc(200, 240, 18, 0, Math.PI*2, true)
+  this.context.arc(200, 250, 18, 0, Math.PI*2, true)
   this.context.strokeStyle = "rgba(255,255,255)";
   this.context.lineWidth = 3;
   this.context.stroke();
 
   this.context.beginPath();
-  this.context.arc(200, 240, 6, 0, Math.PI*2, true)
+  this.context.arc(200, 250, 6, 0, Math.PI*2, true)
   this.context.fillStyle = "rgba(255,255,255)";
   this.context.fill();
 
   // robot's right eye
   this.context.beginPath();
-  this.context.arc(260, 240, 18, 0, Math.PI*2, true)
+  this.context.arc(260, 250, 18, 0, Math.PI*2, true)
   this.context.strokeStyle = "rgba(255,255,255)";
   this.context.lineWidth = 3;
   this.context.stroke();
 
   this.context.beginPath();
-  this.context.arc(260, 240, 6, 0, Math.PI*2, true)
+  this.context.arc(260, 250, 6, 0, Math.PI*2, true)
   this.context.fillStyle = "rgba(255,255,255)";
   this.context.fill();
 
