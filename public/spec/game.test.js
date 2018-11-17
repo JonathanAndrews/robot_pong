@@ -38,6 +38,7 @@ describe('Game', () => {
     };
     stubCanvas = {
       clear: jest.fn(),
+      drawLines: jest.fn(),
       width: 900,
     };
     stubAiInterface = {
@@ -46,11 +47,21 @@ describe('Game', () => {
     pongGame = new Game(stubPlayerPaddle, stubAiPaddle, stubBall, stubCanvas, stubAiInterface, 120000);
   });
 
-  it('calls checkPaddleCollision on the paddle object', () => {
-    pongGame.checkPaddleCollision = jest.fn();
-    pongGame.run();
-    expect(pongGame.checkPaddleCollision).toHaveBeenCalledTimes(1);
-  });
+
+  describe('game.run()', () => {
+    it('calls checkPaddleCollision on the paddle object', () => {
+      pongGame.checkPaddleCollision = jest.fn();
+      pongGame.run();
+      expect(pongGame.checkPaddleCollision).toHaveBeenCalledTimes(1);
+    });
+
+    it('tells the canvasDisplay to draw central lines', () => {
+      pongGame.checkPaddleCollision = jest.fn();
+      pongGame.run();
+      expect(pongGame.canvasDisplay.drawLines).toHaveBeenCalledTimes(1);
+    });
+
+  })
 
   describe('checkPaddleCollision', () => {
     it('should call paddleCollision method if collision with PlayerPaddle', () => {

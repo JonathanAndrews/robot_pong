@@ -26,6 +26,7 @@ Game.prototype.run = function run() {
   ai_inputs = that.getAIInputs();
   move = that.aiInterface.getMove(ai_inputs);
   this.canvasDisplay.clear();
+  this.canvasDisplay.drawLines();
   that.playerPaddle.draw();
   that.aiPaddle.draw();
   this.ball.draw();
@@ -133,6 +134,7 @@ Game.prototype._isBallWithinLowerBoundOfAiPaddle = function _isBallWithinLowerBo
 Game.prototype._isBallWithinUpperBoundOfAiPaddle = function _isBallWithinUpperBoundOfAiPaddle() {
   return (this.aiPaddle.yPosition <= this.ball.position.y);
 };
+
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
   module.exports = Game;
 }

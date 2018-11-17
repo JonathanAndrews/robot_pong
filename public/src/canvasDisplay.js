@@ -9,6 +9,16 @@ CanvasDisplay.prototype.clear = function clear() {
   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 };
 
+CanvasDisplay.prototype.drawLines = function drawLines() {
+  for (var i = 0; i < 25; i++) {
+    this.context.beginPath();
+    this.context.rect(447, i*45, 6, 45/2);
+    this.context.fillStyle = '#FFFFFF';
+    this.context.fill();
+    this.context.closePath();
+  }
+};
+
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
   module.exports = CanvasDisplay;
 }
