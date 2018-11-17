@@ -11,6 +11,8 @@ describe('Canvas Display', () => {
       closePath: jest.fn(),
       fill: jest.fn(),
       rect: jest.fn(),
+      strokeText: jest.fn(),
+      fillText: jest.fn(),
     };
     stubCanvas = {
       getContext: jest.fn(() => stubContext),
@@ -32,6 +34,18 @@ describe('Canvas Display', () => {
       expect(stubContext.fill).toHaveBeenCalledTimes(25);
       expect(stubContext.rect).toHaveBeenCalledTimes(25);
       expect(stubContext.fillStyle).toEqual('#FFFFFF');
+    });
+  });
+
+  describe('drawScores', () => {
+    it('draws the current scores on canvas', () => {
+      const canvasDisplay = new CanvasDisplay(stubCanvas);
+      canvasDisplay.drawScores();
+      expect(stubContext.strokeText).toHaveBeenCalledTimes(1);
+      expect(stubContext.fillText).toHaveBeenCalledTimes(1);
+      expect(stubContext.font).toEqual('20px Arial');
+      expect(stubContext.strokeStyle).toEqual('white');
+      expect(stubContext.textAlign).toEqual('center');
     })
-  })
+  });
 });
