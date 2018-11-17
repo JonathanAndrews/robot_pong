@@ -79,6 +79,37 @@ CanvasDisplay.prototype.drawRobot = function () {
   this.context.strokeStyle = "rgba(255,255,255)";
   this.context.stroke();
 
+  // mouth
+  this.context.beginPath();
+  this.context.rect(170, 300, 120, 40);
+  this.context.stokeStyle = "rgba(255,255,255)";
+  this.context.lineWidth = 3;
+  this.context.stroke();
+
+  this.context.beginPath();
+  this.context.rect(170, 300, 120, 20);
+  this.context.stokeStyle = "rgba(255,255,255)";
+  this.context.lineWidth = 3;
+  this.context.stroke();
+
+  this.context.beginPath();
+  this.context.rect(170, 300, 60, 40);
+  this.context.stokeStyle = "rgba(255,255,255)";
+  this.context.lineWidth = 3;
+  this.context.stroke();
+
+  this.context.beginPath();
+  this.context.rect(170, 300, 30, 40);
+  this.context.stokeStyle = "rgba(255,255,255)";
+  this.context.lineWidth = 3;
+  this.context.stroke();
+
+  this.context.beginPath();
+  this.context.rect(230, 300, 30, 40);
+  this.context.stokeStyle = "rgba(255,255,255)";
+  this.context.lineWidth = 3;
+  this.context.stroke();
+
 };
 
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
