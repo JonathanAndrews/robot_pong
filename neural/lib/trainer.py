@@ -6,7 +6,9 @@ import tensorflow as tf
 class Trainer:
     '''The trainer of the neural champion, using the game created'''
 
-    def __init__(self, game, champion_session, competitor_session, champion_graph, competitor_graph, memory, champion, competitor, max_epsilon, min_epsilon, epsilon_decay, gamma, batch_size=32):
+    def __init__(self, game, champion_session, competitor_session, champion_graph,
+                 competitor_graph, memory, champion, competitor, max_epsilon, min_epsilon,
+                 epsilon_decay, gamma, batch_size=32, display_reward=False):
         self.game = game
         self.champion_session = champion_session
         self.competitor_session = competitor_session
@@ -21,8 +23,10 @@ class Trainer:
         self.epsilon_decay = epsilon_decay
         self.gamma = gamma
         self.total_steps = 0
+        self.total_reward = 0
         self.batch_size = batch_size
         self.current_score = 0
+        self.display_reward = display_reward
 
     def run_game(self):
         self.game.reset_game()
@@ -48,6 +52,8 @@ class Trainer:
             competitor_state = self.game.return_competitor_state()
             if done:
                 self.current_score = 0
+                if self.display_reward:
+                    print(self.total_reward)
                 break
 
     def test_game(self):
@@ -70,10 +76,10 @@ class Trainer:
                 break
 
     def champion_action(self, state):
-        with self.champion_graph.as_default():
-            if random.random() < self.epsilon:
-                return random.choice(self.game.POSSIBLE_MOVES)
-            else:
+        if random.random() < self.epsilon:
+            return random.choice(self.game.POSSIBLE_MOVES)
+        else:
+            with self.champion_graph.as_default():
                 state_values = np.array([value for value in state.values()])
                 return np.argmax(self.champion.single_prediction(state_values, self.champion_session)) - 1
 
