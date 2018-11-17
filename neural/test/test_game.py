@@ -60,11 +60,11 @@ class GameTest(unittest.TestCase):
     def test_possible_moves(self):
         self.assertEqual(self.game.POSSIBLE_MOVES, [-1, 0, 1])
 
-    def test_return_user_state(self):
+    def test_return_champion_state(self):
         self.game.left_paddle.position = self.game.right_paddle.position = np.array([0,1])
         self.game.left_paddle.velocity = self.game.right_paddle.velocity = np.array([0,1])
         self.game.ball.position = self.game.ball.velocity = np.array([0,1])
-        output = self.game.return_user_state()
+        output = self.game.return_champion_state()
         expected_output = {
             'user-paddle-y': 1,
             'user-paddle-dy': 1,

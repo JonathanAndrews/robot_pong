@@ -8,16 +8,17 @@ class TrainerTest(unittest.TestCase):
 
     def setUp(self):
         gameMock = mock.Mock()
-        sessionMock = mock.Mock()
+        championSessionMock = mock.Mock()
+        competitorSessionMock = mock.Mock()
         memoryMock = mock.Mock()
         networkMock = mock.Mock()
         competitorMock = mock.Mock()
-        self.trainer = Trainer(gameMock, sessionMock, memoryMock, networkMock, competitorMock, 1, 0, 0.5, 0.9)
+        self.trainer = Trainer(gameMock, championSessionMock, competitorSessionMock, memoryMock, networkMock, competitorMock, 1, 0, 0.5, 0.9)
 
-    def test_computed_action(self):
+    def test_competitor_action(self):
         self.trainer.network.single_prediction.return_value = [1,0,0]
         state = { 'first': 0, 'second': 1 }
-        self.assertEqual(self.trainer.computed_action(state), -1)
+        self.assertEqual(self.trainer.competitor_action(state), -1)
 
     def test_calculate_reward_positive(self):
         state = { 'score': 1 }
@@ -39,12 +40,12 @@ class TrainerTest(unittest.TestCase):
         self.assertTrue(after_epsilon < initial_epsilon)
 
     def test_add_sample_done(self):
-        memory = [[1,2,3], [2,3,4], 1, 2, False]
+        memory = [{'x':1,'y':2,'z':3}, {'x':2,'y':3,'z':4}, 1, 2, True]
         self.trainer.add_sample(*memory)
         self.trainer.memory.add_memory.assert_called()
 
     def test_add_sample_not_done(self):
-        memory = [[1,2,3], [2,3,4], 1, 2, True]
+        memory = [{'x':1,'y':2,'z':3}, {'x':2,'y':3,'z':4}, 1, 2, False]
         self.trainer.add_sample(*memory)
         self.trainer.memory.add_memory.assert_called()
 
@@ -53,25 +54,25 @@ class TrainerTest(unittest.TestCase):
         self.trainer.reward_predictions([1,2,3],[2,3,4])
         self.trainer.network.batch_prediction.assert_called()
 
-    def test_user_action_random(self):
+    def test_champion_action_random(self):
         self.trainer.epsilon = 2
         self.trainer.game.POSSIBLE_MOVES = ['a', 'b', 'c']
-        self.assertTrue(self.trainer.user_action({ 'x': 1 }) in self.trainer.game.POSSIBLE_MOVES)
+        self.assertTrue(self.trainer.champion_action({ 'x': 1 }) in self.trainer.game.POSSIBLE_MOVES)
 
-    def test_user_action_random(self):
+    def test_champion_action_random(self):
         self.trainer.epsilon = 0
         self.trainer.network.single_prediction.return_value = np.array([1, 0, 0])
-        self.trainer.user_action({ 'x':1, 'y':2, 'z':3 })
+        self.trainer.champion_action({ 'x':1, 'y':2, 'z':3 })
         self.trainer.network.single_prediction.assert_called()
 
     def test_run_game(self):
         self.trainer.train_model = lambda : None
         self.trainer.update_epsilon =  lambda : None
         self.trainer.add_sample = lambda a,b,c,d,e : None
-        self.trainer.return_user_state = lambda : None
+        self.trainer.return_champion_state = lambda : { 'x':1, 'y':2, 'z':3 }
         self.trainer.calculate_reward = lambda x: None
-        self.trainer.user_action = lambda x : None
-        self.trainer.computed_action = lambda x : None
+        self.trainer.champion_action = lambda x : None
+        self.trainer.competitor_action = lambda x : None
 
         self.trainer.game.reset_game = lambda : None
         self.trainer.game.game_over = True
