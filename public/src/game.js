@@ -9,6 +9,7 @@ const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInter
   this.totalIntervals = totalIntervals;
   this.intervalRemaining = totalIntervals;
   this.gameOver = false;
+  this.gravity = false;
   this.aiInterface = aiInterface;
   that = this;
 };
@@ -31,6 +32,8 @@ Game.prototype.run = function run() {
   that.aiPaddle.draw();
   this.ball.draw();
   this.ball.moveBall();
+  this.ball.addGravity(that.gravity)
+  this.ball.accelerationAct();
   that.playerPaddle.moveUp(that.upButton);
   that.playerPaddle.moveDown(that.downButton);
   that.aiPaddle.movePaddle(move)
@@ -52,6 +55,11 @@ Game.prototype.getAIInputs = function getAIInputs() {
      'time-remaining': this.intervalRemaining,
      'score': (this.score[0] - this.score[1]),
           }
+};
+
+Game.prototype.addGravity = function addGravity() {
+  that.ball.addGravity();
+  that.gravity = true;
 };
 
 Game.prototype.keyDownHandler = function keyDownHandler(e) {
@@ -134,6 +142,7 @@ Game.prototype._isBallWithinLowerBoundOfAiPaddle = function _isBallWithinLowerBo
 Game.prototype._isBallWithinUpperBoundOfAiPaddle = function _isBallWithinUpperBoundOfAiPaddle() {
   return (this.aiPaddle.yPosition <= this.ball.position.y);
 };
+
 
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
   module.exports = Game;
