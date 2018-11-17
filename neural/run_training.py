@@ -12,6 +12,7 @@ NO_HIDDEN_LAYERS = 3
 GAME_LENGTH = 120000
 GAME_STEP_TIME = 20
 GAMES_PER_TRAINING_SESSION = 10
+NUMBER_OF_TRAINING_SESSIONS = 10
 MEMORY_SIZE = 60000
 MAX_EPSILON = 0.999
 MIN_EPSILON = 0.001
@@ -23,21 +24,28 @@ def main():
         memory_bank = Memory(MEMORY_SIZE)
         pong_game = Game(GAME_LENGTH, GAME_STEP_TIME)
 
-        initial_user = Network(3, 10, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS)
-        initial_competitor = Network(3, 10, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS)
+        champion = Network(3, 10, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS)
+        competitor = Network(3, 10, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS)
 
-        trainer = Trainer(pong_game, session, memory_bank, initial_user, initial_competitor, MAX_EPSILON, MIN_EPSILON, EPSILON_DECAY, GAMMA)
+        trainer = Trainer(pong_game, session, memory_bank, champion, competitor, MAX_EPSILON, MIN_EPSILON, EPSILON_DECAY, GAMMA)
 
-        session.run(initial_user.variable_initializer)
-        session.run(initial_competitor.variable_initializer)
+        session.run(champion.variable_initializer)
+        session.run(competitor.variable_initializer)
 
-        start_time = time.time()
-        for _ in range(GAMES_PER_TRAINING_SESSION):
-            trainer.run_game()
-            print('Finished a game')
+        for version in range(NUMBER_OF_TRAINING_SESSIONS):
 
-        print("Time taken: %s", time.time() - start_time)
-        initial_user.save_network(session, './version_0/')
+            start_time = time.time()
+            for _ in range(GAMES_PER_TRAINING_SESSION):
+                trainer.run_game()
+                print('Finished a game')
+
+            print("Time taken: %s", time.time() - start_time)
+            initial_user.save_network(session, './trained_network/version_' + str(version) + '/')
+
+            #run test_match
+            #pick winner
+            #pick new competitor
+            #trainer = Trainer(champion, competitor)
 
 if __name__ == '__main__':
     print('Calling main function')

@@ -63,7 +63,7 @@ class Game:
         if self.time_remaining <= 0:
             self.game_over = True
 
-    def return_user_state(self):
+    def return_champion_state(self):
         ai_inputs = {
             'user-paddle-y': self.left_paddle.position[1],
             'user-paddle-dy': self.left_paddle.velocity[1],

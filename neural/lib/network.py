@@ -10,6 +10,7 @@ class Network:
         self.no_hidden_layers = no_hidden_layers
         self.keep_prob = keep_prob
         self.activation_function = activation_function
+        self.name_scope = name_scope
 
         self.define_model()
 
@@ -43,12 +44,12 @@ class Network:
 
         self.neural_output = tf.matmul(layers[self.no_hidden_layers - 1], last_weights) + last_biases
 
-        self.saver = tf.train.Saver([first_weights, first_biases, last_weights, last_biases] +
-                                    [hidden_weight for hidden_weight in hidden_weights.values()] +
-                                    [hidden_bias for hidden_bias in hidden_biases.values()])
         self.loss = tf.losses.mean_squared_error(self.neural_output, self.q_values)
         self.optimizer = tf.train.AdamOptimizer(learning_rate=0.001).minimize(self.loss)
         self.variable_initializer = tf.global_variables_initializer()
+        self.saver = tf.train.Saver(tf.global_variables())
+        variables = tf.global_variables()
+        print(variables)
 
     def single_prediction(self, inputs, session):
         return session.run(self.neural_output, feed_dict={
@@ -70,7 +71,11 @@ class Network:
         })
 
     def load_network(self, session, filename):
-        pass
+        model_varlist = {v.name.lstrip(self.name_scope + '/')[:-2]: v
+                     for v in tf.global_variables() if v.name[:len(self.name_scope)] == self.name_scope}
+        new_saver = tf.train.Saver(var_list=model_varlist)
+        new_saver.restore(session, filename)
+        print("Model restored from path: %s" % filename)
 
     def save_network(self, session, filename):
         save_path = self.saver.save(session, filename)

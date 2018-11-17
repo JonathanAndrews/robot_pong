@@ -5,9 +5,10 @@ import math
 class Trainer:
     '''The trainer of the neural network, using the game created'''
 
-    def __init__(self, game, session, memory, network, competitor, max_epsilon, min_epsilon, epsilon_decay, gamma, batch_size=32):
+    def __init__(self, game, champion_session, competitor_session, memory, network, competitor, max_epsilon, min_epsilon, epsilon_decay, gamma, batch_size=32):
         self.game = game
-        self.session = session
+        self.champion_session = champion_session
+        self.competitor_session = competitor_session
         self.memory = memory
         self.network = network
         self.competitor = competitor
@@ -23,38 +24,58 @@ class Trainer:
     def run_game(self):
         self.game.reset_game()
 
-        user_state = self.game.return_user_state()
+        champion_state = self.game.return_champion_state()
         competitor_state = self.game.return_competitor_state()
 
         while True:
-            user_action = self.user_action(user_state)
+            champion_action = self.champion_action(champion_state)
             competitor_action = self.computed_action(competitor_state)
-            self.game.step(user_action, competitor_action)
+            self.game.step(champion_action, competitor_action)
             self.total_steps += 1
 
-            new_user_state = self.game.return_user_state()
-            reward = self.calculate_reward(new_user_state)
+            new_champion_state = self.game.return_champion_state()
+            reward = self.calculate_reward(new_champion_state)
             done = self.game.game_over
 
-            self.add_sample(user_state, new_user_state, reward, user_action, done) # ONLY WANT THE NUMBER
+            self.add_sample(champion_state, new_champion_state, reward, champion_action, done)
             self.update_epsilon()
             self.train_model()
 
-            user_state = new_user_state
+            champion_state = new_champion_state
             competitor_state = self.game.return_competitor_state()
             if done:
                 self.current_score = 0
                 break
 
-    def user_action(self, state):
+    def test_game(self):
+        self.game.reset_game()
+
+        champion_state = self.game.return_champion_state()
+        competitor_state = self.game.return_competitor_state()
+
+        while True:
+            champion_action = self.computed_action(champion_state)
+            competitor_action = self.computed_action(competitor_state)
+            self.game.step(champion_action, competitor_action)
+
+            champion_state = self.game.return_champion_state()
+            competitor_state = self.game.return_competitor_state()
+
+            done = self.game.game_over
+            if done:
+                return champion_state['score']
+                break
+
+    def champion_action(self, state):
         if random.random() < self.epsilon:
             return random.choice(self.game.POSSIBLE_MOVES)
         else:
-            return self.computed_action(state)
+            state_values = np.array([value for value in state.values()])
+            return np.argmax(self.network.single_prediction(state_values, self.champion_session)) - 1
 
-    def computed_action(self, state):
+    def competitor_action(self, state):
         state_values = np.array([value for value in state.values()])
-        return np.argmax(self.network.single_prediction(state_values, self.session)) - 1
+        return np.argmax(self.network.single_prediction(state_values, self.competitor_session)) - 1
 
     def calculate_reward(self, state):
         if state['score'] > self.current_score:
@@ -65,13 +86,13 @@ class Trainer:
             return -1.0
         return 0.0
 
-    def add_sample(self, user_state, new_user_state, reward, action, done):
-        user_state = [component for component in user_state.values()]
-        new_user_state = [component for component in new_user_state.values()]
+    def add_sample(self, champion_state, new_champion_state, reward, action, done):
+        champion_state = [component for component in champion_state.values()]
+        new_champion_state = [component for component in new_champion_state.values()]
         if done:
-            self.memory.add_memory((user_state, None, reward, action))
+            self.memory.add_memory((champion_state, None, reward, action))
         else:
-            self.memory.add_memory((user_state, new_user_state, reward, action))
+            self.memory.add_memory((champion_state, new_champion_state, reward, action))
 
     def update_epsilon(self):
         self.epsilon = self.min_epsilon + ((self.max_epsilon - self.min_epsilon) * math.exp(-self.epsilon_decay * self.total_steps))
