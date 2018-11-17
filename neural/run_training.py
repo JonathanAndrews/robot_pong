@@ -79,9 +79,9 @@ def main():
         if test_score < 0:
             print('Competitor wins, score was ' + str(test_score))
             with competitor_graph.as_default():
-                competitor.save_network(competitor_session, DIRECTORY + './competitor_save/')
+                competitor.save_network(competitor_session, DIRECTORY + '/competitor_save/')
             with champion_graph.as_default():
-                    champion.load_network(champion_session, DIRECTORY + './competitor_save/')
+                champion.load_network(champion_session, DIRECTORY + '/competitor_save/')
         else:
             print('Champion continues, score was ' + str(test_score))
 
