@@ -2,6 +2,10 @@ import math
 import tensorflow as tf
 import numpy as np
 import time
+import random
+import os
+import pickle
+import datetime
 from lib.network import Network
 from lib.game import Game
 from lib.memory import Memory
@@ -18,6 +22,25 @@ MAX_EPSILON = 0.999
 MIN_EPSILON = 0.001
 EPSILON_DECAY = 0.0001
 GAMMA = 0.999
+STARTING_VERSION = 0
+DIRECTORY = './trained_networks/' + datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+
+HYPERPARAMETER_DICT = {
+    'HIDDEN_LAYER_SIZE': HIDDEN_LAYER_SIZE,
+    'NO_HIDDEN_LAYERS': NO_HIDDEN_LAYERS,
+    'GAME_LENGTH': GAME_LENGTH,
+    'GAME_STEP_TIME': GAME_STEP_TIME,
+    'GAMES_PER_TRAINING_SESSION': GAMES_PER_TRAINING_SESSION,
+    'NUMBER_OF_TRAINING_SESSIONS': NUMBER_OF_TRAINING_SESSIONS,
+    'MEMORY_SIZE': MEMORY_SIZE,
+    'MAX_EPSILON': MAX_EPSILON,
+    'MIN_EPSILON': MIN_EPSILON,
+    'EPSILON_DECAY': EPSILON_DECAY,
+    'GAMMA ': GAMMA,
+    'STARTING_VERSION': STARTING_VERSION,
+    'DIRECTORY': DIRECTORY
+}
+
 
 def main():
     champion_graph = tf.Graph()
@@ -37,22 +60,43 @@ def main():
 
     trainer = Trainer(pong_game, champion_session, competitor_session, champion_graph, competitor_graph, memory_bank, champion, competitor, MAX_EPSILON, MIN_EPSILON, EPSILON_DECAY, GAMMA)
 
+    champion.save_network(champion_session, DIRECTORY + '/version_' + str(STARTING_VERSION) + '/')
 
-    for version in range(NUMBER_OF_TRAINING_SESSIONS):
+    for version in range(STARTING_VERSION, STARTING_VERSION + NUMBER_OF_TRAINING_SESSIONS):
 
         start_time = time.time()
         for _ in range(GAMES_PER_TRAINING_SESSION):
             trainer.run_game()
-            print('Finished a game')
 
-        print("Time taken: %s", time.time() - start_time)
-        champion.save_network(champion_session, './trained_networks/version_' + str(version) + '/')
+        print("Time taken for training session: %s", time.time() - start_time)
+        champion.save_network(champion_session, DIRECTORY + '/version_' + str(version + 1) + '/')
 
-        #run test_match
-        #pick winner
-        #pick new competitor
-        #trainer = Trainer(champion, competitor)
+        test_score = trainer.test_game()
+
+        if test_score < 0:
+            print('Competitor wins, score was ' + str(test_score))
+            with competitor_graph.as_default():
+                competitor.save_network(competitor_session, './competitor_save/temp')
+            with champion_graph.as_default():
+                    champion.load_network(champion_session, './competitor_save/temp')
+        else:
+            print('Champion continues, score was ' + str(test_score))
+
+        new_competitor_version = random.randint(0, version)
+        print('New competitor version: ' + str(new_competitor_version))
+
+        with competitor_graph.as_default():
+            competitor.load_network(competitor_session, DIRECTORY + '/version_' + str(new_competitor_version) + '/')
+
+        trainer = Trainer(pong_game, champion_session, competitor_session, champion_graph, competitor_graph, memory_bank, champion, competitor, MAX_EPSILON, MIN_EPSILON, EPSILON_DECAY, GAMMA)
+
 
 if __name__ == '__main__':
-    print('Calling main function')
+    print('Creating directory')
+    os.mkdir(DIRECTORY)
+    print('Pickling hyperparameter dictionary')
+    with open(DIRECTORY + '/hyperparameters.pickle', 'wb') as storage:
+        pickle.dump(HYPERPARAMETER_DICT, storage, protocol=pickle.HIGHEST_PROTOCOL)
+    print('Starting training session')
     main()
+    print('Training session complete')
