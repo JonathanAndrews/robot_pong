@@ -6,6 +6,7 @@ import random
 import os
 import pickle
 import datetime
+import pandas as pd
 from lib.network import Network
 from lib.game import Game
 from lib.memory import Memory
@@ -23,7 +24,8 @@ MIN_EPSILON = 0.001
 EPSILON_DECAY = 0.0001
 GAMMA = 0.999
 STARTING_VERSION = 0
-DIRECTORY = './trained_networks/' + datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+DATETIME = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+DIRECTORY = './trained_networks/' + DATETIME
 
 HYPERPARAMETER_DICT = {
     'HIDDEN_LAYER_SIZE': HIDDEN_LAYER_SIZE,
@@ -38,6 +40,7 @@ HYPERPARAMETER_DICT = {
     'EPSILON_DECAY': EPSILON_DECAY,
     'GAMMA ': GAMMA,
     'STARTING_VERSION': STARTING_VERSION,
+    'DATETIME': DATETIME,
     'DIRECTORY': DIRECTORY
 }
 
@@ -76,9 +79,9 @@ def main():
         if test_score < 0:
             print('Competitor wins, score was ' + str(test_score))
             with competitor_graph.as_default():
-                competitor.save_network(competitor_session, './competitor_save/temp')
+                competitor.save_network(competitor_session, DIRECTORY + './competitor_save/')
             with champion_graph.as_default():
-                    champion.load_network(champion_session, './competitor_save/temp')
+                    champion.load_network(champion_session, DIRECTORY + './competitor_save/')
         else:
             print('Champion continues, score was ' + str(test_score))
 
@@ -97,6 +100,10 @@ if __name__ == '__main__':
     print('Pickling hyperparameter dictionary')
     with open(DIRECTORY + '/hyperparameters.pickle', 'wb') as storage:
         pickle.dump(HYPERPARAMETER_DICT, storage, protocol=pickle.HIGHEST_PROTOCOL)
+    print('Saving hyperparameter csv')
+    hyperparameter_dataframe = pd.DataFrame([HYPERPARAMETER_DICT], index=['Values'])
+    hyperparameter_dataframe.index.name = 'Hyperparameter'
+    hyperparameter_dataframe.to_csv(DIRECTORY + '/hyperparameters.csv')
     print('Starting training session')
     main()
     print('Training session complete')

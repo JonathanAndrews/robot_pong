@@ -37,6 +37,7 @@ class Game:
         if ((self.ball.position[0] - self.ball.radius <= self.left_paddle.thickness)
            and (self.left_paddle.position[1] <= self.ball.position[1] <= self.left_paddle.position[1] + self.left_paddle.length)
            and (self.ball.velocity[0] <= 0)):
+            print('COLLISION!')
             self.ball.velocity[0] *= -1
             where_on_paddle = ((self.left_paddle.position[1] - self.ball.position[1])/ self.left_paddle.length)
             self.update_ball_velocity(where_on_paddle)
@@ -45,6 +46,7 @@ class Game:
         if ((self.ball.position[0] + self.ball.radius >= self.right_paddle.position[0])
            and (self.right_paddle.position[1] <= self.ball.position[1] <= self.right_paddle.position[1] + self.right_paddle.length)
            and (self.ball.velocity[0] >= 0)):
+            print('COLLISION!')
             self.ball.velocity[0] *= -1
             where_on_paddle = (( self.right_paddle.position[1] - self.ball.position[1])/ self.right_paddle.length)
             self.update_ball_velocity(where_on_paddle)

@@ -90,9 +90,11 @@ class Trainer:
 
     def calculate_reward(self, state):
         if state['score'] > self.current_score:
+            print('GOAL!')
             self.current_score = state['score']
             return 1.0
         elif state['score'] < self.current_score:
+            print('CONCEDED!')
             self.current_score = state['score']
             return -1.0
         return 0.0
