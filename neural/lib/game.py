@@ -9,17 +9,21 @@ class Game:
                  canvas_height=600, paddle_type=Paddle, ball_type=Ball):
         self.canvas = np.array([canvas_width, canvas_height])
         self.left_paddle = paddle_type(290, 0, 10)
-        self.right_paddle = paddle_type(290, 1, 10)
-        self.ball = ball_type(450, 300, 1, 1)
+        self.right_paddle = paddle_type(390, 1, 10)
+        self.ball = ball_type(450, 300, 8, 8)
         self.time_remaining = total_game_time
         self.refresh_time = refresh_time
         self.score = np.array([0, 0])
         self.game_over = False
+        self.collision = False
         self.initial_values = [total_game_time, refresh_time]
 
     def step(self, left_action=0, right_action=0):
         self.step_components(left_action, right_action)
+        self.check_ball_paddle_collision()
         if self.check_for_goals():
+            print('Ball is at ' + str(self.ball.position[1]) + ', champion paddle is at ' + str(self.right_paddle.position[1]))
+            print(self.return_champion_state())
             self.reset_ball_position()
         self.time_remaining -= self.refresh_time
         self.is_game_over()
@@ -38,21 +42,28 @@ class Game:
            and (self.left_paddle.position[1] <= self.ball.position[1] <= self.left_paddle.position[1] + self.left_paddle.length)
            and (self.ball.velocity[0] <= 0)):
             print('COLLISION!')
+            self.collision = True
             self.ball.velocity[0] *= -1
             where_on_paddle = ((self.left_paddle.position[1] - self.ball.position[1])/ self.left_paddle.length)
             self.update_ball_velocity(where_on_paddle)
+        else:
+            self.collision = False
+
 
     def check_ball_right_paddle_collision(self):
         if ((self.ball.position[0] + self.ball.radius >= self.right_paddle.position[0])
            and (self.right_paddle.position[1] <= self.ball.position[1] <= self.right_paddle.position[1] + self.right_paddle.length)
            and (self.ball.velocity[0] >= 0)):
             print('COLLISION!')
+            self.collision = True
             self.ball.velocity[0] *= -1
             where_on_paddle = (( self.right_paddle.position[1] - self.ball.position[1])/ self.right_paddle.length)
             self.update_ball_velocity(where_on_paddle)
+        else:
+            self.collision = False
 
     def update_ball_velocity(self, where_on_paddle):
-        self.ball.velocity[1] = - 6 * ( 0.5 + where_on_paddle)
+        self.ball.velocity[1] = -6 * ( 0.5 + where_on_paddle)
 
     def reset_ball_position(self):
         self.ball.reset_position()
@@ -67,10 +78,10 @@ class Game:
 
     def return_champion_state(self):
         ai_inputs = {
-            'champion-paddle-y': self.left_paddle.position[1],
-            'champion-paddle-dy': self.left_paddle.velocity[1],
-            'competitor-paddle-y': self.right_paddle.position[1],
-            'competitor-paddle-dy': self.right_paddle.velocity[1],
+            'champion-paddle-y': self.right_paddle.position[1],
+            'champion-paddle-dy': self.right_paddle.velocity[1],
+            'competitor-paddle-y': self.left_paddle.position[1],
+            'competitor-paddle-dy': self.left_paddle.velocity[1],
             'ball-position-x': self.ball.position[0],
             'ball-position-y': self.ball.position[1],
             'ball-velocity-dx': self.ball.velocity[0],
@@ -82,10 +93,10 @@ class Game:
 
     def return_competitor_state(self):
         ai_inputs = {
-            'champion-paddle-y': self.right_paddle.position[1],
-            'champion-paddle-dy': self.right_paddle.velocity[1],
-            'competitor-paddle-y': self.left_paddle.position[1],
-            'competitor-paddle-dy': self.left_paddle.velocity[1],
+            'champion-paddle-y': self.left_paddle.position[1],
+            'champion-paddle-dy': self.left_paddle.velocity[1],
+            'competitor-paddle-y': self.right_paddle.position[1],
+            'competitor-paddle-dy': self.right_paddle.velocity[1],
             'ball-position-x': self.canvas[0] - self.ball.position[0],
             'ball-position-y': self.ball.position[1],
             'ball-velocity-dx': -self.ball.velocity[0],

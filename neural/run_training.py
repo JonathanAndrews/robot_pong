@@ -13,16 +13,17 @@ from lib.memory import Memory
 from lib.trainer import Trainer
 
 HIDDEN_LAYER_SIZE = 100
-NO_HIDDEN_LAYERS = 3
+NO_HIDDEN_LAYERS = 4
 GAME_LENGTH = 120000
 GAME_STEP_TIME = 20
-GAMES_PER_TRAINING_SESSION = 1
-NUMBER_OF_TRAINING_SESSIONS = 10
+GAMES_PER_TRAINING_SESSION = 10
+NUMBER_OF_TRAINING_SESSIONS = 20
 MEMORY_SIZE = 60000
 MAX_EPSILON = 0.999
 MIN_EPSILON = 0.001
-EPSILON_DECAY = 0.0001
+EPSILON_DECAY = 0.000001
 GAMMA = 0.999
+LEARNING_RATE = 1
 STARTING_VERSION = 0
 DATETIME = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
 DIRECTORY = './trained_networks/' + DATETIME
@@ -38,7 +39,8 @@ HYPERPARAMETER_DICT = {
     'MAX_EPSILON': MAX_EPSILON,
     'MIN_EPSILON': MIN_EPSILON,
     'EPSILON_DECAY': EPSILON_DECAY,
-    'GAMMA ': GAMMA,
+    'GAMMA': GAMMA,
+    'LEARNING_RATE': LEARNING_RATE,
     'STARTING_VERSION': STARTING_VERSION,
     'DATETIME': DATETIME,
     'DIRECTORY': DIRECTORY
@@ -55,7 +57,7 @@ def main():
     pong_game = Game(GAME_LENGTH, GAME_STEP_TIME)
 
     with champion_graph.as_default():
-        champion = Network(3, 10, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS)
+        champion = Network(3, 10, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS, learning_rate=LEARNING_RATE)
         champion_session.run(champion.variable_initializer)
     with competitor_graph.as_default():
         competitor = Network(3, 10, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS)
@@ -69,9 +71,11 @@ def main():
 
         start_time = time.time()
         for _ in range(GAMES_PER_TRAINING_SESSION):
+            print('New game')
             trainer.run_game()
+            trainer.game = Game(GAME_LENGTH, GAME_STEP_TIME)
 
-        print("Time taken for training session: %s", time.time() - start_time)
+        print("Time taken for training session: ", time.time() - start_time)
         champion.save_network(champion_session, DIRECTORY + '/version_' + str(version + 1) + '/')
 
         test_score = trainer.test_game()

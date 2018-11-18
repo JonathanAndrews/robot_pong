@@ -37,7 +37,7 @@ class Trainer:
         while True:
             champion_action = self.champion_action(champion_state)
             competitor_action = self.competitor_action(competitor_state)
-            self.game.step(champion_action, competitor_action)
+            self.game.step(competitor_action, champion_action)
             self.total_steps += 1
 
             new_champion_state = self.game.return_champion_state()
@@ -89,15 +89,20 @@ class Trainer:
             return np.argmax(self.competitor.single_prediction(state_values, self.competitor_session)) - 1
 
     def calculate_reward(self, state):
+        output = 0
         if state['score'] > self.current_score:
             print('GOAL!')
             self.current_score = state['score']
-            return 1.0
+            output += 1.0
         elif state['score'] < self.current_score:
             print('CONCEDED!')
             self.current_score = state['score']
-            return -1.0
-        return 0.0
+            output += -1.0
+        if self.game.collision:
+            output += 0.5
+        if output:
+            print('AI rewarded: ' + str(output))
+        return output
 
     def add_sample(self, champion_state, new_champion_state, reward, action, done):
         champion_state = [component for component in champion_state.values()]
