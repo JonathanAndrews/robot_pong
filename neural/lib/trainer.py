@@ -52,6 +52,7 @@ class Trainer:
             competitor_state = self.game.return_competitor_state()
             if done:
                 self.current_score = 0
+                print(self.epsilon)
                 if self.display_reward:
                     print(self.total_reward)
                 break

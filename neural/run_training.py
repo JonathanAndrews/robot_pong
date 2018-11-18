@@ -13,19 +13,20 @@ from lib.memory import Memory
 from lib.trainer import Trainer
 
 HIDDEN_LAYER_SIZE = 100
-NO_HIDDEN_LAYERS = 3
+NO_HIDDEN_LAYERS = 4
 GAME_LENGTH = 120000
 GAME_STEP_TIME = 20
-GAMES_PER_TRAINING_SESSION = 0
+GAMES_PER_TRAINING_SESSION = 10
 NUMBER_OF_TRAINING_SESSIONS = 200
 MEMORY_SIZE = 60000
-MAX_EPSILON = 0.999
-MIN_EPSILON = 0.001
-EPSILON_DECAY = 0.000001
+MAX_EPSILON = 0.9999
+MIN_EPSILON = 0.01
+EPSILON_DECAY = 0.0001
 GAMMA = 0.999
-LEARNING_RATE = 0.001
+LEARNING_RATE = 0.01
 STARTING_VERSION = 0
 DATETIME = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+DESCRIPTION = 'Higher Epsilon Decay version'
 DIRECTORY = './trained_networks/' + DATETIME
 
 HYPERPARAMETER_DICT = {
@@ -43,6 +44,7 @@ HYPERPARAMETER_DICT = {
     'LEARNING_RATE': LEARNING_RATE,
     'STARTING_VERSION': STARTING_VERSION,
     'DATETIME': DATETIME,
+    'DESCRIPTION': DESCRIPTION,
     'DIRECTORY': DIRECTORY
 }
 
@@ -89,7 +91,7 @@ def main():
         else:
             print('Champion continues, score was ' + str(test_score))
 
-        new_competitor_version = random.randint(0, version)
+        new_competitor_version = random.randint(max(0, version - 5), version)
         print('New competitor version: ' + str(new_competitor_version))
 
         with competitor_graph.as_default():
