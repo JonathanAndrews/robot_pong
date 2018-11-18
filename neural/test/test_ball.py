@@ -6,8 +6,8 @@ class BallTest(unittest.TestCase):
 
     def setUp(self):
         self.ball = Ball(20, 20, 1, 1, 10, 600, 900)
-        self.ball_left_goal = Ball(595, 20, -1, 1, 10, 600, 900)
-        self.ball_right_goal = Ball(3, 20, 1, 1, 10, 600, 900)
+        self.ball_left_goal = Ball(595, 20, 1, 1, 10, 600, 900)
+        self.ball_right_goal = Ball(3, 20, -1, 1, 10, 600, 900)
         self.colliding_ball = Ball(300, 889, 1, 1, 10, 600, 900)
 
     def test_step(self):
@@ -31,7 +31,6 @@ class BallTest(unittest.TestCase):
 
     def test_check_for_goals_left_goal(self):
         self.assertEqual(self.ball_left_goal.check_for_goals(), [1, 0])
-    
+
     def test_check_for_goals_right_goal(self):
         self.assertEqual(self.ball_right_goal.check_for_goals(), [0, 1])
-

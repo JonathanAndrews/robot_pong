@@ -28,15 +28,15 @@ class TrainerTest(unittest.TestCase):
 
     def test_calculate_reward_positive(self):
         state = { 'score': 1 }
-        self.assertEqual(self.trainer.calculate_reward(state), 1.0)
+        self.assertEqual(self.trainer.calculate_reward(state), 1.5)
 
     def test_calculate_reward_negative(self):
         state = { 'score': -1 }
-        self.assertEqual(self.trainer.calculate_reward(state), -1.0)
+        self.assertEqual(self.trainer.calculate_reward(state), -0.5)
 
     def test_calculate_reward_neutral(self):
         state = { 'score': 0 }
-        self.assertEqual(self.trainer.calculate_reward(state), 0.0)
+        self.assertEqual(self.trainer.calculate_reward(state), 0.5)
 
     def test_update_epsilon(self):
         initial_epsilon = self.trainer.epsilon

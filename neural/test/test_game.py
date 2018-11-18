@@ -31,6 +31,7 @@ class GameTest(unittest.TestCase):
 
     def test_goal_response(self):
         self.game.ball.check_for_goals.return_value = [1,0]
+        self.game.return_champion_state = lambda : None
         self.game.step()
         self.game.ball.reset_position.assert_called()
 

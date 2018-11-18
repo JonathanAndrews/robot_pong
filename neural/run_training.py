@@ -13,17 +13,17 @@ from lib.memory import Memory
 from lib.trainer import Trainer
 
 HIDDEN_LAYER_SIZE = 100
-NO_HIDDEN_LAYERS = 4
+NO_HIDDEN_LAYERS = 3
 GAME_LENGTH = 120000
 GAME_STEP_TIME = 20
-GAMES_PER_TRAINING_SESSION = 10
-NUMBER_OF_TRAINING_SESSIONS = 20
+GAMES_PER_TRAINING_SESSION = 0
+NUMBER_OF_TRAINING_SESSIONS = 200
 MEMORY_SIZE = 60000
 MAX_EPSILON = 0.999
 MIN_EPSILON = 0.001
 EPSILON_DECAY = 0.000001
 GAMMA = 0.999
-LEARNING_RATE = 1
+LEARNING_RATE = 0.001
 STARTING_VERSION = 0
 DATETIME = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
 DIRECTORY = './trained_networks/' + DATETIME
@@ -95,7 +95,7 @@ def main():
         with competitor_graph.as_default():
             competitor.load_network(competitor_session, DIRECTORY + '/version_' + str(new_competitor_version) + '/')
 
-        trainer = Trainer(pong_game, champion_session, competitor_session, champion_graph, competitor_graph, memory_bank, champion, competitor, MAX_EPSILON, MIN_EPSILON, EPSILON_DECAY, GAMMA)
+        trainer = Trainer(Game(GAME_LENGTH, GAME_STEP_TIME), champion_session, competitor_session, champion_graph, competitor_graph, memory_bank, champion, competitor, MAX_EPSILON, MIN_EPSILON, EPSILON_DECAY, GAMMA)
 
 
 if __name__ == '__main__':
