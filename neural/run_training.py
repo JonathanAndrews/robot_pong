@@ -1,12 +1,13 @@
-import math
-import tensorflow as tf
-import numpy as np
-import time
-import random
-import os
-import pickle
 import datetime
+import math
+import numpy as np
+import os
 import pandas as pd
+import pickle
+import random
+import tensorflow as tf
+import time
+import shutil
 from lib.network import Network
 from lib.game import Game
 from lib.memory import Memory
@@ -16,20 +17,20 @@ HIDDEN_LAYER_SIZE = 100
 NO_HIDDEN_LAYERS = 4
 GAME_LENGTH = 120000
 GAME_STEP_TIME = 20
-GAMES_PER_TRAINING_SESSION = 10
-NUMBER_OF_TRAINING_SESSIONS = 200
+GAMES_PER_TRAINING_SESSION = 1
+NUMBER_OF_TRAINING_SESSIONS = 50
 MEMORY_SIZE = 60000
 MAX_EPSILON = 0.9999
 MIN_EPSILON = 0.01
-EPSILON_DECAY = 0.0001
+EPSILON_DECAY = 0.001
 GAMMA = 0.999
-RETURNS_DECAY = 0.999999
-WINNERS_GROWTH = 1.0001
-BATCH_SIZE = 128
-LEARNING_RATE = 0.01
+RETURNS_DECAY = 0.95
+WINNERS_GROWTH = 1.1
+BATCH_SIZE = 64
+LEARNING_RATE = 0.05
 STARTING_VERSION = 0
 DATETIME = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-DESCRIPTION = 'Higher Epsilon Decay version, normalised inputs'
+DESCRIPTION = 'Lower Epsilon Decay, normalised inputs, different reward function'
 DIRECTORY = './trained_networks/' + DATETIME
 
 HYPERPARAMETER_DICT = {
@@ -73,7 +74,8 @@ def main():
 
     trainer = Trainer(pong_game, champion_session, competitor_session, champion_graph, competitor_graph, memory_bank, champion, competitor, MAX_EPSILON, MIN_EPSILON, EPSILON_DECAY, GAMMA, RETURNS_DECAY, WINNERS_GROWTH, batch_size=BATCH_SIZE)
 
-    champion.save_network(champion_session, DIRECTORY + '/version_' + str(STARTING_VERSION) + '/')
+    with champion_graph.as_default():
+        champion.save_network(champion_session, DIRECTORY + '/version_' + str(STARTING_VERSION) + '/')
 
     for version in range(STARTING_VERSION, STARTING_VERSION + NUMBER_OF_TRAINING_SESSIONS):
 
@@ -84,8 +86,10 @@ def main():
             trainer.game = Game(GAME_LENGTH, GAME_STEP_TIME)
 
         print("Time taken for training session: ", time.time() - start_time)
-        champion.save_network(champion_session, DIRECTORY + '/version_' + str(version + 1) + '/')
+        with champion_graph.as_default():
+            champion.save_network(champion_session, DIRECTORY + '/version_' + str(version + 1) + '/')
 
+        trainer.game = Game(GAME_LENGTH, GAME_STEP_TIME)
         test_score = trainer.test_game()
 
         if test_score < 0:
@@ -94,6 +98,7 @@ def main():
                 competitor.save_network(competitor_session, DIRECTORY + '/competitor_save/')
             with champion_graph.as_default():
                 champion.load_network(champion_session, DIRECTORY + '/competitor_save/')
+            shutil.rmtree(DIRECTORY + '/competitor_save/')
         else:
             print('Champion continues, score was ' + str(test_score))
 

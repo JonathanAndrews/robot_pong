@@ -4,10 +4,11 @@
   "description": "Play pong against a Reinforcement Learning AI.",
   "main": "index.js",
   "dependencies": {
+    "@tensorflow/tfjs": "^0.13.5",
+    "ejs": "^2.6.1",
     "eslint": "^5.9.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
-    "ejs": "^2.6.1",
     "express": "^4.16.4"
   },
   "engines": {

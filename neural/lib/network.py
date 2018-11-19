@@ -80,4 +80,7 @@ class Network:
 
     def save_network(self, session, filename):
         save_path = self.saver.save(session, filename)
+        input_dict = { 'states': self.states, 'dropout': self.dropout }
+        output_dict = { 'q_values': self.q_values }
+        tf.saved_model.simple_save(session, filename + '/saved_model', input_dict, output_dict)
         print("Model saved in path: %s" % save_path)
