@@ -32,15 +32,25 @@
 
 
   document.getElementById('myCanvas').addEventListener('click', function(e) {
-    console.log(e)
-
     game.gameOver = true;
     if (game.gameOver && ((100 < e.offsetX && e.offsetX < 300) && (300 < e.offsetY && e.offsetY < 340) )) {
-
+      // Easy Mode
+      game.gameOver = false;
+      setInterval(game.run, 20)
+    }
+    if (game.gameOver && ((350 < e.offsetX && e.offsetX < 550) && (300 < e.offsetY && e.offsetY < 340) )) {
+      // Medium Mode
+      game.gameOver = false;
+      setInterval(game.run, 20)
+    }
+    if (game.gameOver && ((600 < e.offsetX && e.offsetX < 800) && (300 < e.offsetY && e.offsetY < 340) )) {
+      // Hard Mode
       game.gameOver = false;
       setInterval(game.run, 20)
     }
   })
+
+
   document.addEventListener('keydown',game.keyDownHandler,false);
   document.addEventListener('keyup',game.keyUpHandler,false);
   document.getElementById('addGravity').addEventListener('click', game.addGravity, false);
