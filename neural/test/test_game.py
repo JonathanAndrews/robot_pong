@@ -62,39 +62,41 @@ class GameTest(unittest.TestCase):
         self.assertEqual(self.game.POSSIBLE_MOVES, [-1, 0, 1])
 
     def test_return_champion_state(self):
-        self.game.left_paddle.position = self.game.right_paddle.position = np.array([0,1])
-        self.game.left_paddle.velocity = self.game.right_paddle.velocity = np.array([0,1])
-        self.game.ball.position = self.game.ball.velocity = np.array([0,1])
+        self.game.left_paddle.position = self.game.right_paddle.position = np.array([0,600])
+        self.game.left_paddle.velocity = self.game.right_paddle.velocity = np.array([0,6])
+        self.game.ball.position = np.array([0,600])
+        self.game.ball.velocity = np.array([1,6])
         output = self.game.return_champion_state()
         expected_output = {
             'champion-paddle-y': 1,
-            'champion-paddle-dy': 1,
+            'champion-paddle-dy': 6,
             'competitor-paddle-y': 1,
-            'competitor-paddle-dy': 1,
+            'competitor-paddle-dy': 6,
             'ball-position-x': 0,
             'ball-position-y': 1,
-            'ball-velocity-dx': 0,
-            'ball-velocity-dy': 1,
-            'time-remaining': 100,
+            'ball-velocity-dx': 1,
+            'ball-velocity-dy': 6,
+            'time-remaining': 1,
             'score': 0
         }
         self.assertDictEqual(output, expected_output)
 
     def test_return_competitor_state(self):
-        self.game.left_paddle.position = self.game.right_paddle.position = np.array([0,1])
-        self.game.left_paddle.velocity = self.game.right_paddle.velocity = np.array([0,1])
-        self.game.ball.position = self.game.ball.velocity = np.array([1,1])
+        self.game.left_paddle.position = self.game.right_paddle.position = np.array([0,600])
+        self.game.left_paddle.velocity = self.game.right_paddle.velocity = np.array([0,6])
+        self.game.ball.position = np.array([0,600])
+        self.game.ball.velocity = np.array([1,6])
         output = self.game.return_competitor_state()
         expected_output = {
             'champion-paddle-y': 1,
-            'champion-paddle-dy': 1,
+            'champion-paddle-dy': 6,
             'competitor-paddle-y': 1,
-            'competitor-paddle-dy': 1,
-            'ball-position-x': 899,
+            'competitor-paddle-dy': 6,
+            'ball-position-x': 1,
             'ball-position-y': 1,
             'ball-velocity-dx': -1,
-            'ball-velocity-dy': 1,
-            'time-remaining': 100,
+            'ball-velocity-dy': 6,
+            'time-remaining': 1,
             'score': 0
         }
         self.assertDictEqual(output, expected_output)
