@@ -1,20 +1,14 @@
 import random
 import numpy as np
 import math
-import tensorflow as tf
 
 class Trainer:
     '''The trainer of the neural champion, using the game created'''
 
-    def __init__(self, game, champion_session, competitor_session, champion_graph,
-                 competitor_graph, memory, champion, competitor, max_epsilon, min_epsilon,
+    def __init__(self, game, memory, champion, competitor, max_epsilon, min_epsilon,
                  epsilon_decay, gamma, returns_decay, winners_growth, returns_parameter=1 ,
                  winners_parameter=1, batch_size=32, display_reward=False):
         self.game = game
-        self.champion_session = champion_session
-        self.competitor_session = competitor_session
-        self.champion_graph = champion_graph
-        self.competitor_graph = competitor_graph
         self.memory = memory
         self.champion = champion
         self.competitor = competitor
@@ -85,14 +79,12 @@ class Trainer:
         if random.random() < self.epsilon:
             return random.choice(self.game.POSSIBLE_MOVES)
         else:
-            with self.champion_graph.as_default():
-                state_values = np.array([value for value in state.values()])
-                return np.argmax(self.champion.single_prediction(state_values, self.champion_session)) - 1
+            state_values = np.array([[value for value in state.values()]])
+            return np.argmax(self.champion.batch_prediction(state_values)) - 1
 
     def competitor_action(self, state):
-        with self.competitor_graph.as_default():
-            state_values = np.array([value for value in state.values()])
-            return np.argmax(self.competitor.single_prediction(state_values, self.competitor_session)) - 1
+        state_values = np.array([[value for value in state.values()]])
+        return np.argmax(self.competitor.single_prediction(state_values)) - 1
 
     def calculate_reward(self, state):
         output = 0
@@ -149,10 +141,10 @@ class Trainer:
             champion_input_array[index] = state
             champion_output_array[index] = current_reward
 
-        self.champion.batch_train(champion_input_array, champion_output_array, self.champion_session)
+        self.champion.batch_train(champion_input_array, champion_output_array)
 
     def reward_predictions(self, states, new_states):
         return [
-          self.champion.batch_prediction(states, self.champion_session),
-          self.champion.batch_prediction(new_states, self.champion_session)
+          self.champion.batch_prediction(states),
+          self.champion.batch_prediction(new_states)
         ]

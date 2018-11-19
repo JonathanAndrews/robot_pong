@@ -1,11 +1,17 @@
-import tensorflow as tf
+import keras
+import tensorflowjs as tfjs
+from keras.models import Sequential, load_model
+from keras.layers import Dense, InputLayer, Dropout
+from keras.optimizers import Adam
+
+
 
 class Network:
     '''The neural network. There are no ifs no buts just a neural network'''
 
     def __init__(self, no_actions, no_inputs, hidden_layer_size=100, no_hidden_layers=3,
-                 learning_rate=0.001, keep_prob=0.9, activation_function=tf.nn.tanh,
-                 loss_function=tf.losses.mean_squared_error, maximum_saves=10000):
+                 learning_rate=0.001, keep_prob=0.9, activation_function='tanh',
+                 loss_function='mse', maximum_saves=10000):
         self.no_actions = no_actions
         self.no_inputs = no_inputs
         self.hidden_layer_size = hidden_layer_size
@@ -19,68 +25,28 @@ class Network:
         self.define_model()
 
     def define_model(self):
-        self.define_placeholders()
-        self.define_variables()
-
-    def define_placeholders(self):
-        self.states = tf.placeholder(shape=[None, self.no_inputs],
-                                     dtype=tf.float32)
-        self.q_values = tf.placeholder(shape=[None, self.no_actions],
-                                    dtype=tf.float32)
-        self.dropout = tf.placeholder(dtype=tf.float32)
-
-    def define_variables(self):
-        first_weights = tf.Variable(tf.truncated_normal([self.no_inputs, self.hidden_layer_size]))
-        first_biases = tf.Variable(tf.zeros([self.hidden_layer_size]))
-        last_weights = tf.Variable(tf.truncated_normal([self.hidden_layer_size, self.no_actions]))
-        last_biases  = tf.Variable(tf.zeros([self.no_actions]))
-
-        hidden_weights = {}
-        hidden_biases = {}
+        self.model = Sequential()
+        self.model.add(Dense(self.hidden_layer_size, activation=self.activation_function, input_shape=(self.no_inputs,)))
+        self.model.add(Dropout(1 - self.keep_prob))
         for i in range(self.no_hidden_layers - 1):
-            hidden_weights[i] = tf.Variable(tf.truncated_normal([self.hidden_layer_size, self.hidden_layer_size]))
-            hidden_biases[i] = tf.Variable(tf.zeros([self.hidden_layer_size]))
+            self.model.add(Dense(self.hidden_layer_size, activation=self.activation_function))
+            self.model.add(Dropout(1 - self.keep_prob))
+        self.model.add(Dense(self.no_actions, activation='linear'))
+        optimizer = Adam(lr=self.learning_rate)
+        self.model.compile(loss=self.loss_function, optimizer=optimizer)
 
-        layers = {}
-        layers[0] = tf.nn.dropout(self.activation_function(tf.matmul(self.states, first_weights) + first_biases), self.dropout)
-        for i in range(self.no_hidden_layers - 1):
-            layers[i + 1] = tf.nn.dropout(self.activation_function(tf.matmul(layers[i], hidden_weights[i]) + hidden_biases[i]), self.dropout)
+    def single_prediction(self, inputs):
+        return self.model.predict(inputs, verbose=0)
 
-        self.neural_output = tf.matmul(layers[self.no_hidden_layers - 1], last_weights) + last_biases
+    def batch_prediction(self, inputs):
+        return self.model.predict(inputs, verbose=0)
 
-        self.loss = self.loss_function(self.neural_output, self.q_values)
-        self.optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate).minimize(self.loss)
-        self.variable_initializer = tf.global_variables_initializer()
-        self.saver = tf.train.Saver(tf.global_variables(), max_to_keep=self.maximum_saves)
+    def batch_train(self, inputs, outputs):
+        self.model.fit(inputs, outputs, verbose=0)
 
+    def load_network(self, filename):
+        self.model = load_model(filename + '.h5')
 
-    def single_prediction(self, inputs, session):
-        return session.run(self.neural_output, feed_dict={
-            self.states: inputs.reshape(1, self.no_inputs),
-            self.dropout: 1.0
-        })
-
-    def batch_prediction(self, inputs, session):
-        return session.run(self.neural_output, feed_dict={
-            self.states: inputs,
-            self.dropout: self.keep_prob
-        })
-
-    def batch_train(self, inputs, outputs, session):
-        return session.run(self.optimizer, feed_dict={
-            self.states: inputs,
-            self.q_values: outputs,
-            self.dropout: self.keep_prob
-        })
-
-    def load_network(self, session, filename):
-        new_saver = tf.train.Saver()
-        new_saver.restore(session, filename)
-        print("Model restored from path: %s" % filename)
-
-    def save_network(self, session, filename):
-        save_path = self.saver.save(session, filename)
-        input_dict = { 'states': self.states, 'dropout': self.dropout }
-        output_dict = { 'q_values': self.q_values }
-        tf.saved_model.simple_save(session, filename + '/saved_model', input_dict, output_dict)
-        print("Model saved in path: %s" % save_path)
+    def save_network(self, filename):
+        self.model.save(filename + '.h5')
+        tfjs.converters.save_keras_model(self.model, filename + '/javascript/')
