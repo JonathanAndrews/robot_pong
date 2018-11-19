@@ -7,6 +7,8 @@ const Paddle = function Paddle(canvas, playerType) {
   if (playerType === 0) {
     this.xPosition = 10;
   } else {
+    this.DIMENSIONS = { height: 580, width: 10 };
+    this.yPosition = 10;
     this.xPosition = 880;
   }
 };
