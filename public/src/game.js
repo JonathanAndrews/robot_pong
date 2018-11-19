@@ -1,4 +1,4 @@
-const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 6000) {
+const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 300) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
@@ -43,7 +43,7 @@ Game.prototype.run = function run() {
     that.checkPaddleCollision();
     that.checkForGoal();
     that.intervalRemaining -= 1;
-  }
+  } 
 };
 
 Game.prototype.getAIInputs = function getAIInputs() {
