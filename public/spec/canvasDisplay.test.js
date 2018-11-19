@@ -41,10 +41,8 @@ describe('Canvas Display', () => {
     it('draws the current scores on canvas', () => {
       const canvasDisplay = new CanvasDisplay(stubCanvas);
       canvasDisplay.drawScores();
-      expect(stubContext.strokeText).toHaveBeenCalledTimes(1);
-      expect(stubContext.fillText).toHaveBeenCalledTimes(1);
-      expect(stubContext.font).toEqual('20px Arial');
-      expect(stubContext.strokeStyle).toEqual('white');
+      expect(stubContext.fillText).toHaveBeenCalledTimes(2);
+      expect(stubContext.font).toEqual('22px Arial');
       expect(stubContext.textAlign).toEqual('center');
     });
   });

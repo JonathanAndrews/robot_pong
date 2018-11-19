@@ -36,7 +36,7 @@ Game.prototype.run = function run() {
     this.ball.draw();
     this.ball.moveBall();
     this.ball.accelerationAct(that.gravity);
-    this.game.playerPaddle.moveUp(that.upButton);
+    that.playerPaddle.moveUp(that.upButton);
     that.playerPaddle.moveDown(that.downButton);
     that.aiPaddle.movePaddle(move);
     that.checkPaddleCollision();

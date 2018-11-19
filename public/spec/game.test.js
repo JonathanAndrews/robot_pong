@@ -43,6 +43,8 @@ describe('Game', () => {
       drawLines: jest.fn(),
       drawScores: jest.fn(),
       drawTime: jest.fn(),
+      drawRobot: jest.fn(),
+      drawGameOverPage: jest.fn(),
       width: 900,
     };
     stubAiInterface = {
@@ -200,6 +202,7 @@ describe('Game', () => {
 
   describe('isGameOver', () => {
     it('should be false when number of intervals is positive', () => {
+      pongGame.gameOver = false;
       pongGame.run();
       expect(pongGame.gameOver).toEqual(false);
     });

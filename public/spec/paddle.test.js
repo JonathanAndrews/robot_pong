@@ -44,13 +44,13 @@ describe('Paddle', () => {
       const paddle = new Paddle(stubCanvas);
       velocity = paddle.SPEED
       paddle.moveUp(true);
-      expect(paddle.yPosition).toEqual(420 - velocity);
+      expect(paddle.yPosition).toEqual(10 - velocity);
     });
 
     it('doesnt change the yPosition when passed false statement', () => {
       const paddle = new Paddle(stubCanvas);
       paddle.moveUp(false);
-      expect(paddle.yPosition).toEqual(420);
+      expect(paddle.yPosition).toEqual(10);
     });
 
     it('the paddle has an upper boundary', () => {
@@ -66,13 +66,13 @@ describe('Paddle', () => {
       const paddle = new Paddle(stubCanvas);
       velocity = paddle.SPEED
       paddle.moveDown(true);
-      expect(paddle.yPosition).toEqual(420 + velocity);
+      expect(paddle.yPosition).toEqual(10 + velocity);
     });
 
     it('doesnt change the yPosition when passed false statement', () => {
       const paddle = new Paddle(stubCanvas);
       paddle.moveDown(false);
-      expect(paddle.yPosition).toEqual(420);
+      expect(paddle.yPosition).toEqual(10);
     });
 
     it('the paddle has a lower boundary', () => {
