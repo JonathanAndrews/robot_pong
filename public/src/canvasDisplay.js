@@ -21,37 +21,22 @@ CanvasDisplay.prototype.setUpStartPage = function setUpStartPage() {
   this.context.font = '22px Arial';
   this.context.strokeStyle = 'white';
   this.context.textAlign = 'center';
-  this.context.fillText('To begin click on mode:', 450, 180);
+  this.context.fillText('How many times would you like the AI you play against to have trained?:', 450, 180);
 
-  this.context.beginPath();
-  this.context.rect(350, 300, 200, 40);
-  this.context.fillStyle = '#FFFFFF';
-  this.context.fill();
-  this.context.closePath();
-  this.context.font = '20px Arial';
-  this.context.fillStyle = 'black';
-  this.context.textAlign = 'center';
-  this.context.fillText('M E D I U M', 450, 326);
+  for (var x = 0; x < 5; x++) {
+    for (var y = 0; y < 5; y++) {
+      this.context.beginPath();
+      this.context.rect(x*70+300, y*50+240, 40, 30);
+      this.context.fillStyle = '#FFFFFF';
+      this.context.fill();
 
-  this.context.beginPath();
-  this.context.rect(100, 300, 200, 40);
-  this.context.fillStyle = '#FFFFFF';
-  this.context.fill();
-  this.context.closePath();
-  this.context.font = '20px Arial';
-  this.context.fillStyle = 'black';
-  this.context.textAlign = 'center';
-  this.context.fillText('E A S Y', 200, 326);
+      this.context.font = '15px Arial';
+      this.context.fillStyle = 'black';
+      this.context.textAlign = 'center';
+      this.context.fillText(x*100 + y*500, x*70+320, y*50+260);
+    }
+  }
 
-  this.context.beginPath();
-  this.context.rect(600, 300, 200, 40);
-  this.context.fillStyle = '#FFFFFF';
-  this.context.fill();
-  this.context.closePath();
-  this.context.font = '20px Arial';
-  this.context.fillStyle = 'black';
-  this.context.textAlign = 'center';
-  this.context.fillText('H A R D', 700, 326);
 }
 
 CanvasDisplay.prototype.clear = function clear() {

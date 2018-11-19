@@ -8,7 +8,7 @@ const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInter
   this.score = [0, 0];
   this.totalIntervals = totalIntervals;
   this.intervalRemaining = totalIntervals;
-  this.gameOver = false;
+  this.gameOver = true;
   this.gravity = false;
   this.aiInterface = aiInterface;
   that = this;
@@ -59,6 +59,10 @@ Game.prototype.getAIInputs = function getAIInputs() {
      'time-remaining': this.intervalRemaining,
      'score': (this.score[0] - this.score[1]),
           }
+};
+
+Game.prototype.setDifficulty = function (level) {
+  // this.aiInterface.getDifficulty(level);
 };
 
 Game.prototype.addGravity = function addGravity() {
