@@ -33,11 +33,18 @@ describe('Game', () => {
       paddleCollision: jest.fn(),
       position: { x: 450, y: 300 },
       velocity: { dx: 2.2, dy: 2 },
+      accelerationAct: jest.fn(),
+      addGravity: jest.fn(),
       RADIUS: 5,
       reset: jest.fn(),
     };
     stubCanvas = {
       clear: jest.fn(),
+      drawLines: jest.fn(),
+      drawScores: jest.fn(),
+      drawTime: jest.fn(),
+      drawRobot: jest.fn(),
+      drawGameOverPage: jest.fn(),
       width: 900,
     };
     stubAiInterface = {
@@ -46,11 +53,25 @@ describe('Game', () => {
     pongGame = new Game(stubPlayerPaddle, stubAiPaddle, stubBall, stubCanvas, stubAiInterface, 120000);
   });
 
-  it('calls checkPaddleCollision on the paddle object', () => {
-    pongGame.checkPaddleCollision = jest.fn();
-    pongGame.run();
-    expect(pongGame.checkPaddleCollision).toHaveBeenCalledTimes(1);
-  });
+
+  describe('game.run()', () => {
+    it('calls checkPaddleCollision on the paddle object', () => {
+      pongGame.checkPaddleCollision = jest.fn();
+      pongGame.run();
+      expect(pongGame.checkPaddleCollision).toHaveBeenCalledTimes(1);
+    });
+
+    it('tells the canvasDisplay to draw central lines', () => {
+      pongGame.run();
+      expect(pongGame.canvasDisplay.drawLines).toHaveBeenCalledTimes(1);
+    });
+    it('tells the canvasDisplay to draw central lines', () => {
+      pongGame.ball.accelerationAct = jest.fn();
+      pongGame.run();
+      expect(pongGame.ball.accelerationAct).toHaveBeenCalledTimes(1);
+    });
+
+  })
 
   describe('checkPaddleCollision', () => {
     it('should call paddleCollision method if collision with PlayerPaddle', () => {
@@ -181,6 +202,7 @@ describe('Game', () => {
 
   describe('isGameOver', () => {
     it('should be false when number of intervals is positive', () => {
+      pongGame.gameOver = false;
       pongGame.run();
       expect(pongGame.gameOver).toEqual(false);
     });
@@ -191,4 +213,20 @@ describe('Game', () => {
       expect(pongGame.gameOver).toEqual(true);
     });
   });
+
+  describe('addGravity', () => {
+    it('sets game gravity to true', () => {
+      expect(pongGame.gravity).toEqual(false);
+      pongGame.addGravity();
+      expect(pongGame.gravity).toEqual(true);
+    })
+  })
+
+  describe('removeGravity', () => {
+    it('sets game gravity to false', () => {
+      pongGame.gravity = true;
+      pongGame.removeGravity();
+      expect(pongGame.gravity).toEqual(false);
+    })
+  })
 });

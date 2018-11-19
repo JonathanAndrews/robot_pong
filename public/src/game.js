@@ -1,4 +1,4 @@
-const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 120000) {
+const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 300) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
@@ -8,7 +8,8 @@ const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInter
   this.score = [0, 0];
   this.totalIntervals = totalIntervals;
   this.intervalRemaining = totalIntervals;
-  this.gameOver = false;
+  this.gameOver = true;
+  this.gravity = false;
   this.aiInterface = aiInterface;
   that = this;
 };
@@ -22,20 +23,30 @@ Game.prototype.checkPaddleCollision = function checkPaddleCollision() {
 };
 
 Game.prototype.run = function run() {
-  that.isGameOver();
-  ai_inputs = that.getAIInputs();
-  move = that.aiInterface.getMove(ai_inputs);
-  this.canvasDisplay.clear();
-  that.playerPaddle.draw();
-  that.aiPaddle.draw();
-  this.ball.draw();
-  this.ball.moveBall();
-  that.playerPaddle.moveUp(that.upButton);
-  that.playerPaddle.moveDown(that.downButton);
-  that.aiPaddle.movePaddle(move)
-  that.checkPaddleCollision();
-  that.checkForGoal();
-  this.intervalRemaining -= 1;
+  if (that.intervalRemaining > 0) {
+    ai_inputs = that.getAIInputs();
+    move = that.aiInterface.getMove(ai_inputs);
+    this.canvasDisplay.clear();
+    this.canvasDisplay.drawLines();
+    this.canvasDisplay.drawRobot();
+    this.canvasDisplay.drawTime(that.intervalRemaining);
+    this.canvasDisplay.drawScores(that.score[0],that.score[1]);
+    that.playerPaddle.draw();
+    that.aiPaddle.draw();
+    this.ball.draw();
+    this.ball.moveBall();
+    this.ball.accelerationAct(that.gravity);
+    that.playerPaddle.moveUp(that.upButton);
+    that.playerPaddle.moveDown(that.downButton);
+    that.aiPaddle.movePaddle(move);
+    that.checkPaddleCollision();
+    that.checkForGoal();
+    that.intervalRemaining -= 1;
+  } else if (that.intervalRemaining === 0){
+    that.isGameOver();
+    this.canvasDisplay.clear();
+    this.canvasDisplay.drawGameOverPage(that.score);
+  }
 };
 
 Game.prototype.getAIInputs = function getAIInputs() {
@@ -51,6 +62,18 @@ Game.prototype.getAIInputs = function getAIInputs() {
      'time-remaining': this.intervalRemaining,
      'score': (this.score[0] - this.score[1]),
           }
+};
+
+Game.prototype.setDifficulty = function (level) {
+  // this.aiInterface.getDifficulty(level);
+};
+
+Game.prototype.addGravity = function addGravity() {
+  that.gravity = true;
+};
+
+Game.prototype.removeGravity = function removeGravity() {
+  that.gravity = false;
 };
 
 Game.prototype.keyDownHandler = function keyDownHandler(e) {
@@ -133,6 +156,8 @@ Game.prototype._isBallWithinLowerBoundOfAiPaddle = function _isBallWithinLowerBo
 Game.prototype._isBallWithinUpperBoundOfAiPaddle = function _isBallWithinUpperBoundOfAiPaddle() {
   return (this.aiPaddle.yPosition <= this.ball.position.y);
 };
+
+
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
   module.exports = Game;
 }

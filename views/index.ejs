@@ -2,15 +2,18 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Gamedev Canvas Workshop</title>
+    <title>Robot Face Pong</title>
     <style>
     	* { padding: 0; margin: 0; }
     	canvas { background: #123; display: block; margin: 0 auto; }
+    	button { display: block; margin: 0 auto; }
     </style>
 </head>
 <body>
 
 <canvas id="myCanvas" width="900" height="600"></canvas>
+<button id='addGravity'>add gravity</button>
+<button id='removeGravity'>remove gravity</button>
 
 <script src='../src/aiInterface.js'></script>
 <script src='../src/ball.js'></script>
@@ -23,16 +26,33 @@
   ai_paddle = new Paddle(document.getElementById('myCanvas'), 1)
   ball = new Ball(document.getElementById('myCanvas'))
   canvasDisplay = new CanvasDisplay(document.getElementById('myCanvas'))
+  canvasDisplay.setUpStartPage();
 
   var game = new Game(player_paddle, ai_paddle, ball, canvasDisplay, ai_interface);
 
+  let game_runner;
+  setInterval(() => {
+    if (game.gameOver) {
+      clearInterval(game_runner)
+   } 
+  }, 20);
+
+  document.getElementById('myCanvas').addEventListener('click', function(e) {
+    for (var x = 0; x < 5; x++) {
+      for (var y = 0; y < 5; y++) {
+        if(game.gameOver && ((x*70+300 < e.offsetX && e.offsetX < x*70+340) && (y*50+240 < e.offsetY && e.offsetY < y*50+270))) {
+          game.setDifficulty(x+(5*y));
+          game.gameOver = false;
+          game_runner = setInterval(game.run, 20);
+        }
+      }
+    }
+  })
+
   document.addEventListener('keydown',game.keyDownHandler,false);
   document.addEventListener('keyup',game.keyUpHandler,false);
-
-  setInterval(game.run, 20)
-
-
-
+  document.getElementById('addGravity').addEventListener('click', game.addGravity, false);
+  document.getElementById('removeGravity').addEventListener('click', game.removeGravity, false);
 </script>
 
 </body>
