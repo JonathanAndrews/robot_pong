@@ -1,6 +1,6 @@
 import keras
 from keras.models import Sequential, load_model
-from keras.layers import Dense, InputLayer
+from keras.layers import Dense, InputLayer, Dropout
 from keras.optimizers import Adam
 
 class Network:
@@ -24,8 +24,10 @@ class Network:
     def define_model(self):
         self.model = Sequential()
         self.model.add(Dense(self.hidden_layer_size, activation=self.activation_function, input_shape=(self.no_inputs,)))
+        self.model.add(Dropout(1 - self.keep_prob))
         for i in range(self.no_hidden_layers - 1):
             self.model.add(Dense(self.hidden_layer_size, activation=self.activation_function))
+            self.model.add(Dropout(1 - self.keep_prob))
         self.model.add(Dense(self.no_actions, activation='linear'))
         optimizer = Adam(lr=self.learning_rate)
         self.model.compile(loss=self.loss_function, optimizer=optimizer)
