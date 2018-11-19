@@ -8,7 +8,8 @@ class Trainer:
 
     def __init__(self, game, champion_session, competitor_session, champion_graph,
                  competitor_graph, memory, champion, competitor, max_epsilon, min_epsilon,
-                 epsilon_decay, gamma, batch_size=32, display_reward=False):
+                 epsilon_decay, gamma, returns_decay, winners_growth, returns_parameter=1 ,
+                 winners_parameter=1, batch_size=32, display_reward=False):
         self.game = game
         self.champion_session = champion_session
         self.competitor_session = competitor_session
@@ -27,6 +28,10 @@ class Trainer:
         self.batch_size = batch_size
         self.current_score = 0
         self.display_reward = display_reward
+        self.returns_parameter = returns_parameter
+        self.winners_parameter = winners_parameter
+        self.returns_decay = returns_decay
+        self.winners_growth = winners_growth
 
     def run_game(self):
         self.game.reset_game()
@@ -94,15 +99,19 @@ class Trainer:
         if state['score'] > self.current_score:
             print('GOAL!')
             self.current_score = state['score']
-            output += 1.0
+            if self.game.last_hit:
+                print('Down the Line! (winner)')
+                output += (10 * self.winners_parameter)
+                self.winners_parameter *= self.winners_growth
         elif state['score'] < self.current_score:
             print('CONCEDED!')
             self.current_score = state['score']
             output += -1.0
         if self.game.collision:
-            output += 0.5
+            output += (10 * self.returns_parameter)
+            self.returns_parameter *= self.returns_decay
         if output:
-            print('AI rewarded: ' + str(output))
+            print('Champion rewarded: ' + str(output))
         return output
 
     def add_sample(self, champion_state, new_champion_state, reward, action, done):

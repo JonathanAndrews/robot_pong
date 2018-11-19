@@ -17,6 +17,8 @@ class Game:
         self.game_over = False
         self.collision = False
         self.initial_values = [total_game_time, refresh_time]
+        self.current_hit = None
+        self.last_hit = None
 
     def step(self, left_action=0, right_action=0):
         self.step_components(left_action, right_action)
@@ -24,6 +26,8 @@ class Game:
         if self.check_for_goals():
             print('Ball is at ' + str(self.ball.position[1]) + ', champion paddle is at ' + str(self.right_paddle.position[1]))
             print(self.return_champion_state())
+            self.last_hit = self.current_hit
+            self.current_hit = None
             self.reset_ball_position()
         self.time_remaining -= self.refresh_time
         self.is_game_over()
@@ -43,6 +47,8 @@ class Game:
            and (self.ball.velocity[0] <= 0)):
             print('COLLISION!')
             self.collision = True
+            self.last_hit = self.current_hit
+            self.current_hit = 0
             self.ball.velocity[0] *= -1
             where_on_paddle = ((self.left_paddle.position[1] - self.ball.position[1])/ self.left_paddle.length)
             self.update_ball_velocity(where_on_paddle)
@@ -56,6 +62,8 @@ class Game:
            and (self.ball.velocity[0] >= 0)):
             print('COLLISION!')
             self.collision = True
+            self.last_hit = self.current_hit
+            self.current_hit = 1
             self.ball.velocity[0] *= -1
             where_on_paddle = (( self.right_paddle.position[1] - self.ball.position[1])/ self.right_paddle.length)
             self.update_ball_velocity(where_on_paddle)
