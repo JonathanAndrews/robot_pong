@@ -3,13 +3,18 @@ import tensorflow as tf
 class Network:
     '''The neural network. There are no ifs no buts just a neural network'''
 
-    def __init__(self, no_actions, no_inputs, hidden_layer_size=100, no_hidden_layers=3, keep_prob=0.9, activation_function=tf.nn.tanh):
+    def __init__(self, no_actions, no_inputs, hidden_layer_size=100, no_hidden_layers=3,
+                 learning_rate=0.001, keep_prob=0.9, activation_function=tf.nn.tanh,
+                 loss_function=tf.losses.mean_squared_error, maximum_saves=10000):
         self.no_actions = no_actions
         self.no_inputs = no_inputs
         self.hidden_layer_size = hidden_layer_size
         self.no_hidden_layers = no_hidden_layers
+        self.learning_rate = learning_rate
         self.keep_prob = keep_prob
         self.activation_function = activation_function
+        self.loss_function = loss_function
+        self.maximum_saves = maximum_saves
 
         self.define_model()
 
@@ -43,12 +48,11 @@ class Network:
 
         self.neural_output = tf.matmul(layers[self.no_hidden_layers - 1], last_weights) + last_biases
 
-        self.saver = tf.train.Saver([first_weights, first_biases, last_weights, last_biases] +
-                                    [hidden_weight for hidden_weight in hidden_weights.values()] +
-                                    [hidden_bias for hidden_bias in hidden_biases.values()])
-        self.loss = tf.losses.mean_squared_error(self.neural_output, self.q_values)
-        self.optimizer = tf.train.AdamOptimizer(learning_rate=0.001).minimize(self.loss)
+        self.loss = self.loss_function(self.neural_output, self.q_values)
+        self.optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate).minimize(self.loss)
         self.variable_initializer = tf.global_variables_initializer()
+        self.saver = tf.train.Saver(tf.global_variables(), max_to_keep=self.maximum_saves)
+
 
     def single_prediction(self, inputs, session):
         return session.run(self.neural_output, feed_dict={
@@ -69,5 +73,11 @@ class Network:
             self.dropout: self.keep_prob
         })
 
-    def load_network(self, filename):
-        pass
+    def load_network(self, session, filename):
+        new_saver = tf.train.Saver()
+        new_saver.restore(session, filename)
+        print("Model restored from path: %s" % filename)
+
+    def save_network(self, session, filename):
+        save_path = self.saver.save(session, filename)
+        print("Model saved in path: %s" % save_path)

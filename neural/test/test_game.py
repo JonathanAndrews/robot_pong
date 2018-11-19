@@ -10,6 +10,17 @@ class GameTest(unittest.TestCase):
         ballMock = mock.Mock()
         self.game = Game(100, 1, paddle_type=paddleMock, ball_type=ballMock)
         self.game.ball.check_for_goals.return_value = [0,0]
+        self.game.ball.position = np.array([8, 100])
+        self.game.ball.velocity = np.array([-1, -2])
+        self.game.left_paddle.position = np.array([0, 90])
+        self.game.right_paddle.position = np.array([505, 90])
+        self.game.left_paddle.speed = 1
+        self.game.right_paddle.speed = 1
+        self.game.ball.radius = 10
+        self.game.right_paddle.thickness = 10
+        self.game.right_paddle.length = 20
+        self.game.left_paddle.thickness = 10
+        self.game.left_paddle.length = 20
 
     def test_step(self):
         self.game.step()
@@ -20,30 +31,20 @@ class GameTest(unittest.TestCase):
 
     def test_goal_response(self):
         self.game.ball.check_for_goals.return_value = [1,0]
+        self.game.return_champion_state = lambda : None
         self.game.step()
         self.game.ball.reset_position.assert_called()
 
     def test_left_ball_paddle_collision(self):
-        self.game.ball.position = np.array([8, 100])
-        self.game.ball.velocity = np.array([-1, 0])
-        self.game.ball.radius = 10
-        self.game.left_paddle.position = np.array([0, 90])
-        self.game.left_paddle.thickness = 10
-        self.game.left_paddle.length = 10
-        self.game.right_paddle.position = np.array([505, 90])
+        self.game.ball.velocity = np.array([-1, 1])
         self.game.check_ball_paddle_collision()
-        self.assertTrue((self.game.ball.velocity == np.array([1,0])).all())
+        self.assertTrue((self.game.ball.velocity == np.array([1, 0])).all())
 
     def test_right_ball_paddle_collision(self):
         self.game.ball.position = np.array([500, 100])
-        self.game.ball.velocity = np.array([1, 0])
-        self.game.ball.radius = 10
-        self.game.left_paddle.position = np.array([0, 90])
-        self.game.right_paddle.position = np.array([505, 90])
-        self.game.right_paddle.thickness = 10
-        self.game.right_paddle.length = 20
+        self.game.ball.velocity = np.array([1, -2])
         self.game.check_ball_paddle_collision()
-        self.assertTrue((self.game.ball.velocity == np.array([-1,0])).all())
+        self.assertTrue((self.game.ball.velocity == np.array([-1, 0])).all())
 
     def test_is_game_won(self):
         for i in range (101):
@@ -60,16 +61,16 @@ class GameTest(unittest.TestCase):
     def test_possible_moves(self):
         self.assertEqual(self.game.POSSIBLE_MOVES, [-1, 0, 1])
 
-    def test_return_user_state(self):
+    def test_return_champion_state(self):
         self.game.left_paddle.position = self.game.right_paddle.position = np.array([0,1])
         self.game.left_paddle.velocity = self.game.right_paddle.velocity = np.array([0,1])
         self.game.ball.position = self.game.ball.velocity = np.array([0,1])
-        output = self.game.return_user_state()
+        output = self.game.return_champion_state()
         expected_output = {
-            'user-paddle-y': 1,
-            'user-paddle-dy': 1,
-            'comp-paddle-y': 1,
-            'comp-paddle-dy': 1,
+            'champion-paddle-y': 1,
+            'champion-paddle-dy': 1,
+            'competitor-paddle-y': 1,
+            'competitor-paddle-dy': 1,
             'ball-position-x': 0,
             'ball-position-y': 1,
             'ball-velocity-dx': 0,
@@ -85,10 +86,10 @@ class GameTest(unittest.TestCase):
         self.game.ball.position = self.game.ball.velocity = np.array([1,1])
         output = self.game.return_competitor_state()
         expected_output = {
-            'user-paddle-y': 1,
-            'user-paddle-dy': 1,
-            'comp-paddle-y': 1,
-            'comp-paddle-dy': 1,
+            'champion-paddle-y': 1,
+            'champion-paddle-dy': 1,
+            'competitor-paddle-y': 1,
+            'competitor-paddle-dy': 1,
             'ball-position-x': 899,
             'ball-position-y': 1,
             'ball-velocity-dx': -1,

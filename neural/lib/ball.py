@@ -19,9 +19,9 @@ class Ball:
             self.velocity[1] *= -1
 
     def check_for_goals(self):
-        if (self.position[0] + self.radius >= self.canvas[0]):
+        if ((self.position[0] + self.radius >= self.canvas[0]) and (self.velocity[0] > 0)):
             return [1, 0]
-        if (self.position[0] - self.radius <= 0):
+        if ((self.position[0] - self.radius <= 0) and (self.velocity[0] < 0)):
             return [0, 1]
         return [0, 0]
 
