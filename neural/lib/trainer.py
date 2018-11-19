@@ -106,7 +106,7 @@ class Trainer:
         elif state['score'] < self.current_score:
             print('CONCEDED!')
             self.current_score = state['score']
-            output += -1.0
+            output += -10
         if self.game.collision:
             output += (10 * self.returns_parameter)
             self.returns_parameter *= self.returns_decay
