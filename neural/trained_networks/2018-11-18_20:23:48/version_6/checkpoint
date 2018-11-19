@@ -1,8 +1,0 @@
-model_checkpoint_path: "."
-all_model_checkpoint_paths: "../version_0"
-all_model_checkpoint_paths: "../version_1"
-all_model_checkpoint_paths: "../version_2"
-all_model_checkpoint_paths: "../version_3"
-all_model_checkpoint_paths: "../version_4"
-all_model_checkpoint_paths: "../version_5"
-all_model_checkpoint_paths: "."

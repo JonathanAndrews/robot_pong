@@ -5,9 +5,7 @@ import os
 import pandas as pd
 import pickle
 import random
-import tensorflow as tf
 import time
-import shutil
 from lib.network import Network
 from lib.game import Game
 from lib.memory import Memory
@@ -23,14 +21,14 @@ MEMORY_SIZE = 60000
 MAX_EPSILON = 0.9999
 MIN_EPSILON = 0.01
 EPSILON_DECAY = 0.001
-GAMMA = 0.999
+GAMMA = 0.95
 RETURNS_DECAY = 0.95
-WINNERS_GROWTH = 1.1
+WINNERS_GROWTH = 1.15
 BATCH_SIZE = 64
-LEARNING_RATE = 0.05
+LEARNING_RATE = 0.1
 STARTING_VERSION = 0
 DATETIME = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-DESCRIPTION = 'Lower Epsilon Decay, normalised inputs, different reward function'
+DESCRIPTION = 'Raised learning rate, 2 games per training session'
 DIRECTORY = './trained_networks/' + DATETIME
 
 HYPERPARAMETER_DICT = {
@@ -57,25 +55,15 @@ HYPERPARAMETER_DICT = {
 
 
 def main():
-    champion_graph = tf.Graph()
-    competitor_graph = tf.Graph()
-    champion_session = tf.Session(graph=champion_graph)
-    competitor_session = tf.Session(graph=competitor_graph)
-
     memory_bank = Memory(MEMORY_SIZE)
     pong_game = Game(GAME_LENGTH, GAME_STEP_TIME)
 
-    with champion_graph.as_default():
-        champion = Network(3, 10, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS, learning_rate=LEARNING_RATE)
-        champion_session.run(champion.variable_initializer)
-    with competitor_graph.as_default():
-        competitor = Network(3, 10, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS)
-        competitor_session.run(competitor.variable_initializer)
+    champion = Network(3, 10, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS, learning_rate=LEARNING_RATE)
+    competitor = Network(3, 10, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS)
 
-    trainer = Trainer(pong_game, champion_session, competitor_session, champion_graph, competitor_graph, memory_bank, champion, competitor, MAX_EPSILON, MIN_EPSILON, EPSILON_DECAY, GAMMA, RETURNS_DECAY, WINNERS_GROWTH, batch_size=BATCH_SIZE)
+    trainer = Trainer(pong_game, memory_bank, champion, competitor, MAX_EPSILON, MIN_EPSILON, EPSILON_DECAY, GAMMA, RETURNS_DECAY, WINNERS_GROWTH, batch_size=BATCH_SIZE)
 
-    with champion_graph.as_default():
-        champion.save_network(champion_session, DIRECTORY + '/version_' + str(STARTING_VERSION) + '/')
+    champion.save_network(DIRECTORY + '/version_' + str(STARTING_VERSION))
 
     for version in range(STARTING_VERSION, STARTING_VERSION + NUMBER_OF_TRAINING_SESSIONS):
 
@@ -86,32 +74,27 @@ def main():
             trainer.game = Game(GAME_LENGTH, GAME_STEP_TIME)
 
         print("Time taken for training session: ", time.time() - start_time)
-        with champion_graph.as_default():
-            champion.save_network(champion_session, DIRECTORY + '/version_' + str(version + 1) + '/')
+        champion.save_network(DIRECTORY + '/version_' + str(version + 1))
 
         trainer.game = Game(GAME_LENGTH, GAME_STEP_TIME)
         test_score = trainer.test_game()
 
         if test_score < 0:
             print('Competitor wins, score was ' + str(test_score))
-            with competitor_graph.as_default():
-                competitor.save_network(competitor_session, DIRECTORY + '/competitor_save/')
-            with champion_graph.as_default():
-                champion.load_network(champion_session, DIRECTORY + '/competitor_save/')
-            shutil.rmtree(DIRECTORY + '/competitor_save/')
+            competitor.save_network(DIRECTORY + '/competitor_save')
+            champion.load_network(DIRECTORY + '/competitor_save')
         else:
             print('Champion continues, score was ' + str(test_score))
 
         new_competitor_version = random.randint(max(0, version - 5), version)
         print('New competitor version: ' + str(new_competitor_version))
 
-        with competitor_graph.as_default():
-            competitor.load_network(competitor_session, DIRECTORY + '/version_' + str(new_competitor_version) + '/')
+        competitor.load_network(DIRECTORY + '/version_' + str(new_competitor_version))
 
         current_epsilon = trainer.epsilon
         current_returns_parameter = trainer.returns_parameter
         current_winners_parameter = trainer.winners_parameter
-        trainer = Trainer(Game(GAME_LENGTH, GAME_STEP_TIME), champion_session, competitor_session, champion_graph, competitor_graph, memory_bank, champion, competitor, current_epsilon, MIN_EPSILON, EPSILON_DECAY, GAMMA, RETURNS_DECAY, WINNERS_GROWTH, returns_parameter=current_returns_parameter, winners_parameter=current_winners_parameter, batch_size=BATCH_SIZE)
+        trainer = Trainer(Game(GAME_LENGTH, GAME_STEP_TIME), memory_bank, champion, competitor, current_epsilon, MIN_EPSILON, EPSILON_DECAY, GAMMA, RETURNS_DECAY, WINNERS_GROWTH, returns_parameter=current_returns_parameter, winners_parameter=current_winners_parameter, batch_size=BATCH_SIZE)
 
 
 if __name__ == '__main__':
