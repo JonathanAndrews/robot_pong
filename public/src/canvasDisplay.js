@@ -5,6 +5,22 @@ const CanvasDisplay = function CanvasDisplay(canvas) {
   this.context = this.canvas.getContext('2d');
 };
 
+CanvasDisplay.prototype.setUpStartPage = function setUpStartPage() {
+  this.context.font = '12px Arial';
+  this.context.strokeStyle = 'white';
+  this.context.textAlign = 'center';
+  this.context.lineWidth = 0.5;
+  this.context.fillStyle = 'white';
+  this.context.fillText('Created by: James Rodney, Aidan Faria, Jonathan Andrews and Cameron Whitehead', 640, 580);
+
+  this.context.font = '22px Arial';
+  this.context.strokeStyle = 'white';
+  this.context.textAlign = 'center';
+  this.context.fillText('R O B O T    F A C E    P O N G', 450, 40);
+
+
+}
+
 CanvasDisplay.prototype.clear = function clear() {
   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 };
@@ -21,9 +37,9 @@ CanvasDisplay.prototype.drawLines = function drawLines() {
 
 CanvasDisplay.prototype.drawScores = function (playerScore, aiScore) {
   this.context.font = '22px Arial';
-  this.context.strokeStyle = 'white';
+  this.context.fillStyle = 'white';
   this.context.textAlign = 'center';
-  this.context.strokeText('R O B O T    F A C E    P O N G', 450, 40);
+  this.context.fillText('R O B O T    F A C E    P O N G', 450, 40);
   this.context.fillText(playerScore + " - " + aiScore, 50, 30);
 };
 
