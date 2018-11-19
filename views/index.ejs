@@ -32,8 +32,10 @@
 
 
   document.getElementById('myCanvas').addEventListener('click', function(e) {
+    console.log(e)
+
     game.gameOver = true;
-    if (game.gameOver) {
+    if (game.gameOver && ((100 < e.offsetX && e.offsetX < 300) && (300 < e.offsetY && e.offsetY < 340) )) {
 
       game.gameOver = false;
       setInterval(game.run, 20)
