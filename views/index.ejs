@@ -26,14 +26,24 @@
   ai_paddle = new Paddle(document.getElementById('myCanvas'), 1)
   ball = new Ball(document.getElementById('myCanvas'))
   canvasDisplay = new CanvasDisplay(document.getElementById('myCanvas'))
+  canvasDisplay.setUpStartPage();
 
   var game = new Game(player_paddle, ai_paddle, ball, canvasDisplay, ai_interface);
 
+
+  document.getElementById('myCanvas').addEventListener('click', function(e) {
+    game.gameOver = true;
+    if (game.gameOver) {
+
+      game.gameOver = false;
+      setInterval(game.run, 20)
+    }
+  })
   document.addEventListener('keydown',game.keyDownHandler,false);
   document.addEventListener('keyup',game.keyUpHandler,false);
   document.getElementById('addGravity').addEventListener('click', game.addGravity, false);
   document.getElementById('removeGravity').addEventListener('click', game.removeGravity, false);
-  setInterval(game.run, 20)
+
 
 
 
