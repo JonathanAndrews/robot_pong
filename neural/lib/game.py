@@ -63,7 +63,7 @@ class Game:
             self.collision = False
 
     def update_ball_velocity(self, where_on_paddle):
-        self.ball.velocity[1] = -6 * ( 0.5 + where_on_paddle)
+        self.ball.velocity[1] = -18 * ( 0.5 + where_on_paddle)
 
     def reset_ball_position(self):
         self.ball.reset_position()
