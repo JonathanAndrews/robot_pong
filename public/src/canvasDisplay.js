@@ -6,12 +6,7 @@ const CanvasDisplay = function CanvasDisplay(canvas) {
 };
 
 CanvasDisplay.prototype.setUpStartPage = function setUpStartPage() {
-  this.context.font = '12px Arial';
-  this.context.strokeStyle = 'white';
-  this.context.textAlign = 'center';
-  this.context.lineWidth = 0.5;
-  this.context.fillStyle = 'white';
-  this.context.fillText('Created by: James Rodney, Aidan Faria, Jonathan Andrews and Cameron Whitehead', 640, 580);
+  this.credits();
 
   this.context.font = '22px Arial';
   this.context.strokeStyle = 'white';
@@ -36,8 +31,43 @@ CanvasDisplay.prototype.setUpStartPage = function setUpStartPage() {
       this.context.fillText(x*100 + y*500, x*70+320, y*50+260);
     }
   }
-
 }
+
+CanvasDisplay.prototype.drawGameOverPage = function drawGameOverPage(score) {
+  this.context.font = '22px Arial';
+  this.context.strokeStyle = 'white';
+  this.context.textAlign = 'center';
+  this.context.fillText('R O B O T    F A C E    P O N G', 450, 40);
+
+  this.context.font = '40px Arial';
+  this.context.strokeStyle = 'white';
+  this.context.textAlign = 'center';
+  this.context.fillText('G a m e  O v e r', 450, 250);
+
+  this.context.beginPath();
+  this.context.rect(350, 300, 200, 50);
+  this.context.fillStyle = '#FFFFFF';
+  this.context.fill();
+
+  this.context.font = '30px Arial';
+  this.context.fillStyle = '#123';
+  this.context.textAlign = 'center';
+  this.context.fillText('Play Again', 450, 335);
+
+  this.context.font = '60px Arial';
+  this.context.fillStyle = 'white';
+  this.context.strokeStyle = 'white';
+  this.context.textAlign = 'center';
+  this.context.fillText(`${score[0]}    -    ${score[1]}`, 450, 500);
+
+  document.getElementById('myCanvas').addEventListener('click', function(e) {
+    if(game.gameOver && ((350 < e.offsetX && e.offsetX < 550) && (300 < e.offsetY && e.offsetY < 350))) {
+      location.reload();
+    }
+  })
+
+  this.credits();
+};
 
 CanvasDisplay.prototype.clear = function clear() {
   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -68,6 +98,15 @@ CanvasDisplay.prototype.drawTime = function (interval) {
   this.context.textAlign = 'center';
   this.context.fillText(interval+'s', 800, 30);
 };
+
+CanvasDisplay.prototype.credits = function() {
+  this.context.font = '12px Arial';
+  this.context.strokeStyle = 'white';
+  this.context.textAlign = 'center';
+  this.context.lineWidth = 0.5;
+  this.context.fillStyle = 'white';
+  this.context.fillText('Created by: James Rodney, Aidan Faria, Jonathan Andrews and Cameron Whitehead', 640, 580);
+}
 
 CanvasDisplay.prototype.drawRobot = function () {
   // robot's head

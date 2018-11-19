@@ -30,6 +30,12 @@
 
   var game = new Game(player_paddle, ai_paddle, ball, canvasDisplay, ai_interface);
 
+  let game_runner;
+  setInterval(() => {
+    if (game.gameOver) {
+      clearInterval(game_runner)
+   } 
+  }, 20);
 
   document.getElementById('myCanvas').addEventListener('click', function(e) {
     for (var x = 0; x < 5; x++) {
@@ -37,7 +43,7 @@
         if(game.gameOver && ((x*70+300 < e.offsetX && e.offsetX < x*70+340) && (y*50+240 < e.offsetY && e.offsetY < y*50+270))) {
           game.setDifficulty(x+(5*y));
           game.gameOver = false;
-          setInterval(game.run, 20);
+          game_runner = setInterval(game.run, 20);
         }
       }
     }
