@@ -26,7 +26,7 @@ GAMMA = 0.999
 LEARNING_RATE = 0.01
 STARTING_VERSION = 0
 DATETIME = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-DESCRIPTION = 'Higher Epsilon Decay version'
+DESCRIPTION = 'Higher Epsilon Decay version, normalised inputs'
 DIRECTORY = './trained_networks/' + DATETIME
 
 HYPERPARAMETER_DICT = {
@@ -97,7 +97,8 @@ def main():
         with competitor_graph.as_default():
             competitor.load_network(competitor_session, DIRECTORY + '/version_' + str(new_competitor_version) + '/')
 
-        trainer = Trainer(Game(GAME_LENGTH, GAME_STEP_TIME), champion_session, competitor_session, champion_graph, competitor_graph, memory_bank, champion, competitor, MAX_EPSILON, MIN_EPSILON, EPSILON_DECAY, GAMMA)
+        current_epsilon = trainer.epsilon
+        trainer = Trainer(Game(GAME_LENGTH, GAME_STEP_TIME), champion_session, competitor_session, champion_graph, competitor_graph, memory_bank, champion, competitor, current_epsilon, MIN_EPSILON, EPSILON_DECAY, GAMMA)
 
 
 if __name__ == '__main__':

@@ -9,7 +9,7 @@ class Game:
                  canvas_height=600, paddle_type=Paddle, ball_type=Ball):
         self.canvas = np.array([canvas_width, canvas_height])
         self.left_paddle = paddle_type(290, 0, 10)
-        self.right_paddle = paddle_type(390, 1, 10)
+        self.right_paddle = paddle_type(290, 1, 10)
         self.ball = ball_type(450, 300, 8, 8)
         self.time_remaining = total_game_time
         self.refresh_time = refresh_time
@@ -78,31 +78,31 @@ class Game:
 
     def return_champion_state(self):
         ai_inputs = {
-            'champion-paddle-y': self.right_paddle.position[1],
-            'champion-paddle-dy': self.right_paddle.velocity[1],
-            'competitor-paddle-y': self.left_paddle.position[1],
-            'competitor-paddle-dy': self.left_paddle.velocity[1],
-            'ball-position-x': self.ball.position[0],
-            'ball-position-y': self.ball.position[1],
-            'ball-velocity-dx': self.ball.velocity[0],
-            'ball-velocity-dy': self.ball.velocity[1],
-            'time-remaining': self.time_remaining,
-            'score': self.score[1] - self.score[0]
+            'champion-paddle-y': self.right_paddle.position[1] / self.canvas[1],
+            'champion-paddle-dy': self.right_paddle.velocity[1] / self.right_paddle.speed,
+            'competitor-paddle-y': self.left_paddle.position[1] / self.canvas[1],
+            'competitor-paddle-dy': self.left_paddle.velocity[1] / self.left_paddle.speed,
+            'ball-position-x': self.ball.position[0] / self.canvas[0],
+            'ball-position-y': self.ball.position[1] / self.canvas[1],
+            'ball-velocity-dx': self.ball.velocity[0] / abs(self.ball.velocity[0]),
+            'ball-velocity-dy': self.ball.velocity[1] / abs(self.ball.velocity[0]),
+            'time-remaining': self.time_remaining / self.initial_values[0],
+            'score': (self.score[1] - self.score[0]) / 100
         }
         return ai_inputs
 
     def return_competitor_state(self):
         ai_inputs = {
-            'champion-paddle-y': self.left_paddle.position[1],
-            'champion-paddle-dy': self.left_paddle.velocity[1],
-            'competitor-paddle-y': self.right_paddle.position[1],
-            'competitor-paddle-dy': self.right_paddle.velocity[1],
-            'ball-position-x': self.canvas[0] - self.ball.position[0],
-            'ball-position-y': self.ball.position[1],
-            'ball-velocity-dx': -self.ball.velocity[0],
-            'ball-velocity-dy': self.ball.velocity[1],
-            'time-remaining': self.time_remaining,
-            'score': self.score[0] - self.score[1]
+            'champion-paddle-y': self.left_paddle.position[1] / self.canvas[1],
+            'champion-paddle-dy': self.left_paddle.velocity[1] / self.left_paddle.speed,
+            'competitor-paddle-y': self.right_paddle.position[1] / self.canvas[1],
+            'competitor-paddle-dy': self.right_paddle.velocity[1] / self.right_paddle.speed,
+            'ball-position-x': (self.canvas[0] - self.ball.position[0]) / self.canvas[0],
+            'ball-position-y': self.ball.position[1] / self.canvas[1],
+            'ball-velocity-dx': -self.ball.velocity[0] / abs(self.ball.velocity[0]),
+            'ball-velocity-dy': self.ball.velocity[1] / abs(self.ball.velocity[0]),
+            'time-remaining': self.time_remaining / self.initial_values[0],
+            'score': (self.score[0] - self.score[1]) / 100
         }
         return ai_inputs
 
