@@ -15,7 +15,7 @@ class TrainerTest(unittest.TestCase):
         memoryMock = mock.Mock()
         networkMock = mock.Mock()
         competitorMock = mock.Mock()
-        self.trainer = Trainer(gameMock, championSessionMock, competitorSessionMock, championGraphMock, competitorGraphMock, memoryMock, networkMock, competitorMock, 1, 0, 0.5, 0.9)
+        self.trainer = Trainer(gameMock, championSessionMock, competitorSessionMock, championGraphMock, competitorGraphMock, memoryMock, networkMock, competitorMock, 1, 0, 0.5, 0.9, 0.9, 1.1)
 
     def test_competitor_action(self):
         default_graph_mock = mock.Mock()
@@ -26,17 +26,27 @@ class TrainerTest(unittest.TestCase):
         state = { 'first': 0, 'second': 1 }
         self.assertEqual(self.trainer.competitor_action(state), -1)
 
-    def test_calculate_reward_positive(self):
+    def test_calculate_reward_return(self):
+        self.trainer.game.last_hit = 0
+        self.trainer.game.collision = True
+        state = { 'score': 0 }
+        self.assertEqual(self.trainer.calculate_reward(state), 10)
+    
+    def test_calculate_reward_winner(self):
+        self.trainer.game.last_hit = 1
+        self.trainer.game.collision = False
         state = { 'score': 1 }
-        self.assertEqual(self.trainer.calculate_reward(state), 1.5)
+        self.assertEqual(self.trainer.calculate_reward(state), 10)
 
     def test_calculate_reward_negative(self):
-        state = { 'score': -1 }
-        self.assertEqual(self.trainer.calculate_reward(state), -0.5)
+        self.trainer.game.collision = False
+        state = { 'score': -100 }
+        self.assertEqual(self.trainer.calculate_reward(state), -10)
 
     def test_calculate_reward_neutral(self):
+        self.trainer.game.collision = False
         state = { 'score': 0 }
-        self.assertEqual(self.trainer.calculate_reward(state), 0.5)
+        self.assertEqual(self.trainer.calculate_reward(state), 0)
 
     def test_update_epsilon(self):
         initial_epsilon = self.trainer.epsilon

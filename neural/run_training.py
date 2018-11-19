@@ -23,6 +23,9 @@ MAX_EPSILON = 0.9999
 MIN_EPSILON = 0.01
 EPSILON_DECAY = 0.0001
 GAMMA = 0.999
+RETURNS_DECAY = 0.999999
+WINNERS_GROWTH = 1.0001
+BATCH_SIZE = 128
 LEARNING_RATE = 0.01
 STARTING_VERSION = 0
 DATETIME = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
@@ -41,6 +44,9 @@ HYPERPARAMETER_DICT = {
     'MIN_EPSILON': MIN_EPSILON,
     'EPSILON_DECAY': EPSILON_DECAY,
     'GAMMA': GAMMA,
+    'RETURNS_DECAY' = RETURNS_DECAY,
+    'WINNERS_GROWTH' = WINNERS_GROWTH,
+    'BATCH_SIZE' = BATCH_SIZE,
     'LEARNING_RATE': LEARNING_RATE,
     'STARTING_VERSION': STARTING_VERSION,
     'DATETIME': DATETIME,
@@ -65,7 +71,7 @@ def main():
         competitor = Network(3, 10, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS)
         competitor_session.run(competitor.variable_initializer)
 
-    trainer = Trainer(pong_game, champion_session, competitor_session, champion_graph, competitor_graph, memory_bank, champion, competitor, MAX_EPSILON, MIN_EPSILON, EPSILON_DECAY, GAMMA)
+    trainer = Trainer(pong_game, champion_session, competitor_session, champion_graph, competitor_graph, memory_bank, champion, competitor, MAX_EPSILON, MIN_EPSILON, EPSILON_DECAY, GAMMA, RETURNS_DECAY, WINNERS_GROWTH, batch_size=BATCH_SIZE)
 
     champion.save_network(champion_session, DIRECTORY + '/version_' + str(STARTING_VERSION) + '/')
 
@@ -98,7 +104,9 @@ def main():
             competitor.load_network(competitor_session, DIRECTORY + '/version_' + str(new_competitor_version) + '/')
 
         current_epsilon = trainer.epsilon
-        trainer = Trainer(Game(GAME_LENGTH, GAME_STEP_TIME), champion_session, competitor_session, champion_graph, competitor_graph, memory_bank, champion, competitor, current_epsilon, MIN_EPSILON, EPSILON_DECAY, GAMMA)
+        current_returns_parameter = trainer.returns_parameter
+        current_winners_parameter = trainer.winners_parameter
+        trainer = Trainer(Game(GAME_LENGTH, GAME_STEP_TIME), champion_session, competitor_session, champion_graph, competitor_graph, memory_bank, champion, competitor, current_epsilon, MIN_EPSILON, EPSILON_DECAY, GAMMA, RETURNS_DECAY, WINNERS_GROWTH, returns_parameter=current_returns_parameter, winners_parameter=current_winners_parameter, batch_size=BATCH_SIZE)
 
 
 if __name__ == '__main__':
