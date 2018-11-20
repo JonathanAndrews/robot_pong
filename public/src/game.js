@@ -1,4 +1,4 @@
-const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 300) {
+const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 6000) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
@@ -11,6 +11,7 @@ const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInter
   this.gameOver = true;
   this.gravity = false;
   this.aiInterface = aiInterface;
+  this.current_model = null
   that = this;
 };
 
@@ -25,7 +26,7 @@ Game.prototype.checkPaddleCollision = function checkPaddleCollision() {
 Game.prototype.run = function run() {
   if (that.intervalRemaining > 0) {
     ai_inputs = that.getAIInputs();
-    move = that.aiInterface.getMove(ai_inputs);
+    move = that.aiInterface.getMove(that.current_model, ai_inputs);
     this.canvasDisplay.clear();
     this.canvasDisplay.drawLines();
     this.canvasDisplay.drawRobot();
@@ -52,9 +53,9 @@ Game.prototype.run = function run() {
 Game.prototype.getAIInputs = function getAIInputs() {
   return {
      'user-paddle-y': this.playerPaddle.yPosition,
-     'user-paddle-dy': this.playerPaddle.SPEED,
+     // 'user-paddle-dy': this.playerPaddle.SPEED,
      'comp-paddle-y': this.aiPaddle.yPosition,
-     'comp-paddle-dy': this.aiPaddle.SPEED,
+     // 'comp-paddle-dy': this.aiPaddle.SPEED,
      'ball-position-x': this.ball.position.x,
      'ball-position-y': this.ball.position.y,
      'ball-velocity-dx': this.ball.velocity.dx,
@@ -64,8 +65,9 @@ Game.prototype.getAIInputs = function getAIInputs() {
           }
 };
 
-Game.prototype.setDifficulty = function (level) {
-  // this.aiInterface.getDifficulty(level);
+Game.prototype.setDifficulty = async function(level) {
+  this.aiInterface.current_model = await this.aiInterface.fetchModel(level)
+  this.current_model = level
 };
 
 Game.prototype.addGravity = function addGravity() {
