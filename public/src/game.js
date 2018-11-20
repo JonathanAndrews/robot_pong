@@ -52,14 +52,14 @@ Game.prototype.run = function run() {
 Game.prototype.getAIInputs = function getAIInputs() {
   return {
      'user-paddle-y': this.playerPaddle.yPosition,
-     'user-paddle-dy': this.playerPaddle.SPEED,
+     // 'user-paddle-dy': this.playerPaddle.SPEED,
      'comp-paddle-y': this.aiPaddle.yPosition,
-     'comp-paddle-dy': this.aiPaddle.SPEED,
+     // 'comp-paddle-dy': this.aiPaddle.SPEED,
      'ball-position-x': this.ball.position.x,
      'ball-position-y': this.ball.position.y,
      'ball-velocity-dx': this.ball.velocity.dx,
      'ball-velocity-dy': this.ball.velocity.dy,
-     'time-remaining': this.intervalRemaining,
+     // 'time-remaining': this.intervalRemaining,
      'score': (this.score[0] - this.score[1]),
           }
 };
