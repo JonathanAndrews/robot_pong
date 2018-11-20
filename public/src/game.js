@@ -1,4 +1,4 @@
-const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 3000) {
+const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 6000) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
@@ -52,9 +52,9 @@ Game.prototype.run = function run() {
 Game.prototype.getAIInputs = function getAIInputs() {
   return {
      'user-paddle-y': this.playerPaddle.yPosition,
-     'user-paddle-dy': this.playerPaddle.SPEED,
+     // 'user-paddle-dy': this.playerPaddle.SPEED,
      'comp-paddle-y': this.aiPaddle.yPosition,
-     'comp-paddle-dy': this.aiPaddle.SPEED,
+     // 'comp-paddle-dy': this.aiPaddle.SPEED,
      'ball-position-x': this.ball.position.x,
      'ball-position-y': this.ball.position.y,
      'ball-velocity-dx': this.ball.velocity.dx,
@@ -65,7 +65,7 @@ Game.prototype.getAIInputs = function getAIInputs() {
 };
 
 Game.prototype.setDifficulty = function (level) {
-  // this.aiInterface.getDifficulty(level);
+  this.aiInterface.current_model = await this.aiInterface.fetchModel(level)
 };
 
 Game.prototype.addGravity = function addGravity() {
