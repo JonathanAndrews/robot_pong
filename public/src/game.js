@@ -26,7 +26,6 @@ Game.prototype.checkPaddleCollision = function checkPaddleCollision() {
 Game.prototype.run = function run() {
   if (that.intervalRemaining > 0) {
     ai_inputs = that.getAIInputs();
-    console.log(that.current_model)
     move = that.aiInterface.getMove(that.current_model, ai_inputs);
     this.canvasDisplay.clear();
     this.canvasDisplay.drawLines();
@@ -67,10 +66,8 @@ Game.prototype.getAIInputs = function getAIInputs() {
 };
 
 Game.prototype.setDifficulty = async function(level) {
-  console.log(level)
   this.aiInterface.current_model = await this.aiInterface.fetchModel(level)
   this.current_model = level
-  console.log(this.current_model);
 };
 
 Game.prototype.addGravity = function addGravity() {

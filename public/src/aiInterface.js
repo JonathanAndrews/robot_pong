@@ -5,14 +5,11 @@ const AiInterface = function AiInterface() {
 
 AiInterface.prototype.fetchModel = async function fetchModel(version) {
   if (!this.model[version]) {
-    console.log('THIS HAS BEEN CALLED')
     this.model[version] = await tf.loadModel(this.MODELURL + version);
-    console.log(version)
   }
 }
 
 AiInterface.prototype.getMove = function getMove(version, hash_input) {
-  console.log(version)
   let ai_input_array = this._ai_input_array(hash_input);
   let move_rewards = this._make_predictions(version, ai_input_array);
   return this._chooses_best_move(move_rewards);
@@ -26,8 +23,6 @@ AiInterface.prototype._ai_input_array = function _ai_input_array(hash_input) {
 }
 
 AiInterface.prototype._make_predictions = function _make_predictions(version, inputs) {
-  console.log(inputs)
-  console.log(version)
   let tf_ai_inputs = tf.tensor2d([inputs]);
   return this.model[version].predict(tf_ai_inputs).dataSync();
 }
