@@ -59,7 +59,7 @@ Game.prototype.getAIInputs = function getAIInputs() {
      'ball-position-y': this.ball.position.y,
      'ball-velocity-dx': this.ball.velocity.dx,
      'ball-velocity-dy': this.ball.velocity.dy,
-     // 'time-remaining': this.intervalRemaining,
+     'time-remaining': this.intervalRemaining,
      'score': (this.score[0] - this.score[1]),
           }
 };
