@@ -10,8 +10,8 @@ class Network:
     '''The neural network. There are no ifs no buts just a neural network'''
 
     def __init__(self, no_actions, no_inputs, hidden_layer_size=100, no_hidden_layers=3,
-                 learning_rate=0.001, keep_prob=0.5, activation_function='tanh',
-                 loss_function='mse', maximum_saves=10000):
+                 learning_rate=0.001, keep_prob=0.5, activation_function='relu',
+                 loss_function='binary_crossentropy', maximum_saves=10000):
         self.no_actions = no_actions
         self.no_inputs = no_inputs
         self.hidden_layer_size = hidden_layer_size
@@ -35,11 +35,12 @@ class Network:
         optimizer = Adam(lr=self.learning_rate)
         self.model.compile(loss=self.loss_function, optimizer=optimizer)
 
-    def single_prediction(self, inputs):
-        return self.model.predict(inputs, verbose=0)
-
-    def batch_prediction(self, inputs):
-        return self.model.predict(inputs, verbose=0)
+    def batch_prediction(self, inputs, display=0):
+        output = self.model.predict_on_batch(inputs)
+        if display:
+            print('OUTPUT')
+            print(output)
+        return output
 
     def batch_train(self, inputs, outputs):
         self.model.fit(inputs, outputs, verbose=0)
