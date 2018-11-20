@@ -70,7 +70,7 @@ CanvasDisplay.prototype.drawGameOverPage = function drawGameOverPage(score) {
       game.gameOver = true
       game.intervalRemaining = game.totalIntervals
       canvasDisplay.gameOverPage = false
-      game.score = [0, 0]
+      game.score = [0, 0];
     }
   })
 
