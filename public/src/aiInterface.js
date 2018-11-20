@@ -1,5 +1,4 @@
-const AiInterface = function AiInterface(network) {
-  this.network = network
+const AiInterface = function AiInterface() {
   this.MODELURL = 'https://burninglake.herokuapp.com/model/version_'
   this.model = {};
   this.current_model = null;
