@@ -1,36 +1,34 @@
 const AiInterface = function AiInterface(network) {
   this.network = network
+  this.MODELURL = 'https://burninglake.herokuapp.com/model'
+  this.model = 0;
+  this.fetchModel();
 }
 
-let model = 0;
-
-const modelURL = 'https://burninglake.herokuapp.com/model'
-
-AiInterface.prototype.fetchModel = async function fetchModel(modelURL) {
-  if (model === 0) model = await tf.loadModel(modelURL);
+AiInterface.prototype.fetchModel = async function fetchModel() {
+  if (this.model === 0) this.model = await tf.loadModel(this.MODELURL);
 }
-
 
 AiInterface.prototype.getMove = function getMove(hash_input) {
-  this.fetchModel(modelURL);
-  // console.log(hash_input);
-  let keys = Object.keys(hash_input)
-  let ai_input_array = keys.map(function(v) { return hash_input[v]})
-  // console.log(keys);
-  // console.log(ai_inputs);
-  x = tf.tensor2d([ai_input_array])
-  // console.log(x);
-  y = model.predict(x).dataSync();
-  console.log(y);
-
-
-  // //
-  //     options = [-1, 0, 1]
-  // return options[Math.floor(Math.random() * options.length)]
+  let ai_input_array = this._ai_input_array(hash_input);
+  let move_rewards = this._make_predictions(ai_input_array);
+  return this._chooses_best_move(move_rewards);
 }
 
-AiInterface.prototype.getComputedMove = function getComputedMove(hash_input) {
-  this.network.computeMove(hash_input)
+AiInterface.prototype._ai_input_array = function _ai_input_array(hash_input) {
+  let keys = Object.keys(hash_input);
+  return keys.map(function(k) { return hash_input[k]});
+}
+
+AiInterface.prototype._make_predictions = function _make_predictions(inputs) {
+  let tf_ai_inputs = tf.tensor2d([inputs]);
+  return this.model.predict(tf_ai_inputs).dataSync();
+}
+
+AiInterface.prototype._chooses_best_move = function _chooses_best_move(inputs) {
+  let index_of_move = inputs.indexOf(Math.max(...inputs)) ;
+  let move = index_of_move - 1;
+  return move;
 }
 
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
