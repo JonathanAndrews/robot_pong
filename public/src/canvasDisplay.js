@@ -3,6 +3,7 @@ const CanvasDisplay = function CanvasDisplay(canvas) {
   this.width = canvas.width;
   this.height = canvas.height;
   this.context = this.canvas.getContext('2d');
+  this.gameOverPage = false;
 };
 
 CanvasDisplay.prototype.setUpStartPage = function setUpStartPage() {
@@ -34,6 +35,7 @@ CanvasDisplay.prototype.setUpStartPage = function setUpStartPage() {
 }
 
 CanvasDisplay.prototype.drawGameOverPage = function drawGameOverPage(score) {
+  this.gameOverPage = true
   this.context.font = '22px Arial';
   this.context.strokeStyle = 'white';
   this.context.textAlign = 'center';
@@ -62,7 +64,13 @@ CanvasDisplay.prototype.drawGameOverPage = function drawGameOverPage(score) {
 
   document.getElementById('myCanvas').addEventListener('click', function(e) {
     if(game.gameOver && ((350 < e.offsetX && e.offsetX < 550) && (300 < e.offsetY && e.offsetY < 350))) {
-      location.reload();
+      canvasDisplay.gameOverPage = false
+      canvasDisplay.clear()
+      canvasDisplay.setUpStartPage()
+      game.gameOver = true
+      game.intervalRemaining = game.totalIntervals
+      canvasDisplay.gameOverPage = false
+      game.score = [0, 0]
     }
   })
 
