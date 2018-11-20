@@ -10,7 +10,7 @@ class Network:
     '''The neural network. There are no ifs no buts just a neural network'''
 
     def __init__(self, no_actions, no_inputs, hidden_layer_size=100, no_hidden_layers=3,
-                 learning_rate=0.001, keep_prob=0.9, activation_function='tanh',
+                 learning_rate=0.001, keep_prob=0.5, activation_function='tanh',
                  loss_function='mse', maximum_saves=10000):
         self.no_actions = no_actions
         self.no_inputs = no_inputs

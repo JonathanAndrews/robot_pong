@@ -73,17 +73,18 @@ class Trainer:
             done = self.game.game_over
             if done:
                 return champion_state['score']
-                break
 
     def champion_action(self, state):
         if random.random() < self.epsilon:
             return random.choice(self.game.POSSIBLE_MOVES)
         else:
             state_values = np.array([[value for value in state.values()]])
-            return np.argmax(self.champion.batch_prediction(state_values)) - 1
+            print(self.champion.single_prediction(state_values))
+            return np.argmax(self.champion.single_prediction(state_values)) - 1
 
     def competitor_action(self, state):
         state_values = np.array([[value for value in state.values()]])
+        print('competitor chooses ' + str(np.argmax(self.champion.single_prediction(state_values))))
         return np.argmax(self.competitor.single_prediction(state_values)) - 1
 
     def calculate_reward(self, state):
@@ -93,14 +94,14 @@ class Trainer:
             self.current_score = state['score']
             if self.game.last_hit:
                 print('Down the Line! (winner)')
-                output += (10 * self.winners_parameter)
+                output += (30 * self.winners_parameter)
                 self.winners_parameter *= self.winners_growth
         elif state['score'] < self.current_score:
             print('CONCEDED!')
             self.current_score = state['score']
             output += -10
         if self.game.collision:
-            output += (10 * self.returns_parameter)
+            output += (20 * self.returns_parameter)
             self.returns_parameter *= self.returns_decay
         if output:
             print('Champion rewarded: ' + str(output))
@@ -119,13 +120,17 @@ class Trainer:
 
     def train_model(self):
         batch = self.memory.sample_memory(self.batch_size)
+        # print(batch)
         states = np.array([entry[0] for entry in batch])
+        # print(states)
         new_states = [entry[1] for entry in batch]
         new_states = [[0] * self.champion.no_inputs if v is None else v for v in new_states]
         new_states = np.array(new_states)
+        # print(new_states)
 
         reward_predictions, next_reward_predictions = self.reward_predictions(states, new_states)
 
+        # print(reward_predictions, next_reward_predictions)
         champion_input_array = np.zeros([self.batch_size, self.champion.no_inputs])
         champion_output_array = np.zeros([self.batch_size, self.champion.no_actions])
 
@@ -141,6 +146,7 @@ class Trainer:
             champion_input_array[index] = state
             champion_output_array[index] = current_reward
 
+        # print(champion_input_array, champion_output_array)
         self.champion.batch_train(champion_input_array, champion_output_array)
 
     def reward_predictions(self, states, new_states):

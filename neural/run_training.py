@@ -11,24 +11,24 @@ from lib.game import Game
 from lib.memory import Memory
 from lib.trainer import Trainer
 
-HIDDEN_LAYER_SIZE = 100
-NO_HIDDEN_LAYERS = 4
+HIDDEN_LAYER_SIZE = 128
+NO_HIDDEN_LAYERS = 8
 GAME_LENGTH = 120000
 GAME_STEP_TIME = 20
-GAMES_PER_TRAINING_SESSION = 10
-NUMBER_OF_TRAINING_SESSIONS = 90
-MEMORY_SIZE = 60000
+GAMES_PER_TRAINING_SESSION = 1
+NUMBER_OF_TRAINING_SESSIONS = 24
+MEMORY_SIZE = 64000
 MAX_EPSILON = 0.9999
-MIN_EPSILON = 0.0001
-EPSILON_DECAY = 0.0000017
-GAMMA = 0.999
+MIN_EPSILON = 0.001
+EPSILON_DECAY = 0.00017
+GAMMA = 0.7
 RETURNS_DECAY = 0.95
-WINNERS_GROWTH = 1.1
-BATCH_SIZE = 1024
-LEARNING_RATE = 0.01
+WINNERS_GROWTH = 1.3
+BATCH_SIZE = 512
+LEARNING_RATE = 0.1
 STARTING_VERSION = 0
 DATETIME = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-DESCRIPTION = 'Four layers overnight version'
+DESCRIPTION = 'Huge network version'
 DIRECTORY = './trained_networks/' + DATETIME
 
 HYPERPARAMETER_DICT = {
@@ -58,8 +58,8 @@ def main():
     memory_bank = Memory(MEMORY_SIZE)
     pong_game = Game(GAME_LENGTH, GAME_STEP_TIME)
 
-    champion = Network(3, 10, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS, learning_rate=LEARNING_RATE)
-    competitor = Network(3, 10, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS)
+    champion = Network(3, 6, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS, learning_rate=LEARNING_RATE)
+    competitor = Network(3, 6, hidden_layer_size=HIDDEN_LAYER_SIZE, no_hidden_layers=NO_HIDDEN_LAYERS)
 
     trainer = Trainer(pong_game, memory_bank, champion, competitor, MAX_EPSILON, MIN_EPSILON, EPSILON_DECAY, GAMMA, RETURNS_DECAY, WINNERS_GROWTH, batch_size=BATCH_SIZE)
 
