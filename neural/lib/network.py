@@ -1,7 +1,10 @@
 import keras
+import tensorflowjs as tfjs
 from keras.models import Sequential, load_model
 from keras.layers import Dense, InputLayer, Dropout
 from keras.optimizers import Adam
+
+
 
 class Network:
     '''The neural network. There are no ifs no buts just a neural network'''
@@ -46,3 +49,4 @@ class Network:
 
     def save_network(self, filename):
         self.model.save(filename + '.h5')
+        tfjs.converters.save_keras_model(self.model, filename + '/javascript/')
