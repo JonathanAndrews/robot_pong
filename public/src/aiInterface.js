@@ -1,12 +1,11 @@
-const AiInterface = function AiInterface(network) {
-  this.network = network
-  this.MODELURL = 'https://burninglake.herokuapp.com/model'
-  this.model = 0;
+const AiInterface = function AiInterface() {
+  this.MODELURL = 'https://burninglake.herokuapp.com/model';
+  this.model = false;
   this.fetchModel();
 }
 
 AiInterface.prototype.fetchModel = async function fetchModel() {
-  if (this.model === 0) this.model = await tf.loadModel(this.MODELURL);
+  if (!this.model) this.model = await tf.loadModel(this.MODELURL);
 }
 
 AiInterface.prototype.getMove = function getMove(hash_input) {
