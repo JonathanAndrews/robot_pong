@@ -65,7 +65,7 @@ Game.prototype.getAIInputs = function getAIInputs() {
 };
 
 Game.prototype.setDifficulty = function (level) {
-  // this.aiInterface.getDifficulty(level);
+  this.aiInterface.current_model = await this.aiInterface.fetchModel(level)
 };
 
 Game.prototype.addGravity = function addGravity() {
