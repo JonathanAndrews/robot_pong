@@ -1,30 +1,30 @@
 const AiInterface = function AiInterface() {
   this.MODELURL = 'https://burninglake.herokuapp.com/model/version_'
   this.model = {};
-  this.current_model = null;
 }
 
 AiInterface.prototype.fetchModel = async function fetchModel(version) {
-  if (!this.model.version) {
-    this.model.version = await tf.loadModel(this.MODELURL + version);
+  if (!this.model[version]) {
+    this.model[version] = await tf.loadModel(this.MODELURL + version);
   }
-  this.current_model = this.model.version
 }
 
-AiInterface.prototype.getMove = function getMove(hash_input) {
+AiInterface.prototype.getMove = function getMove(version, hash_input) {
   let ai_input_array = this._ai_input_array(hash_input);
-  let move_rewards = this._make_predictions(ai_input_array);
+  let move_rewards = this._make_predictions(version, ai_input_array);
   return this._chooses_best_move(move_rewards);
 }
 
 AiInterface.prototype._ai_input_array = function _ai_input_array(hash_input) {
   let keys = Object.keys(hash_input);
-  return keys.map(function(k) { return hash_input[k] });
+  a = keys.map(function(k) { return hash_input[k] });
+  return a
+
 }
 
-AiInterface.prototype._make_predictions = function _make_predictions(inputs) {
+AiInterface.prototype._make_predictions = function _make_predictions(version, inputs) {
   let tf_ai_inputs = tf.tensor2d([inputs]);
-  return this.current_model.predict(tf_ai_inputs).dataSync();
+  return this.model[version].predict(tf_ai_inputs).dataSync();
 }
 
 AiInterface.prototype._chooses_best_move = function _chooses_best_move(inputs) {

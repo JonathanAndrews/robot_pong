@@ -11,6 +11,7 @@ const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInter
   this.gameOver = true;
   this.gravity = false;
   this.aiInterface = aiInterface;
+  this.current_model = null
   that = this;
 };
 
@@ -25,7 +26,7 @@ Game.prototype.checkPaddleCollision = function checkPaddleCollision() {
 Game.prototype.run = function run() {
   if (that.intervalRemaining > 0) {
     ai_inputs = that.getAIInputs();
-    move = that.aiInterface.getMove(ai_inputs);
+    move = that.aiInterface.getMove(that.current_model, ai_inputs);
     this.canvasDisplay.clear();
     this.canvasDisplay.drawLines();
     this.canvasDisplay.drawRobot();
@@ -64,8 +65,9 @@ Game.prototype.getAIInputs = function getAIInputs() {
           }
 };
 
-Game.prototype.setDifficulty = function (level) {
+Game.prototype.setDifficulty = async function(level) {
   this.aiInterface.current_model = await this.aiInterface.fetchModel(level)
+  this.current_model = level
 };
 
 Game.prototype.addGravity = function addGravity() {
