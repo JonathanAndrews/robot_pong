@@ -42,7 +42,7 @@ describe('Paddle', () => {
   describe('moveUp', () => {
     it('increases the yPosition when passed true statement', () => {
       const paddle = new Paddle(stubCanvas);
-      velocity = paddle.SPEED
+      velocity = paddle.SPEED;
       paddle.moveUp(true);
       expect(paddle.yPosition).toEqual(10 - velocity);
     });
@@ -64,7 +64,7 @@ describe('Paddle', () => {
   describe('moveDown', () => {
     it('decreases the yPosition when passed true statement', () => {
       const paddle = new Paddle(stubCanvas);
-      velocity = paddle.SPEED
+      velocity = paddle.SPEED;
       paddle.moveDown(true);
       expect(paddle.yPosition).toEqual(10 + velocity);
     });

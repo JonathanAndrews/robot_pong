@@ -49,7 +49,8 @@ describe('Game', () => {
     };
     stubAiInterface = {
       getMove: jest.fn(),
-    }
+      fetchModel: jest.fn(),
+    };
     pongGame = new Game(stubPlayerPaddle, stubAiPaddle, stubBall, stubCanvas, stubAiInterface, 120000);
   });
 
@@ -70,8 +71,15 @@ describe('Game', () => {
       pongGame.run();
       expect(pongGame.ball.accelerationAct).toHaveBeenCalledTimes(1);
     });
+  });
 
-  })
+  describe('setDifficulty', () => {
+    it('should set current_model to level', () => {
+      pongGame.aiInterface.fetchModel = jest.fn();
+      pongGame.setDifficulty(3);
+      expect(pongGame.aiInterface.fetchModel).toHaveBeenCalledTimes(1);
+    });
+  });
 
   describe('checkPaddleCollision', () => {
     it('should call paddleCollision method if collision with PlayerPaddle', () => {
@@ -95,21 +103,21 @@ describe('Game', () => {
 
   describe('getAIInputs', () => {
     it('should return a hash', () => {
-      expect(pongGame.getAIInputs()).toBeInstanceOf(Object)
+      expect(pongGame.getAIInputs()).toBeInstanceOf(Object);
     });
 
     it('returns expected hash', () => {
-      let ai_inputs = pongGame.getAIInputs()
-      expect(ai_inputs['user-paddle-y']).toEqual(420)
-      expect(ai_inputs['user-paddle-dy']).toEqual(1.5)
-      expect(ai_inputs['comp-paddle-y']).toEqual(420)
-      expect(ai_inputs['comp-paddle-dy']).toEqual(1.5)
-      expect(ai_inputs['ball-position-x']).toEqual(450)
-      expect(ai_inputs['ball-position-y']).toEqual(300)
-      expect(ai_inputs['ball-velocity-dx']).toEqual(2.2)
-      expect(ai_inputs['ball-velocity-dy']).toEqual(2)
-      expect(ai_inputs['time-remaining']).toEqual(120000)
-      expect(ai_inputs['score']).toEqual(0)
+      const ai_inputs = pongGame.getAIInputs();
+      expect(ai_inputs['user-paddle-y']).toEqual(420);
+      // expect(ai_inputs['user-paddle-dy']).toEqual(1.5);
+      expect(ai_inputs['comp-paddle-y']).toEqual(420);
+      // expect(ai_inputs['comp-paddle-dy']).toEqual(1.5);
+      expect(ai_inputs['ball-position-x']).toEqual(450);
+      expect(ai_inputs['ball-position-y']).toEqual(300);
+      expect(ai_inputs['ball-velocity-dx']).toEqual(2.2);
+      expect(ai_inputs['ball-velocity-dy']).toEqual(2);
+      expect(ai_inputs['time-remaining']).toEqual(120000);
+      expect(ai_inputs.score).toEqual(0);
     });
   });
 
@@ -219,14 +227,14 @@ describe('Game', () => {
       expect(pongGame.gravity).toEqual(false);
       pongGame.addGravity();
       expect(pongGame.gravity).toEqual(true);
-    })
-  })
+    });
+  });
 
   describe('removeGravity', () => {
     it('sets game gravity to false', () => {
       pongGame.gravity = true;
       pongGame.removeGravity();
       expect(pongGame.gravity).toEqual(false);
-    })
-  })
+    });
+  });
 });

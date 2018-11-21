@@ -7,10 +7,10 @@ describe('AI Interface', () => {
     aiInterface = new AiInterface();
   });
 
-    describe('getMove', () => {
-        it('takes a hash and returns an Integer', () => {
-            let inputs = { some: "hash" };
-            expect((aiInterface.getMove(inputs) === (1 || 0 || -1))).toTrue;
-        })
-    })
-})
+  describe('getMove', () => {
+    it('takes a hash and returns an Integer', () => {
+      const inputs = { some: 'hash' };
+      expect((aiInterface.getMove(inputs) === (1 || 0 || -1))).toTrue;
+    });
+  });
+});
