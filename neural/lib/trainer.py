@@ -92,8 +92,6 @@ class Trainer:
 
     def calculate_reward(self, state):
         output = 0
-        if state['champion-paddle-y'] <= state['ball-position-y'] <= state['champion-paddle-y'] + 60:
-            output += 1
         if state['score'] > self.current_score:
             print('GOAL!')
             self.current_score = state['score']
@@ -104,11 +102,11 @@ class Trainer:
         elif state['score'] < self.current_score:
             print('CONCEDED!')
             self.current_score = state['score']
-            output += -10
+            output += -5
         if self.game.collision:
             output += (5 * self.returns_parameter)
             self.returns_parameter *= self.returns_decay
-        if abs(output) > 1:
+        if output:
             print('Champion rewarded: ' + str(output))
         return output
 
