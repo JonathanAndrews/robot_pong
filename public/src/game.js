@@ -53,16 +53,16 @@ Game.prototype.run = function run() {
 
 Game.prototype.getAIInputs = function getAIInputs() {
   return {
+     'comp-paddle-y': this.aiPaddle.yPosition / this.canvasDisplay.height,
      'user-paddle-y': this.playerPaddle.yPosition / this.canvasDisplay.height,
      // 'user-paddle-dy': this.playerPaddle.SPEED,
-     'comp-paddle-y': this.aiPaddle.yPosition / this.canvasDisplay.height,
      // 'comp-paddle-dy': this.aiPaddle.SPEED,
      'ball-position-x': this.ball.position.x / this.canvasDisplay.width,
      'ball-position-y': this.ball.position.y / this.canvasDisplay.height,
      'ball-velocity-dx': this.ball.velocity.dx / Math.abs(this.ball.velocity.dx),
      'ball-velocity-dy': this.ball.velocity.dy / Math.abs(this.ball.velocity.dx),
      // 'time-remaining': this.intervalRemaining,
-     'score': (this.score[0] - this.score[1]) / 100,
+     'score': (this.score[1] - this.score[0]) / 100,
           }
 };
 
