@@ -103,8 +103,11 @@ class Trainer:
             print('CONCEDED!')
             self.current_score = state['score']
             output += -5
-        if state['champion-paddle-y'] <= state['ball-position-y'] <= state['champion-paddle-y'] + 60:
-            output += 0.1
+        if state['champion-paddle-y'] <= state['ball-position-y'] <= state['champion-paddle-y'] + 0.1:
+            output += 0.8
+        else:
+            output -= 0.8
+            print('ball not level with paddle')
         if self.game.collision:
             output += (5 * self.returns_parameter)
             self.returns_parameter *= self.returns_decay
