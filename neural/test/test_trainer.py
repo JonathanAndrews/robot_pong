@@ -8,20 +8,12 @@ class TrainerTest(unittest.TestCase):
 
     def setUp(self):
         gameMock = mock.Mock()
-        championSessionMock = mock.Mock()
-        competitorSessionMock = mock.Mock()
-        championGraphMock = mock.Mock()
-        competitorGraphMock = mock.Mock()
         memoryMock = mock.Mock()
         networkMock = mock.Mock()
         competitorMock = mock.Mock()
-        self.trainer = Trainer(gameMock, championSessionMock, competitorSessionMock, championGraphMock, competitorGraphMock, memoryMock, networkMock, competitorMock, 1, 0, 0.5, 0.9, 0.9, 1.1)
+        self.trainer = Trainer(gameMock, memoryMock, networkMock, competitorMock, 1, 0, 0.5, 0.9, 0.9, 1.1)
 
     def test_competitor_action(self):
-        default_graph_mock = mock.Mock()
-        self.trainer.competitor_graph.as_default.return_value = default_graph_mock
-        default_graph_mock.__enter__ = mock.Mock(return_value=(mock.Mock(), None))
-        default_graph_mock.__exit__ = mock.Mock(return_value=(mock.Mock(), None))
         self.trainer.competitor.single_prediction.return_value = [1,0,0]
         state = { 'first': 0, 'second': 1 }
         self.assertEqual(self.trainer.competitor_action(state), -1)
@@ -30,13 +22,13 @@ class TrainerTest(unittest.TestCase):
         self.trainer.game.last_hit = 0
         self.trainer.game.collision = True
         state = { 'score': 0 }
-        self.assertEqual(self.trainer.calculate_reward(state), 10)
-    
+        self.assertEqual(self.trainer.calculate_reward(state), 20)
+
     def test_calculate_reward_winner(self):
         self.trainer.game.last_hit = 1
         self.trainer.game.collision = False
         state = { 'score': 1 }
-        self.assertEqual(self.trainer.calculate_reward(state), 10)
+        self.assertEqual(self.trainer.calculate_reward(state), 30)
 
     def test_calculate_reward_negative(self):
         self.trainer.game.collision = False
@@ -76,10 +68,6 @@ class TrainerTest(unittest.TestCase):
         self.assertTrue(self.trainer.champion_action({ 'x': 1 }) in self.trainer.game.POSSIBLE_MOVES)
 
     def test_champion_action_prediction(self):
-        champion_graph_mock = mock.Mock()
-        champion_graph_mock.__enter__ = mock.Mock(return_value=(mock.Mock(), None))
-        champion_graph_mock.__exit__ = mock.Mock(return_value=(mock.Mock(), None))
-        self.trainer.champion_graph.as_default.return_value = champion_graph_mock
         self.trainer.epsilon = 0
         self.trainer.champion.single_prediction.return_value = np.array([1, 0, 0])
         self.trainer.champion_action({ 'x':1, 'y':2, 'z':3 })
@@ -89,17 +77,27 @@ class TrainerTest(unittest.TestCase):
         self.trainer.train_model = lambda : None
         self.trainer.update_epsilon =  lambda : None
         self.trainer.add_sample = lambda a,b,c,d,e : None
-        self.trainer.return_champion_state = lambda : { 'x':1, 'y':2, 'z':3 }
+        self.trainer.game.return_champion_state = lambda : { 'x':1, 'y':2, 'z':3 }
+        self.trainer.game.return_competitor_state = lambda : None
         self.trainer.calculate_reward = lambda x: None
         self.trainer.champion_action = lambda x : None
         self.trainer.competitor_action = lambda x : None
         self.trainer.game.reset_game = lambda : None
         self.trainer.game.game_over = True
         self.trainer.game.step = lambda a,b : None
-        self.trainer.game.return_competitor_state = lambda : None
-
         self.trainer.run_game()
         self.assertEqual([self.trainer.total_steps, self.trainer.current_score], [1,0])
+
+    def test_test_game(self):
+        self.trainer.train_model = lambda : None
+        self.trainer.game.return_champion_state = lambda : { 'x':1, 'y':2, 'z':3, 'score':1 }
+        self.trainer.game.return_competitor_state = lambda : None
+        self.trainer.champion_action = lambda x : None
+        self.trainer.competitor_action = lambda x : None
+        self.trainer.game.reset_game = lambda : None
+        self.trainer.game.game_over = True
+        self.trainer.game.step = lambda a,b : None
+        self.assertEqual(self.trainer.test_game(), 1)
 
     def test_train_model(self):
         self.trainer.memory.sample_memory.return_value = [[1,2,3,0]]

@@ -1,14 +1,17 @@
 import keras
+import tensorflowjs as tfjs
 from keras.models import Sequential, load_model
 from keras.layers import Dense, InputLayer, Dropout
 from keras.optimizers import Adam
+
+
 
 class Network:
     '''The neural network. There are no ifs no buts just a neural network'''
 
     def __init__(self, no_actions, no_inputs, hidden_layer_size=100, no_hidden_layers=3,
-                 learning_rate=0.001, keep_prob=0.9, activation_function='tanh',
-                 loss_function='mse', maximum_saves=10000):
+                 learning_rate=0.001, keep_prob=0.95, activation_function='relu',
+                 loss_function='binary_crossentropy', maximum_saves=10000):
         self.no_actions = no_actions
         self.no_inputs = no_inputs
         self.hidden_layer_size = hidden_layer_size
@@ -30,13 +33,14 @@ class Network:
             self.model.add(Dropout(1 - self.keep_prob))
         self.model.add(Dense(self.no_actions, activation='linear'))
         optimizer = Adam(lr=self.learning_rate)
-        self.model.compile(loss=self.loss_function, optimizer=optimizer)
+        self.model.compile(loss=self.loss_function, optimizer=optimizer, metrics=['mae', 'acc'])
 
-    def single_prediction(self, inputs):
-        return self.model.predict(inputs, verbose=0)
-
-    def batch_prediction(self, inputs):
-        return self.model.predict(inputs, verbose=0)
+    def batch_prediction(self, inputs, display=0):
+        output = self.model.predict_on_batch(inputs)
+        if display:
+            print('OUTPUT')
+            print(output)
+        return output
 
     def batch_train(self, inputs, outputs):
         self.model.fit(inputs, outputs, verbose=0)
@@ -46,3 +50,4 @@ class Network:
 
     def save_network(self, filename):
         self.model.save(filename + '.h5')
+        tfjs.converters.save_keras_model(self.model, filename + '/javascript/')

@@ -75,6 +75,7 @@ class Game:
 
     def reset_ball_position(self):
         self.ball.reset_position()
+        self.ball.velocity[0] *= -1
 
     def check_for_goals(self):
         self.score += np.array(self.ball.check_for_goals())
@@ -87,14 +88,14 @@ class Game:
     def return_champion_state(self):
         ai_inputs = {
             'champion-paddle-y': self.right_paddle.position[1] / self.canvas[1],
-            'champion-paddle-dy': self.right_paddle.velocity[1] / self.right_paddle.speed,
+            # 'champion-paddle-dy': self.right_paddle.velocity[1] / self.right_paddle.speed,
             'competitor-paddle-y': self.left_paddle.position[1] / self.canvas[1],
-            'competitor-paddle-dy': self.left_paddle.velocity[1] / self.left_paddle.speed,
+            # 'competitor-paddle-dy': self.left_paddle.velocity[1] / self.left_paddle.speed,
             'ball-position-x': self.ball.position[0] / self.canvas[0],
             'ball-position-y': self.ball.position[1] / self.canvas[1],
             'ball-velocity-dx': self.ball.velocity[0] / abs(self.ball.velocity[0]),
             'ball-velocity-dy': self.ball.velocity[1] / abs(self.ball.velocity[0]),
-            'time-remaining': self.time_remaining / self.initial_values[0],
+            # 'time-remaining': self.time_remaining / self.initial_values[0],
             'score': (self.score[1] - self.score[0]) / 100
         }
         return ai_inputs
@@ -102,14 +103,14 @@ class Game:
     def return_competitor_state(self):
         ai_inputs = {
             'champion-paddle-y': self.left_paddle.position[1] / self.canvas[1],
-            'champion-paddle-dy': self.left_paddle.velocity[1] / self.left_paddle.speed,
+            # 'champion-paddle-dy': self.left_paddle.velocity[1] / self.left_paddle.speed,
             'competitor-paddle-y': self.right_paddle.position[1] / self.canvas[1],
-            'competitor-paddle-dy': self.right_paddle.velocity[1] / self.right_paddle.speed,
+            # 'competitor-paddle-dy': self.right_paddle.velocity[1] / self.right_paddle.speed,
             'ball-position-x': (self.canvas[0] - self.ball.position[0]) / self.canvas[0],
             'ball-position-y': self.ball.position[1] / self.canvas[1],
             'ball-velocity-dx': -self.ball.velocity[0] / abs(self.ball.velocity[0]),
             'ball-velocity-dy': self.ball.velocity[1] / abs(self.ball.velocity[0]),
-            'time-remaining': self.time_remaining / self.initial_values[0],
+            # 'time-remaining': self.time_remaining / self.initial_values[0],
             'score': (self.score[0] - self.score[1]) / 100
         }
         return ai_inputs

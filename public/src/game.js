@@ -53,17 +53,17 @@ Game.prototype.run = function run() {
 
 Game.prototype.getAIInputs = function getAIInputs() {
   return {
-    'user-paddle-y': this.playerPaddle.yPosition,
-    // 'user-paddle-dy': this.playerPaddle.SPEED,
-    'comp-paddle-y': this.aiPaddle.yPosition,
-    // 'comp-paddle-dy': this.aiPaddle.SPEED,
-    'ball-position-x': this.ball.position.x,
-    'ball-position-y': this.ball.position.y,
-    'ball-velocity-dx': this.ball.velocity.dx,
-    'ball-velocity-dy': this.ball.velocity.dy,
-    'time-remaining': this.intervalRemaining,
-    score: (this.score[0] - this.score[1]),
-  };
+     'comp-paddle-y': this.aiPaddle.yPosition / this.canvasDisplay.height,
+     'user-paddle-y': this.playerPaddle.yPosition / this.canvasDisplay.height,
+     // 'user-paddle-dy': this.playerPaddle.SPEED,
+     // 'comp-paddle-dy': this.aiPaddle.SPEED,
+     'ball-position-x': this.ball.position.x / this.canvasDisplay.width,
+     'ball-position-y': this.ball.position.y / this.canvasDisplay.height,
+     'ball-velocity-dx': this.ball.velocity.dx / Math.abs(this.ball.velocity.dx),
+     'ball-velocity-dy': this.ball.velocity.dy / Math.abs(this.ball.velocity.dx),
+     // 'time-remaining': this.intervalRemaining,
+     'score': (this.score[1] - this.score[0]) / 100,
+          }
 };
 
 Game.prototype.setDifficulty = async function setDifficulty(level) {
