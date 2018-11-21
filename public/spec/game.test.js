@@ -51,7 +51,8 @@ describe('Game', () => {
       getMove: jest.fn(),
       fetchModel: jest.fn(),
     };
-    pongGame = new Game(stubPlayerPaddle, stubAiPaddle, stubBall, stubCanvas, stubAiInterface, 120000);
+    pongGame = new Game(stubPlayerPaddle, stubAiPaddle, stubBall, stubCanvas,
+      stubAiInterface, 120000);
   });
 
 
@@ -107,17 +108,17 @@ describe('Game', () => {
     });
 
     it('returns expected hash', () => {
-      const ai_inputs = pongGame.getAIInputs();
-      expect(ai_inputs['user-paddle-y']).toEqual(420);
-      // expect(ai_inputs['user-paddle-dy']).toEqual(1.5);
-      expect(ai_inputs['comp-paddle-y']).toEqual(420);
-      // expect(ai_inputs['comp-paddle-dy']).toEqual(1.5);
-      expect(ai_inputs['ball-position-x']).toEqual(450);
-      expect(ai_inputs['ball-position-y']).toEqual(300);
-      expect(ai_inputs['ball-velocity-dx']).toEqual(2.2);
-      expect(ai_inputs['ball-velocity-dy']).toEqual(2);
-      expect(ai_inputs['time-remaining']).toEqual(120000);
-      expect(ai_inputs.score).toEqual(0);
+      const aiInputs = pongGame.getAIInputs();
+      expect(aiInputs['user-paddle-y']).toEqual(420);
+      // expect(aiInputs['user-paddle-dy']).toEqual(1.5);
+      expect(aiInputs['comp-paddle-y']).toEqual(420);
+      // expect(aiInputs['comp-paddle-dy']).toEqual(1.5);
+      expect(aiInputs['ball-position-x']).toEqual(450);
+      expect(aiInputs['ball-position-y']).toEqual(300);
+      expect(aiInputs['ball-velocity-dx']).toEqual(2.2);
+      expect(aiInputs['ball-velocity-dy']).toEqual(2);
+      expect(aiInputs['time-remaining']).toEqual(120000);
+      expect(aiInputs.score).toEqual(0);
     });
   });
 

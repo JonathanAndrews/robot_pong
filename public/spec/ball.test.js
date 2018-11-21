@@ -99,15 +99,15 @@ describe('Ball', () => {
 
   describe('accelerationAct', () => {
     it('increased y-velocity by y-acceleration when passed true', () => {
-      initial_vel = ball.velocity.dy;
+      initialVel = ball.velocity.dy;
       ball.accelerationAct(true);
-      expect(ball.velocity.dy).toEqual(initial_vel + ball.acceleration.ddy);
+      expect(ball.velocity.dy).toEqual(initialVel + ball.acceleration.ddy);
     });
 
     it('doesnt change velocity when passed false', () => {
-      initial_vel = ball.velocity.dy;
+      initialVel = ball.velocity.dy;
       ball.accelerationAct(false);
-      expect(ball.velocity.dy).toEqual(initial_vel);
+      expect(ball.velocity.dy).toEqual(initialVel);
     });
   });
 });
