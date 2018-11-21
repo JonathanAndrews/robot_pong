@@ -28,7 +28,8 @@ class Game:
             print(self.return_champion_state())
             self.last_hit = self.current_hit
             self.current_hit = None
-            self.reset_ball_position()
+            # self.reset_ball_position()
+        self.update_ball_scored_goal()
         self.time_remaining -= self.refresh_time
         self.is_game_over()
 
@@ -72,24 +73,29 @@ class Game:
 
     def update_ball_velocity(self, where_on_paddle):
         self.ball.velocity[1] = -18 * ( 0.5 + where_on_paddle)
-
-    def reset_ball_position(self):
-        self.ball.reset_position()
-        self.ball.velocity[0] *= -1
+    #
+    # def reset_ball_position(self):
+    #     self.ball.reset_position()
+    #     self.ball.velocity[0] *= -1
 
     def check_for_goals(self):
-        self.score += np.array(self.ball.check_for_goals())
-        return sum(self.ball.check_for_goals())
+        if self.ball.scored_goal == False:
+            self.score += np.array(self.ball.check_for_goals())
+            return sum(self.ball.check_for_goals())
+        return False
 
     def is_game_over(self):
         if self.time_remaining <= 0:
             self.game_over = True
 
+    def update_ball_scored_goal(self):
+        self.ball.update_scored_goal()
+
     def return_champion_state(self):
         ai_inputs = {
             'champion-paddle-y': self.right_paddle.position[1] / self.canvas[1],
             # 'champion-paddle-dy': self.right_paddle.velocity[1] / self.right_paddle.speed,
-            'competitor-paddle-y': self.left_paddle.position[1] / self.canvas[1],
+            # 'competitor-paddle-y': self.left_paddle.position[1] / self.canvas[1],
             # 'competitor-paddle-dy': self.left_paddle.velocity[1] / self.left_paddle.speed,
             'ball-position-x': self.ball.position[0] / self.canvas[0],
             'ball-position-y': self.ball.position[1] / self.canvas[1],
@@ -104,7 +110,7 @@ class Game:
         ai_inputs = {
             'champion-paddle-y': self.left_paddle.position[1] / self.canvas[1],
             # 'champion-paddle-dy': self.left_paddle.velocity[1] / self.left_paddle.speed,
-            'competitor-paddle-y': self.right_paddle.position[1] / self.canvas[1],
+            # 'competitor-paddle-y': self.right_paddle.position[1] / self.canvas[1],
             # 'competitor-paddle-dy': self.right_paddle.velocity[1] / self.right_paddle.speed,
             'ball-position-x': (self.canvas[0] - self.ball.position[0]) / self.canvas[0],
             'ball-position-y': self.ball.position[1] / self.canvas[1],
@@ -119,4 +125,4 @@ class Game:
         self.time_remaining, self.refresh_time = self.initial_values
         self.game_over = False
         self.score = np.array([0, 0])
-        self.reset_ball_position()
+        self.ball.position = self.canvas / 2
