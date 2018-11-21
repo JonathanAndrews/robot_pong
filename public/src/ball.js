@@ -42,6 +42,7 @@ Ball.prototype.reset = function reset() {
   this.audio.audio_goal.play()
   this.position = { x: 450, y: 300 };
   this.velocity = this.initialVelocity;
+  this.velocity.dx *= -1
 };
 
 Ball.prototype.accelerationAct = function (gravity) {

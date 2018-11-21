@@ -11,21 +11,21 @@ from lib.game import Game
 from lib.memory import Memory
 from lib.trainer import Trainer
 
-HIDDEN_LAYER_SIZE = 128
-NO_HIDDEN_LAYERS = 16
-GAME_LENGTH = 120000
+HIDDEN_LAYER_SIZE = 512
+NO_HIDDEN_LAYERS = 8
+GAME_LENGTH = 30000
 GAME_STEP_TIME = 20
-GAMES_PER_TRAINING_SESSION = 10
-NUMBER_OF_TRAINING_SESSIONS = 90
-MEMORY_SIZE = 60000
-MAX_EPSILON = 0.9999
-MIN_EPSILON = 0.0001
-EPSILON_DECAY = 0.0000017
-GAMMA = 0.999
-RETURNS_DECAY = 0.95
-WINNERS_GROWTH = 1.1
-BATCH_SIZE = 1024
-LEARNING_RATE = 0.01
+GAMES_PER_TRAINING_SESSION = 1
+NUMBER_OF_TRAINING_SESSIONS = 200
+MEMORY_SIZE = 6400
+MAX_EPSILON = 0.99
+MIN_EPSILON = 0.001
+EPSILON_DECAY = 0.00001
+GAMMA = 0.99
+RETURNS_DECAY = 1
+WINNERS_GROWTH = 1
+BATCH_SIZE = 1
+LEARNING_RATE = 0.00001
 STARTING_VERSION = 0
 DATETIME = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
 DESCRIPTION = 'Four layers overnight version'
@@ -95,6 +95,7 @@ def main():
         competitor.load_network(DIRECTORY + '/version_' + str(new_competitor_version))
 
         current_epsilon = trainer.epsilon
+        print('epsilon is ' + str(current_epsilon))
         current_returns_parameter = trainer.returns_parameter
         current_winners_parameter = trainer.winners_parameter
         trainer = Trainer(Game(GAME_LENGTH, GAME_STEP_TIME), memory_bank, champion, competitor, current_epsilon, MIN_EPSILON, EPSILON_DECAY, GAMMA, RETURNS_DECAY, WINNERS_GROWTH, returns_parameter=current_returns_parameter, winners_parameter=current_winners_parameter, batch_size=BATCH_SIZE)
