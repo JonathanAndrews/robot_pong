@@ -10,7 +10,7 @@ class Network:
     '''The neural network. There are no ifs no buts just a neural network'''
 
     def __init__(self, no_actions, no_inputs, hidden_layer_size=100, no_hidden_layers=3,
-                 learning_rate=0.001, keep_prob=0.5, activation_function='relu',
+                 learning_rate=0.001, keep_prob=0.95, activation_function='relu',
                  loss_function='binary_crossentropy', maximum_saves=10000):
         self.no_actions = no_actions
         self.no_inputs = no_inputs
@@ -33,7 +33,7 @@ class Network:
             self.model.add(Dropout(1 - self.keep_prob))
         self.model.add(Dense(self.no_actions, activation='linear'))
         optimizer = Adam(lr=self.learning_rate)
-        self.model.compile(loss=self.loss_function, optimizer=optimizer)
+        self.model.compile(loss=self.loss_function, optimizer=optimizer, metrics=['mae', 'acc'])
 
     def batch_prediction(self, inputs, display=0):
         output = self.model.predict_on_batch(inputs)

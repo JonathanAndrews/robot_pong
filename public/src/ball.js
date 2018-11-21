@@ -38,6 +38,7 @@ Ball.prototype.paddleCollision = function paddleCollision(paddleLocationY, paddl
 Ball.prototype.reset = function reset() {
   this.position = { x: 450, y: 300 };
   this.velocity = this.initialVelocity;
+  this.velocity.dx *= -1
 };
 
 Ball.prototype.accelerationAct = function (gravity) {

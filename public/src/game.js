@@ -27,6 +27,7 @@ Game.prototype.run = function run() {
   if (that.intervalRemaining > 0) {
     ai_inputs = that.getAIInputs();
     move = that.aiInterface.getMove(that.current_model, ai_inputs);
+    console.log(move)
     this.canvasDisplay.clear();
     this.canvasDisplay.drawLines();
     this.canvasDisplay.drawRobot();
@@ -52,16 +53,16 @@ Game.prototype.run = function run() {
 
 Game.prototype.getAIInputs = function getAIInputs() {
   return {
-     'user-paddle-y': this.playerPaddle.yPosition,
+     'user-paddle-y': this.playerPaddle.yPosition / this.canvasDisplay.height,
      // 'user-paddle-dy': this.playerPaddle.SPEED,
-     'comp-paddle-y': this.aiPaddle.yPosition,
+     'comp-paddle-y': this.aiPaddle.yPosition / this.canvasDisplay.height,
      // 'comp-paddle-dy': this.aiPaddle.SPEED,
-     'ball-position-x': this.ball.position.x,
-     'ball-position-y': this.ball.position.y,
-     'ball-velocity-dx': this.ball.velocity.dx,
-     'ball-velocity-dy': this.ball.velocity.dy,
-     'time-remaining': this.intervalRemaining,
-     'score': (this.score[0] - this.score[1]),
+     'ball-position-x': this.ball.position.x / this.canvasDisplay.width,
+     'ball-position-y': this.ball.position.y / this.canvasDisplay.height,
+     'ball-velocity-dx': this.ball.velocity.dx / Math.abs(this.ball.velocity.dx),
+     'ball-velocity-dy': this.ball.velocity.dy / Math.abs(this.ball.velocity.dx),
+     // 'time-remaining': this.intervalRemaining,
+     'score': (this.score[0] - this.score[1]) / 100,
           }
 };
 
