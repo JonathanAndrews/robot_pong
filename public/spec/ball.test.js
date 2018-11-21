@@ -5,8 +5,20 @@ describe('Ball', () => {
   let stubCanvas;
   let ball;
   let PADDLEHEIGHT;
+  let audio;
+  let paddle_sound;
+  let wall_sound;
+  let goal_sound;
 
   beforeEach(() => {
+    paddle_sound = { play: jest.fn() }
+    wall_sound = { play: jest.fn() }
+    goal_sound = { play: jest.fn() }
+    audio = {
+      audio_paddle: paddle_sound,
+      audio_wall: wall_sound,
+      audio_goal: goal_sound,
+    }
     stubContext = {
       beginPath: jest.fn(),
       arc: jest.fn(),
@@ -16,7 +28,7 @@ describe('Ball', () => {
     stubCanvas = {
       getContext: jest.fn(() => stubContext),
     };
-    ball = new Ball(stubCanvas);
+    ball = new Ball(stubCanvas, audio);
     PADDLEHEIGHT = 10;
   });
 
@@ -102,12 +114,34 @@ describe('Ball', () => {
       initial_vel = ball.velocity.dy;
       ball.accelerationAct(true);
       expect(ball.velocity.dy).toEqual(initial_vel + ball.acceleration.ddy)
-    })
+    });
 
     it('doesnt change velocity when passed false', () => {
       initial_vel = ball.velocity.dy;
       ball.accelerationAct(false);
       expect(ball.velocity.dy).toEqual(initial_vel)
-    })
-  })
+    });
+  });
+
+  describe('Audio Effects', () => {
+    it('Paddle Collision plays Bounce_Paddle sound', () => {
+      velocityY = ball.velocity.dy
+      expect(paddle_sound.play).toHaveBeenCalledTimes(0)     
+      ball.paddleCollision(12, PADDLEHEIGHT);
+      expect(paddle_sound.play).toHaveBeenCalledTimes(1)
+    });
+
+    it('Paddle Collision plays Bounce_Wall sound', () => {
+      ball.position.y = 595;
+      expect(wall_sound.play).toHaveBeenCalledTimes(0)     
+      ball.moveBall();
+      expect(wall_sound.play).toHaveBeenCalledTimes(1)
+    });
+
+    it('Paddle Collision plays Goal_Sound sound', () => {
+      expect(goal_sound.play).toHaveBeenCalledTimes(0)     
+      ball.reset();
+      expect(goal_sound.play).toHaveBeenCalledTimes(1)
+    });
+  });
 });
