@@ -43,21 +43,21 @@ describe('Ball', () => {
 
   it('should change position', () => {
     ball.moveBall();
-    dx = ball.velocity.dx
-    dy = ball.velocity.dy
+    dx = ball.velocity.dx;
+    dy = ball.velocity.dy;
     expect(ball.position).toEqual({ x: 450 + dx, y: 300 + dy });
   });
 
   describe('Wall collision', () => {
     it('should not reverse vertical velocity, if ball does not hit wall', () => {
-      velocityY = ball.velocity.dy
+      velocityY = ball.velocity.dy;
       ball.moveBall();
       expect(ball.velocity.dy).toEqual(velocityY);
     });
 
     it('should reverse velocity, if ball hits bottom wall', () => {
       ball.position.y = 595;
-      velocityY = ball.velocity.dy
+      velocityY = ball.velocity.dy;
       ball.moveBall();
       expect(ball.velocity.dy).toEqual(-velocityY);
     });
@@ -72,7 +72,7 @@ describe('Ball', () => {
 
   describe('Paddle collision', () => {
     it('reverses the horizontal velocity', () => {
-      velocityY = ball.velocity.dy
+      velocityY = ball.velocity.dy;
       expect(ball.velocity.dx).toEqual(velocityY);
       ball.paddleCollision(12, PADDLEHEIGHT);
       expect(ball.velocity.dx).toEqual(-velocityY);
@@ -111,15 +111,15 @@ describe('Ball', () => {
 
   describe('accelerationAct', () => {
     it('increased y-velocity by y-acceleration when passed true', () => {
-      initial_vel = ball.velocity.dy;
+      initialVel = ball.velocity.dy;
       ball.accelerationAct(true);
-      expect(ball.velocity.dy).toEqual(initial_vel + ball.acceleration.ddy)
+      expect(ball.velocity.dy).toEqual(initialVel + ball.acceleration.ddy);
     });
 
     it('doesnt change velocity when passed false', () => {
-      initial_vel = ball.velocity.dy;
+      initialVel = ball.velocity.dy;
       ball.accelerationAct(false);
-      expect(ball.velocity.dy).toEqual(initial_vel)
+      expect(ball.velocity.dy).toEqual(initialVel);
     });
   });
 

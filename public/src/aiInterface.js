@@ -1,38 +1,36 @@
 const AiInterface = function AiInterface() {
-  this.MODELURL = 'http://localhost:5000/model/version_'
+  this.MODELURL = 'https://burninglake.herokuapp.com/model/version_';
   this.model = {};
-}
+};
 
 AiInterface.prototype.fetchModel = async function fetchModel(version) {
   if (!this.model[version]) {
     this.model[version] = await tf.loadModel(this.MODELURL + version);
   }
-}
+};
 
-AiInterface.prototype.getMove = function getMove(version, hash_input) {
-  let ai_input_array = this._ai_input_array(hash_input);
-  let move_rewards = this._make_predictions(version, ai_input_array);
-  return this._chooses_best_move(move_rewards);
-}
+AiInterface.prototype.getMove = function getMove(version, hashInput) {
+  const aiInputArray = this._aiInputArray(hashInput);
+  const moveRewards = this._makePredictions(version, aiInputArray);
+  return this._choosesBestMove(moveRewards);
+};
 
-AiInterface.prototype._ai_input_array = function _ai_input_array(hash_input) {
-  let keys = Object.keys(hash_input);
-  a = keys.map(function(k) { return hash_input[k] });
-  return a
+AiInterface.prototype._aiInputArray = function _aiInputArray(hashInput) {
+  const keys = Object.keys(hashInput);
+  return keys.map(k => hashInput[k]);
+};
 
-}
+AiInterface.prototype._makePredictions = function _makePredictions(version, inputs) {
+  const tfAiInputs = tf.tensor2d([inputs]);
+  return this.model[version].predict(tfAiInputs).dataSync();
+};
 
-AiInterface.prototype._make_predictions = function _make_predictions(version, inputs) {
-  let tf_ai_inputs = tf.tensor2d([inputs]);
-  return this.model[version].predict(tf_ai_inputs).dataSync();
-}
-
-AiInterface.prototype._chooses_best_move = function _chooses_best_move(inputs) {
-  let index_of_move = inputs.indexOf(Math.max(...inputs)) ;
-  let move = index_of_move - 1;
+AiInterface.prototype._choosesBestMove = function _choosesBestMove(inputs) {
+  const indexOfMove = inputs.indexOf(Math.max(...inputs));
+  const move = indexOfMove - 1;
   return move;
-}
+};
 
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
-    module.exports = AiInterface;
-  }
+  module.exports = AiInterface;
+}

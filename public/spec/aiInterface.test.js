@@ -27,6 +27,7 @@ describe('AI Interface', () => {
         expect(tf.loadModel).toHaveBeenCalledTimes(0)
       })
 
+
       it("does make call to API when model has not been retrieved", () => {
         aiInterface.fetchModel()
         expect(tf.loadModel).toHaveBeenCalledTimes(1)

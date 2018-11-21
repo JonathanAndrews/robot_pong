@@ -1,4 +1,5 @@
-const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 6000) {
+const Game = function Game(playerPaddle, aiPaddle, ball, canvasDisplay,
+  aiInterface, totalIntervals = 60) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
@@ -26,14 +27,13 @@ Game.prototype.checkPaddleCollision = function checkPaddleCollision() {
 
 Game.prototype.run = function run() {
   if (that.intervalRemaining > 0) {
-    ai_inputs = that.getAIInputs();
-    move = that.aiInterface.getMove(that.current_model, ai_inputs);
-    console.log(move)
+    aiInputs = that.getAIInputs();
+    move = that.aiInterface.getMove(that.current_model, aiInputs);
     this.canvasDisplay.clear();
     this.canvasDisplay.drawLines();
     this.canvasDisplay.drawRobot();
     this.canvasDisplay.drawTime(that.intervalRemaining);
-    this.canvasDisplay.drawScores(that.score[0],that.score[1]);
+    this.canvasDisplay.drawScores(that.score[0], that.score[1]);
     that.playerPaddle.draw();
     that.aiPaddle.draw();
     this.ball.draw();
@@ -46,7 +46,7 @@ Game.prototype.run = function run() {
     that.checkForGoal();
     that.checkForNewPoint();
     that.intervalRemaining -= 1;
-  } else if (that.intervalRemaining === 0){
+  } else if (that.intervalRemaining === 0) {
     that.isGameOver();
     this.canvasDisplay.clear();
     this.canvasDisplay.drawGameOverPage(that.score);
@@ -68,9 +68,9 @@ Game.prototype.getAIInputs = function getAIInputs() {
           }
 };
 
-Game.prototype.setDifficulty = async function(level) {
-  this.aiInterface.current_model = await this.aiInterface.fetchModel(level)
-  this.current_model = level
+Game.prototype.setDifficulty = async function setDifficulty(level) {
+  this.aiInterface.current_model = await this.aiInterface.fetchModel(level);
+  this.current_model = level;
 };
 
 Game.prototype.addGravity = function addGravity() {
@@ -131,37 +131,41 @@ Game.prototype.isGameOver = function isGameOver() {
 // Player Paddle Collision Methods
 
 Game.prototype._isPlayerPaddleCollision = function _isPlayerPaddleCollision() {
-  return (this._isBallWithinRangeOfPlayer() && (this._isPlayerInPosition()) && (this.ball.velocity.dx <= 0));
+  return (this._isBallWithinRangeOfPlayer() && (this._isPlayerInPosition())
+  && (this.ball.velocity.dx <= 0));
 };
 
 Game.prototype._isBallWithinRangeOfPlayer = function _isBallWithinRangeOfPlayer() {
   return (this.ball.position.x >= this.playerPaddle.xPosition
-          && this.ball.position.x <= this.playerPaddle.DIMENSIONS.width + this.playerPaddle.xPosition);
+          && this.ball.position.x <= this.playerPaddle.DIMENSIONS.width
+          + this.playerPaddle.xPosition);
 };
 
 Game.prototype._isPlayerInPosition = function _isPlayerInPosition() {
-  return (this._isBallWithinLowerBoundOfPlayerPaddle()
-          && this._isBallWithinUpperBoundOfPlayerPaddle());
+  return (this._isBallWithinLBOfPlayerPaddle()
+          && this._isBallWithinUBOfPlayerPaddle());
 };
 
-Game.prototype._isBallWithinLowerBoundOfPlayerPaddle = function _isBallWithinLowerBoundOfPlayerPaddle() {
+Game.prototype._isBallWithinLBOfPlayerPaddle = function _isBallWithinLBOfPlayerPaddle() {
   return (this.playerPaddle.yPosition + this.playerPaddle.DIMENSIONS.height
           >= this.ball.position.y);
 };
 
-Game.prototype._isBallWithinUpperBoundOfPlayerPaddle = function _isBallWithinUpperBoundOfPlayerPaddle() {
+Game.prototype._isBallWithinUBOfPlayerPaddle = function _isBallWithinUBOfPlayerPaddle() {
   return (this.playerPaddle.yPosition <= this.ball.position.y);
 };
 
 // Ai Paddle Collision Methods
 
 Game.prototype._isAiPaddleCollision = function _isAiPaddleCollision() {
-  return (this._isBallWithinRangeOfAi() && (this._isAiInPosition()) && (this.ball.velocity.dx >= 0));
+  return (this._isBallWithinRangeOfAi() && (this._isAiInPosition())
+  && (this.ball.velocity.dx >= 0));
 };
 
 Game.prototype._isBallWithinRangeOfAi = function _isBallWithinRangeOfAi() {
   return (this.ball.position.x + this.ball.RADIUS >= this.aiPaddle.xPosition
-          && this.ball.position.x + this.ball.RADIUS <= this.aiPaddle.xPosition + this.aiPaddle.DIMENSIONS.width);
+          && this.ball.position.x + this.ball.RADIUS <= this.aiPaddle.xPosition
+          + this.aiPaddle.DIMENSIONS.width);
 };
 
 Game.prototype._isAiInPosition = function _isAiInPosition() {

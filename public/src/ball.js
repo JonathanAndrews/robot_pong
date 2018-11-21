@@ -53,7 +53,7 @@ Ball.prototype.reset = function reset() {
   this.velocity.dx *= -1
 };
 
-Ball.prototype.accelerationAct = function (gravity) {
+Ball.prototype.accelerationAct = function accelerationAct(gravity) {
   if (gravity) {
     this.velocity.dy += this.acceleration.ddy;
   }
