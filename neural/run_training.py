@@ -28,7 +28,7 @@ BATCH_SIZE = 1
 LEARNING_RATE = 0.00001
 STARTING_VERSION = 0
 DATETIME = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
-DESCRIPTION = 'Huge network version'
+DESCRIPTION = 'Four layers overnight version'
 DIRECTORY = './trained_networks/' + DATETIME
 
 HYPERPARAMETER_DICT = {
