@@ -12,6 +12,7 @@ const Game = function Game( playerPaddle, aiPaddle, ball, canvasDisplay, aiInter
   this.gravity = false;
   this.aiInterface = aiInterface;
   this.current_model = null
+  this.scored_goal = false
   that = this;
 };
 
@@ -43,6 +44,7 @@ Game.prototype.run = function run() {
     that.aiPaddle.movePaddle(move);
     that.checkPaddleCollision();
     that.checkForGoal();
+    that.checkForNewPoint();
     that.intervalRemaining -= 1;
   } else if (that.intervalRemaining === 0){
     that.isGameOver();
@@ -96,14 +98,28 @@ Game.prototype.keyUpHandler = function keyUpHandler(e) {
 };
 
 Game.prototype.checkForGoal = function checkForGoal() {
-  if (this.ball.position.x < -this.ball.RADIUS) {
-    this.score[1] += 1;
-    this.ball.reset();
-  } else if (this.ball.position.x > this.canvasDisplay.width + this.ball.RADIUS) {
-    this.score[0] += 1;
-    this.ball.reset();
+  if (this.scored_goal === false) {
+    if (this.ball.position.x < -this.ball.RADIUS) {
+      this.score[1] += 1;
+      this.scored_goal = true
+      // this.ball.reset();
+    } else if (this.ball.position.x > this.canvasDisplay.width + this.ball.RADIUS) {
+      this.score[0] += 1;
+      this.scored_goal = true
+      // this.ball.reset();
+    }
   }
 };
+
+Game.prototype.checkForNewPoint = function checkForNewPoint() {
+  if (this.scored_goal === true) {
+    if (this.ball.position.x > 30 && this.ball.position.x < 870) {
+      console.log('here')
+      this.scored_goal = false
+      this.ball.back_wall_bounce = false
+    }
+  }
+}
 
 Game.prototype.isGameOver = function isGameOver() {
   if (this.intervalRemaining <= 0) {

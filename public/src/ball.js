@@ -7,6 +7,7 @@ const Ball = function Ball(canvas, audio) {
   this.velocity = { dx: 8, dy: 8 };
   this.acceleration = { ddx: 0, ddy: 0.2};
   this.audio = audio;
+  this.back_wall_bounce = false
 };
 
 Ball.prototype.draw = function draw(ctx = this.context) {
@@ -28,6 +29,13 @@ Ball.prototype.wallCollision = function wallCollision() {
         || (this.position.y + this.RADIUS) >= 600) {
     this.velocity.dy *= -1;
     this.audio.audio_wall.play()
+  }
+  if (this.back_wall_bounce === false) {
+    if ((this.position.x - this.RADIUS) <= -100
+    || (this.position.x + this.RADIUS) >= 1000) {
+      this.velocity.dx *= -1;
+      this.back_wall_bounce = true
+    }
   }
 };
 
