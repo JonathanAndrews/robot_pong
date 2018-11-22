@@ -14,31 +14,36 @@ class TrainerTest(unittest.TestCase):
         self.trainer = Trainer(gameMock, memoryMock, networkMock, competitorMock, 1, 0, 0.5, 0.9, 0.9, 1.1)
 
     def test_competitor_action(self):
-        self.trainer.competitor.single_prediction.return_value = [1,0,0]
-        state = { 'first': 0, 'second': 1 }
+        self.trainer.competitor.batch_prediction.return_value = [1,0,0]
+        state = { 'first': 0, 'second': 1, 'champion-paddle-y': 0, 'ball-position-y': 0.5 }
         self.assertEqual(self.trainer.competitor_action(state), -1)
 
     def test_calculate_reward_return(self):
         self.trainer.game.last_hit = 0
         self.trainer.game.collision = True
-        state = { 'score': 0 }
-        self.assertEqual(self.trainer.calculate_reward(state), 20)
+        state = { 'score': 0, 'champion-paddle-y': 0, 'ball-position-y': 0.5 }
+        self.assertEqual(self.trainer.calculate_reward(state), 5)
 
     def test_calculate_reward_winner(self):
         self.trainer.game.last_hit = 1
         self.trainer.game.collision = False
-        state = { 'score': 1 }
-        self.assertEqual(self.trainer.calculate_reward(state), 30)
+        state = { 'score': 1, 'champion-paddle-y': 0, 'ball-position-y': 0.5 }
+        self.assertEqual(self.trainer.calculate_reward(state), 5)
 
     def test_calculate_reward_negative(self):
         self.trainer.game.collision = False
-        state = { 'score': -100 }
-        self.assertEqual(self.trainer.calculate_reward(state), -10)
+        state = { 'score': -100, 'champion-paddle-y': 0, 'ball-position-y': 0.5 }
+        self.assertEqual(self.trainer.calculate_reward(state), -5)
 
     def test_calculate_reward_neutral(self):
         self.trainer.game.collision = False
-        state = { 'score': 0 }
+        state = { 'score': 0, 'champion-paddle-y': 0, 'ball-position-y': 0.5 }
         self.assertEqual(self.trainer.calculate_reward(state), 0)
+
+    def test_calculate_reward_in_line(self):
+        self.trainer.game.collision = False
+        state = { 'score': 0, 'champion-paddle-y': 0, 'ball-position-y': 0.05 }
+        self.assertEqual(self.trainer.calculate_reward(state), 0.1)
 
     def test_update_epsilon(self):
         initial_epsilon = self.trainer.epsilon
@@ -69,15 +74,15 @@ class TrainerTest(unittest.TestCase):
 
     def test_champion_action_prediction(self):
         self.trainer.epsilon = 0
-        self.trainer.champion.single_prediction.return_value = np.array([1, 0, 0])
+        self.trainer.champion.batch_prediction.return_value = np.array([1, 0, 0])
         self.trainer.champion_action({ 'x':1, 'y':2, 'z':3 })
-        self.trainer.champion.single_prediction.assert_called()
+        self.trainer.champion.batch_prediction.assert_called()
 
     def test_run_game(self):
         self.trainer.train_model = lambda : None
         self.trainer.update_epsilon =  lambda : None
         self.trainer.add_sample = lambda a,b,c,d,e : None
-        self.trainer.game.return_champion_state = lambda : { 'x':1, 'y':2, 'z':3 }
+        self.trainer.game.return_champion_state = lambda : { 'x':1, 'y':2, 'z':3, 'champion-paddle-y': 0, 'ball-position-y': 0.5 }
         self.trainer.game.return_competitor_state = lambda : None
         self.trainer.calculate_reward = lambda x: None
         self.trainer.champion_action = lambda x : None
@@ -85,12 +90,13 @@ class TrainerTest(unittest.TestCase):
         self.trainer.game.reset_game = lambda : None
         self.trainer.game.game_over = True
         self.trainer.game.step = lambda a,b : None
+        self.trainer.memory.buffer = [1]
         self.trainer.run_game()
         self.assertEqual([self.trainer.total_steps, self.trainer.current_score], [1,0])
 
     def test_test_game(self):
         self.trainer.train_model = lambda : None
-        self.trainer.game.return_champion_state = lambda : { 'x':1, 'y':2, 'z':3, 'score':1 }
+        self.trainer.game.return_champion_state = lambda : { 'x':1, 'y':2, 'z':3, 'score':1, 'champion-paddle-y': 0, 'ball-position-y': 0.5 }
         self.trainer.game.return_competitor_state = lambda : None
         self.trainer.champion_action = lambda x : None
         self.trainer.competitor_action = lambda x : None
@@ -101,6 +107,14 @@ class TrainerTest(unittest.TestCase):
 
     def test_train_model(self):
         self.trainer.memory.sample_memory.return_value = [[1,2,3,0]]
+        self.trainer.reward_predictions = lambda x,y: [[[1]],[[1]]]
+        self.trainer.champion.no_inputs = self.trainer.champion.no_actions = 1
+        self.trainer.champion.batch_train.return_value = [1]
+        self.trainer.train_model()
+        self.trainer.champion.batch_train.assert_called()
+
+    def test_train_model_done(self):
+        self.trainer.memory.sample_memory.return_value = [[1,None,3,0]]
         self.trainer.reward_predictions = lambda x,y: [[[1]],[[1]]]
         self.trainer.champion.no_inputs = self.trainer.champion.no_actions = 1
         self.trainer.champion.batch_train.return_value = [1]

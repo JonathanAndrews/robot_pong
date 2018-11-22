@@ -1,4 +1,6 @@
-const Game = function Game(playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 12000) {
+
+const Game = function Game(playerPaddle, aiPaddle, ball, canvasDisplay,
+  aiInterface, totalIntervals = 600) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
@@ -52,17 +54,17 @@ Game.prototype.run = function run() {
 
 Game.prototype.getAIInputs = function getAIInputs() {
   return {
-     'comp-paddle-y': this.aiPaddle.yPosition / this.canvasDisplay.height,
-     'user-paddle-y': this.playerPaddle.yPosition / this.canvasDisplay.height,
-     // 'user-paddle-dy': this.playerPaddle.SPEED,
-     // 'comp-paddle-dy': this.aiPaddle.SPEED,
-     'ball-position-x': this.ball.position.x / this.canvasDisplay.width,
-     'ball-position-y': this.ball.position.y / this.canvasDisplay.height,
-     'ball-velocity-dx': this.ball.velocity.dx / Math.abs(this.ball.velocity.dx),
-     'ball-velocity-dy': this.ball.velocity.dy / Math.abs(this.ball.velocity.dx),
-     // 'time-remaining': this.intervalRemaining,
-     'score': (this.score[1] - this.score[0]) / 100,
-          }
+    'comp-paddle-y': this.aiPaddle.yPosition / this.canvasDisplay.height,
+    'user-paddle-y': this.playerPaddle.yPosition / this.canvasDisplay.height,
+    // 'user-paddle-dy': this.playerPaddle.SPEED,
+    // 'comp-paddle-dy': this.aiPaddle.SPEED,
+    'ball-position-x': this.ball.position.x / this.canvasDisplay.width,
+    'ball-position-y': this.ball.position.y / this.canvasDisplay.height,
+    'ball-velocity-dx': this.ball.velocity.dx / Math.abs(this.ball.velocity.dx),
+    'ball-velocity-dy': this.ball.velocity.dy / Math.abs(this.ball.velocity.dx),
+    // 'time-remaining': this.intervalRemaining,
+    score: (this.score[1] - this.score[0]) / 100,
+  };
 };
 
 Game.prototype.setDifficulty = async function setDifficulty(level) {
@@ -79,18 +81,26 @@ Game.prototype.removeGravity = function removeGravity() {
 };
 
 Game.prototype.keyDownHandler = function keyDownHandler(e) {
-  if (e.keyCode === 38) {
+  if (e.keyCode === 87) {
     that.upButton = true;
-  } else if (e.keyCode === 40) {
+  } else if (e.keyCode === 83) {
     that.downButton = true;
   }
 };
 
 Game.prototype.keyUpHandler = function keyUpHandler(e) {
-  if (e.keyCode === 38) {
+  if (e.keyCode === 87) {
     that.upButton = false;
-  } else if (e.keyCode === 40) {
+  } else if (e.keyCode === 83) {
     that.downButton = false;
+  } else if (e.keyCode === 71) {
+    if (gravity === false) {
+      that.addGravity();
+      gravity = true;
+    } else {
+      that.removeGravity();
+      gravity = false;
+    }
   }
 };
 

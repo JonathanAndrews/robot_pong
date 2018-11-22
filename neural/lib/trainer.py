@@ -7,7 +7,7 @@ class Trainer:
 
     def __init__(self, game, memory, champion, competitor, max_epsilon, min_epsilon,
                  epsilon_decay, gamma, returns_decay, winners_growth, returns_parameter=1 ,
-                 winners_parameter=1, batch_size=32, display_reward=False):
+                 winners_parameter=1, batch_size=32):
         self.game = game
         self.memory = memory
         self.champion = champion
@@ -21,7 +21,6 @@ class Trainer:
         self.total_reward = 0
         self.batch_size = batch_size
         self.current_score = 0
-        self.display_reward = display_reward
         self.returns_parameter = returns_parameter
         self.winners_parameter = winners_parameter
         self.returns_decay = returns_decay
@@ -42,9 +41,7 @@ class Trainer:
             new_champion_state = self.game.return_champion_state()
             reward = self.calculate_reward(new_champion_state)
             done = self.game.game_over
-            if reward != 0 or random.random() > 0.95:
-                if not done:
-                    self.add_sample(champion_state, new_champion_state, reward, champion_action, done)
+            self.add_sample(champion_state, new_champion_state, reward, champion_action, done)
 
             self.update_epsilon()
             if len(self.memory.buffer) > 0:
@@ -55,8 +52,6 @@ class Trainer:
             if done:
                 self.current_score = 0
                 print(self.epsilon)
-                if self.display_reward:
-                    print(self.total_reward)
                 break
 
     def test_game(self):
@@ -66,7 +61,7 @@ class Trainer:
         competitor_state = self.game.return_competitor_state()
 
         while True:
-            champion_action = self.champion_action(champion_state, display=True)
+            champion_action = self.champion_action(champion_state)
             competitor_action = self.competitor_action(competitor_state)
             self.game.step(competitor_action, champion_action)
 
@@ -78,38 +73,44 @@ class Trainer:
                 self.current_score = 0
                 return champion_state['score']
 
-    def champion_action(self, state, display=False):
+    def champion_action(self, state):
         if random.random() < self.epsilon:
             return random.choice(self.game.POSSIBLE_MOVES)
         else:
             state_values = np.array([[value for value in state.values()]])
             state_values_0 = [value for value in state.values()]
-            return np.argmax(self.champion.batch_prediction(state_values, display)) - 1
+            return np.argmax(self.champion.batch_prediction(state_values)) - 1
 
     def competitor_action(self, state):
         state_values = np.array([[value for value in state.values()]])
         return np.argmax(self.competitor.batch_prediction(state_values)) - 1
 
     def calculate_reward(self, state):
+        return self.calculate_return_reward(state) + self.calculate_score_reward(state) + self.calculate_follow_reward(state)
+
+    def calculate_return_reward(self, state):
         output = 0
-        if state['score'] > self.current_score:
-            print('GOAL!')
-            self.current_score = state['score']
-            if self.game.last_hit:
-                print('Down the Line! (winner)')
-                output += (5 * self.winners_parameter)
-                self.winners_parameter *= self.winners_growth
-        elif state['score'] < self.current_score:
-            print('CONCEDED!')
-            self.current_score = state['score']
-            output += -5
-        if state['champion-paddle-y'] <= state['ball-position-y'] <= state['champion-paddle-y'] + 0.1:
-            output += 0.1
         if self.game.collision:
             output += (5 * self.returns_parameter)
             self.returns_parameter *= self.returns_decay
-        if output:
-            print('Champion rewarded: ' + str(output))
+        return output
+
+    def calculate_score_reward(self, state):
+        output = 0
+        if state['score'] > self.current_score:
+            self.current_score = state['score']
+            if self.game.last_hit:
+                output += (5 * self.winners_parameter)
+                self.winners_parameter *= self.winners_growth
+        elif state['score'] < self.current_score:
+            self.current_score = state['score']
+            output += -5
+        return output
+
+    def calculate_follow_reward(self, state):
+        output = 0
+        if state['champion-paddle-y'] <= state['ball-position-y'] <= state['champion-paddle-y'] + 0.1:
+            output += 0.1
         return output
 
     def add_sample(self, champion_state, new_champion_state, reward, action, done):
@@ -125,23 +126,14 @@ class Trainer:
 
     def train_model(self):
         batch = self.memory.sample_memory(self.batch_size)
-        # print('batch')
-        # print(batch)
         states = np.array([entry[0] for entry in batch])
-        # print("\nstates")
-        # print(states)
+
         new_states = [entry[1] for entry in batch]
         new_states = [[None] * self.champion.no_inputs if v is None else v for v in new_states]
         new_states = np.array(new_states)
-        # print("\nnew states")
-        # print(new_states)
 
         reward_predictions, next_reward_predictions = self.reward_predictions(states, new_states)
 
-        # print("\n reward predictions")
-        # print(reward_predictions)
-        # print("\n next reward predictions")
-        # print(next_reward_predictions)
         champion_input_array = np.zeros([min(self.batch_size, len(batch)), self.champion.no_inputs])
         champion_output_array = np.zeros([min(self.batch_size, len(batch)), self.champion.no_actions])
 
@@ -157,10 +149,6 @@ class Trainer:
             champion_input_array[index] = state
             champion_output_array[index] = current_reward
 
-        # print("\n input array")
-        # print(champion_input_array)
-        # print("\n output array")
-        # print(champion_output_array)
         self.champion.batch_train(champion_input_array, champion_output_array)
 
     def reward_predictions(self, states, new_states):

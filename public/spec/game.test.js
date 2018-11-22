@@ -143,18 +143,18 @@ describe('Game', () => {
   });
 
   describe('keyDownHandler', () => {
-    it('should change upButton to true if keyCode is 38', () => {
+    it('should change upButton to true if keyCode is 87', () => {
       const mockE = {
-        keyCode: 38,
+        keyCode: 87,
       };
       expect(pongGame.upButton).toEqual(false);
       pongGame.keyDownHandler(mockE);
       expect(pongGame.upButton).toEqual(true);
     });
 
-    it('should change downButton to true if keyCode is 40', () => {
+    it('should change downButton to true if keyCode is 83', () => {
       const mockE = {
-        keyCode: 40,
+        keyCode: 83,
       };
       expect(pongGame.downButton).toEqual(false);
       pongGame.keyDownHandler(mockE);
@@ -172,9 +172,9 @@ describe('Game', () => {
   });
 
   describe('keyUpHandler', () => {
-    it('should change upButton to true if keyCode is 38', () => {
+    it('should change upButton to true if keyCode is 87', () => {
       const mockE = {
-        keyCode: 38,
+        keyCode: 87,
       };
       pongGame.upButton = true;
       expect(pongGame.upButton).toEqual(true);
@@ -182,24 +182,14 @@ describe('Game', () => {
       expect(pongGame.upButton).toEqual(false);
     });
 
-    it('should change downButton to true if keyCode is 40', () => {
+    it('should change downButton to true if keyCode is 83', () => {
       const mockE = {
-        keyCode: 40,
+        keyCode: 83,
       };
       pongGame.downButton = true;
       expect(pongGame.downButton).toEqual(true);
       pongGame.keyUpHandler(mockE);
       expect(pongGame.downButton).toEqual(false);
-    });
-
-    it('should change downButton to true if keyCode is 39', () => {
-      const mockE = {
-        keyCode: 39,
-      };
-      pongGame.downButton = true;
-      expect(pongGame.downButton).toEqual(true);
-      pongGame.keyUpHandler(mockE);
-      expect(pongGame.downButton).toEqual(true);
     });
   });
 

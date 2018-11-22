@@ -13,11 +13,8 @@ CanvasDisplay.prototype.setUpStartPage = function setUpStartPage() {
   this.context.strokeStyle = 'white';
   this.context.textAlign = 'center';
   this.context.fillText('R O B O T    F A C E    P O N G', 450, 40);
-
-  this.context.font = '22px Arial';
-  this.context.strokeStyle = 'white';
-  this.context.textAlign = 'center';
-  this.context.fillText('How many times would you like the AI you play against to have trained?:', 450, 180);
+  this.context.fillText('To move use the w and s keys.', 450, 120);
+  this.context.fillText('Which version would you like to play against?', 450, 180);
 
   for (let x = 0; x < 5; x++) {
     for (let y = 0; y < 5; y++) {
@@ -29,7 +26,7 @@ CanvasDisplay.prototype.setUpStartPage = function setUpStartPage() {
       this.context.font = '15px Arial';
       this.context.fillStyle = 'black';
       this.context.textAlign = 'center';
-      this.context.fillText(x * 100 + y * 500, x * 70 + 320, y * 50 + 260);
+      this.context.fillText(x + y * 5, x * 70 + 320, y * 50 + 260);
     }
   }
 };

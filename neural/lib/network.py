@@ -35,11 +35,8 @@ class Network:
         optimizer = Adam(lr=self.learning_rate)
         self.model.compile(loss=self.loss_function, optimizer=optimizer, metrics=['mae', 'acc'])
 
-    def batch_prediction(self, inputs, display=0):
+    def batch_prediction(self, inputs):
         output = self.model.predict_on_batch(inputs)
-        if display:
-            print('OUTPUT')
-            print(output)
         return output
 
     def batch_train(self, inputs, outputs):
