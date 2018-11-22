@@ -98,7 +98,7 @@ class TrainerTest(unittest.TestCase):
         self.trainer.train_model = lambda : None
         self.trainer.game.return_champion_state = lambda : { 'x':1, 'y':2, 'z':3, 'score':1, 'champion-paddle-y': 0, 'ball-position-y': 0.5 }
         self.trainer.game.return_competitor_state = lambda : None
-        self.trainer.champion_action = lambda x, display : None
+        self.trainer.champion_action = lambda x : None
         self.trainer.competitor_action = lambda x : None
         self.trainer.game.reset_game = lambda : None
         self.trainer.game.game_over = True
