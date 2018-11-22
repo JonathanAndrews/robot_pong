@@ -91,4 +91,15 @@ describe('Canvas Display', () => {
       expect(stubContext.fillText).toHaveBeenCalledTimes(1);
     })
   })
+
+  describe('setUpStartPage', () => {
+    it('draws the starting page', () => {
+      const canvasDisplay = new CanvasDisplay(stubCanvas);
+      canvasDisplay.setUpStartPage();
+      expect(stubContext.fillText).toHaveBeenCalledTimes(28);
+      expect(stubContext.fill).toHaveBeenCalledTimes(25);
+      expect(stubContext.rect).toHaveBeenCalledTimes(25);
+      expect(stubContext.beginPath).toHaveBeenCalledTimes(25);
+    })
+  })
 });
