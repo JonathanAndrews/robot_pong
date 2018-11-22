@@ -3,9 +3,13 @@
 A single player pong game. Play against increasingly competitive versions of a reinforcement learning AI. 
 
 ## Motivation
+This project was undertaken as part of the Makers Academy Software Developer course. We decided to make an AI as our final project to stretch ourselves and learn as much as possible in the two weeks. 
+
 A short description of the motivation behind the creation and maintenance of the project. This should explain why the project exists.
 
 ## Build status
+Robot Face Pong - The pong game with AI opponent is currently deployed at https://robot-face-pong.herokuapp.com/. Travis is being used to ensure that only high quality code is deployed. 
+
 Build status of continus integration i.e. travis, appveyor etc. Ex. -
 
 Build Status Windows Build Status
