@@ -5,7 +5,7 @@ const Ball = function Ball(canvas, audio) {
   this.context = this.canvas.getContext('2d');
   this.initialVelocity = { dx: 8, dy: 8 };
   this.velocity = { dx: 8, dy: 8 };
-  this.acceleration = { ddx: 0, ddy: 0.2};
+  this.acceleration = { ddx: 0, ddy: 0.2 };
   this.audio = audio;
 };
 
@@ -27,7 +27,7 @@ Ball.prototype.wallCollision = function wallCollision() {
   if ((this.position.y - this.RADIUS) <= 0
         || (this.position.y + this.RADIUS) >= 600) {
     this.velocity.dy *= -1;
-    this.audio.audio_wall.play()
+    this.audio.audioWall.play();
   }
 };
 
@@ -35,14 +35,14 @@ Ball.prototype.paddleCollision = function paddleCollision(paddleLocationY, paddl
   this.velocity.dx *= -1;
   const whereOnPaddle = (this.position.y - paddleLocationY) / paddleHeight;
   this.velocity.dy = -6 * 4 * (0.5 - whereOnPaddle);
-  this.audio.audio_paddle.play()
+  this.audio.audioPaddle.play();
 };
 
 Ball.prototype.reset = function reset() {
-  this.audio.audio_goal.play()
+  this.audio.audioGoal.play();
   this.position = { x: 450, y: 300 };
   this.velocity = this.initialVelocity;
-  this.velocity.dx *= -1
+  this.velocity.dx *= -1;
 };
 
 Ball.prototype.accelerationAct = function accelerationAct(gravity) {
