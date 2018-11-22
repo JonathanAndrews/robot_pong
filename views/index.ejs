@@ -28,7 +28,7 @@
   let audio_wall = document.createElement("audio");
   audio_wall.src = "soundFX/Bounce_Wall.mp3"
   let audio_goal = document.createElement("audio");
-  audio_goal.src = "soundFX/Goal_Sound.mp3"
+  audio_goal.src = "soundFX/Goal_Sound.wav"
   let audio = {
     audio_paddle: audio_paddle,
     audio_wall: audio_wall,
@@ -48,7 +48,8 @@
   let game_runner;
   setInterval(() => {
     if (game.gameOver) {
-      clearInterval(game_runner)
+      eventListenerBug = true;
+      clearInterval(game_runner);
    }
   }, 20);
 
