@@ -5,73 +5,83 @@
     <meta charset="utf-8" />
     <title>Robot Face Pong</title>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.7"></script>
-    <style>
-    	* { padding: 0; margin: 0; }
-    	canvas { background: #123; display: block; margin: 0 auto; }
-    	button { display: block; margin: 0 auto; }
-    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/stylesheet.css">
 </head>
 <body>
+<div class='game'>
+  <canvas id="myCanvas" width="900" height="600"></canvas>
 
-<canvas id="myCanvas" width="900" height="600"></canvas>
-<button id='addGravity'>add gravity</button>
-<button id='removeGravity'>remove gravity</button>
+  <script src='../src/aiInterface.js'></script>
+  <script src='../src/ball.js'></script>
+  <script src='../src/canvasDisplay.js'></script>
+  <script src='../src/paddle.js'></script>
+  <script src='../src/game.js'></script>
+  <script>
+    let audio_paddle = document.createElement("audio");
+    audio_paddle.src = "soundFX/Bounce_Paddle.mp3"
+    let audio_wall = document.createElement("audio");
+    audio_wall.src = "soundFX/Bounce_Wall.mp3"
+    let audio_goal = document.createElement("audio");
+    audio_goal.src = "soundFX/Goal_Sound.wav"
+    let audio = {
+      audio_paddle: audio_paddle,
+      audio_wall: audio_wall,
+      audio_goal: audio_goal
+    }
 
-<script src='../src/aiInterface.js'></script>
-<script src='../src/ball.js'></script>
-<script src='../src/canvasDisplay.js'></script>
-<script src='../src/paddle.js'></script>
-<script src='../src/game.js'></script>
-<script>
-  let audio_paddle = document.createElement("audio");
-  audio_paddle.src = "soundFX/Bounce_Paddle.mp3"
-  let audio_wall = document.createElement("audio");
-  audio_wall.src = "soundFX/Bounce_Wall.mp3"
-  let audio_goal = document.createElement("audio");
-  audio_goal.src = "soundFX/Goal_Sound.wav"
-  let audio = {
-    audio_paddle: audio_paddle,
-    audio_wall: audio_wall,
-    audio_goal: audio_goal
-  }
+    ai_interface = new AiInterface()
+    player_paddle = new Paddle(document.getElementById('myCanvas'), 0)
+    ai_paddle = new Paddle(document.getElementById('myCanvas'), 1)
+    ball = new Ball(document.getElementById('myCanvas'), audio)
+    canvasDisplay = new CanvasDisplay(document.getElementById('myCanvas'))
+    canvasDisplay.setUpStartPage();
 
-  ai_interface = new AiInterface()
-  player_paddle = new Paddle(document.getElementById('myCanvas'), 0)
-  ai_paddle = new Paddle(document.getElementById('myCanvas'), 1)
-  ball = new Ball(document.getElementById('myCanvas'), audio)
-  canvasDisplay = new CanvasDisplay(document.getElementById('myCanvas'))
-  canvasDisplay.setUpStartPage();
+    var game = new Game(player_paddle, ai_paddle, ball, canvasDisplay, ai_interface);
+    var eventListenerBug = true;
+    var gravity = false;
 
-  var game = new Game(player_paddle, ai_paddle, ball, canvasDisplay, ai_interface);
-  var eventListenerBug = true;
+    let game_runner;
+    setInterval(() => {
+      if (game.gameOver) {
+        eventListenerBug = true;
+        clearInterval(game_runner);
+     }
+    }, 20);
 
-  let game_runner;
-  setInterval(() => {
-    if (game.gameOver) {
-      eventListenerBug = true;
-      clearInterval(game_runner);
-   }
-  }, 20);
-
-  document.getElementById('myCanvas').addEventListener('click', async function(e) {
-    for (var x = 0; x < 5; x++) {
-      for (var y = 0; y < 5; y++) {
-        if(game.gameOver && !canvasDisplay.gameOverPage && ((x*70+300 < e.offsetX && e.offsetX < x*70+340) && (y*50+240 < e.offsetY && e.offsetY < y*50+270)) && eventListenerBug) {
-          eventListenerBug = false;
-          await game.setDifficulty(x+(5*y));
-          game.gameOver = false;
-          game_runner = setInterval(game.run, 20);
+    document.getElementById('myCanvas').addEventListener('click', async function(e) {
+      for (var x = 0; x < 5; x++) {
+        for (var y = 0; y < 5; y++) {
+          if(game.gameOver && !canvasDisplay.gameOverPage && ((x*70+300 < e.offsetX && e.offsetX < x*70+340) && (y*50+240 < e.offsetY && e.offsetY < y*50+270)) && eventListenerBug) {
+            eventListenerBug = false;
+            await game.setDifficulty(x+(5*y));
+            game.gameOver = false;
+            game_runner = setInterval(game.run, 20);
+          }
         }
       }
-    }
-  })
+    })
 
-  document.addEventListener('keydown',game.keyDownHandler,false);
-  document.addEventListener('keyup',game.keyUpHandler,false);
-  document.getElementById('addGravity').addEventListener('click', game.addGravity, false);
-  document.getElementById('removeGravity').addEventListener('click', game.removeGravity, false);
+    document.addEventListener('keydown',game.keyDownHandler, false);
+    document.addEventListener('keyup',game.keyUpHandler, false);
+    // document.addEventListener('click', function () {
+    //   if (gravity === false) {
+    //     game.addGravity
+    //     gravity = true
+    //   }
+    // }) , false);
+    // document.addEventListener('click', function() {
+    //   if (gravity === true) {
+    //     game.removeGravity
+    //     gravity = false
+    //   }
+    // }), false);
 
-</script>
+  </script>
+</div>
+<div id='instructions'>
+  <div class=
+</div>
 
 </body>
 </html>

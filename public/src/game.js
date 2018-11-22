@@ -92,6 +92,12 @@ Game.prototype.keyUpHandler = function keyUpHandler(e) {
     that.upButton = false;
   } else if (e.keyCode === 40) {
     that.downButton = false;
+  } else if (e.keyCode === 71) {
+    if (gravity === false) {
+      that.addGravity()
+    } else {
+      that.removeGravity()
+    }
   }
 };
 
