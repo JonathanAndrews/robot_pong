@@ -13,6 +13,8 @@ describe('Canvas Display', () => {
       rect: jest.fn(),
       strokeText: jest.fn(),
       fillText: jest.fn(),
+      stroke: jest.fn(),
+      arc: jest.fn(),
     };
     stubCanvas = {
       getContext: jest.fn(() => stubContext),
@@ -57,4 +59,23 @@ describe('Canvas Display', () => {
       expect(stubContext.textAlign).toEqual('center');
     });
   });
+
+  describe('drawRobot', () => {
+    it('draws an awesome robot', () => {
+      const canvasDisplay = new CanvasDisplay(stubCanvas);
+      canvasDisplay.drawRobot();
+      expect(stubContext.beginPath).toHaveBeenCalledTimes(12);
+      expect(stubContext.stroke).toHaveBeenCalledTimes(10);
+      expect(stubContext.rect).toHaveBeenCalledTimes(7);
+      expect(stubContext.arc).toHaveBeenCalledTimes(5);
+    })
+  })
+
+  describe('credits', () => {
+    it('credits the game creators', () => {
+      const canvasDisplay = new CanvasDisplay(stubCanvas);
+      canvasDisplay.credits();
+      expect(stubContext.fillText).toHaveBeenCalledTimes(1);
+    })
+  })
 });

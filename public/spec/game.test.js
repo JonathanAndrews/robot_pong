@@ -56,7 +56,6 @@ describe('Game', () => {
       stubAiInterface, 120000);
   });
 
-
   describe('game.run()', () => {
     it('calls checkPaddleCollision on the paddle object', () => {
       pongGame.checkPaddleCollision = jest.fn();
