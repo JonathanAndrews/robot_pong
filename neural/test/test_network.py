@@ -28,7 +28,7 @@ class NetworkTest(unittest.TestCase):
         training_outputs = np.array([[0.1, 0.12], [0.323, 0.984]])
         self.network.batch_train(training_inputs, training_outputs)
         second_prediction = self.network.batch_prediction(input)
-        self.assertTrue((first_prediction != second_prediction).any())
+        self.assertTrue((first_prediction[0] != second_prediction[0]).any())
 
     def test_save_and_load_model(self):
         self.network.define_model()
