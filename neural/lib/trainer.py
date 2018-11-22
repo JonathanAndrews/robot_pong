@@ -61,7 +61,7 @@ class Trainer:
         competitor_state = self.game.return_competitor_state()
 
         while True:
-            champion_action = self.champion_action(champion_state, display=True)
+            champion_action = self.champion_action(champion_state)
             competitor_action = self.competitor_action(competitor_state)
             self.game.step(competitor_action, champion_action)
 
@@ -73,38 +73,44 @@ class Trainer:
                 self.current_score = 0
                 return champion_state['score']
 
-    def champion_action(self, state, display=False):
+    def champion_action(self, state):
         if random.random() < self.epsilon:
             return random.choice(self.game.POSSIBLE_MOVES)
         else:
             state_values = np.array([[value for value in state.values()]])
             state_values_0 = [value for value in state.values()]
-            return np.argmax(self.champion.batch_prediction(state_values, display)) - 1
+            return np.argmax(self.champion.batch_prediction(state_values)) - 1
 
     def competitor_action(self, state):
         state_values = np.array([[value for value in state.values()]])
         return np.argmax(self.competitor.batch_prediction(state_values)) - 1
 
     def calculate_reward(self, state):
+        return self.calculate_return_reward(state) + self.calculate_score_reward(state) + self.calculate_follow_reward(state)
+
+    def calculate_return_reward(self, state):
         output = 0
-        if state['score'] > self.current_score:
-            print('GOAL!')
-            self.current_score = state['score']
-            if self.game.last_hit:
-                print('Down the Line! (winner)')
-                output += (5 * self.winners_parameter)
-                self.winners_parameter *= self.winners_growth
-        elif state['score'] < self.current_score:
-            print('CONCEDED!')
-            self.current_score = state['score']
-            output += -5
-        if state['champion-paddle-y'] <= state['ball-position-y'] <= state['champion-paddle-y'] + 0.1:
-            output += 0.1
         if self.game.collision:
             output += (5 * self.returns_parameter)
             self.returns_parameter *= self.returns_decay
-        if output:
-            print('Champion rewarded: ' + str(output))
+        return output
+
+    def calculate_score_reward(self, state):
+        output = 0
+        if state['score'] > self.current_score:
+            self.current_score = state['score']
+            if self.game.last_hit:
+                output += (5 * self.winners_parameter)
+                self.winners_parameter *= self.winners_growth
+        elif state['score'] < self.current_score:
+            self.current_score = state['score']
+            output += -5
+        return output
+
+    def calculate_follow_reward(self, state):
+        output = 0
+        if state['champion-paddle-y'] <= state['ball-position-y'] <= state['champion-paddle-y'] + 0.1:
+            output += 0.1
         return output
 
     def add_sample(self, champion_state, new_champion_state, reward, action, done):
