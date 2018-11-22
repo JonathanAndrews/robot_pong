@@ -46,6 +46,7 @@ describe('Game', () => {
       drawRobot: jest.fn(),
       drawGameOverPage: jest.fn(),
       width: 900,
+      height: 600,
     };
     stubAiInterface = {
       getMove: jest.fn(),
@@ -109,15 +110,15 @@ describe('Game', () => {
 
     it('returns expected hash', () => {
       const aiInputs = pongGame.getAIInputs();
-      expect(aiInputs['user-paddle-y']).toEqual(420);
+      expect(aiInputs['user-paddle-y']).toEqual(0.7);
       // expect(aiInputs['user-paddle-dy']).toEqual(1.5);
-      expect(aiInputs['comp-paddle-y']).toEqual(420);
+      expect(aiInputs['comp-paddle-y']).toEqual(0.7);
       // expect(aiInputs['comp-paddle-dy']).toEqual(1.5);
-      expect(aiInputs['ball-position-x']).toEqual(450);
-      expect(aiInputs['ball-position-y']).toEqual(300);
-      expect(aiInputs['ball-velocity-dx']).toEqual(2.2);
-      expect(aiInputs['ball-velocity-dy']).toEqual(2);
-      expect(aiInputs['time-remaining']).toEqual(120000);
+      expect(aiInputs['ball-position-x']).toEqual(0.5);
+      expect(aiInputs['ball-position-y']).toEqual(0.5);
+      expect(aiInputs['ball-velocity-dx']).toEqual(1);
+      expect(aiInputs['ball-velocity-dy']).toBeCloseTo(0.9, 1);
+      // expect(aiInputs['time-remaining']).toEqual(120000);
       expect(aiInputs.score).toEqual(0);
     });
   });
