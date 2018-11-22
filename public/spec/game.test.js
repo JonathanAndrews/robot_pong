@@ -56,7 +56,6 @@ describe('Game', () => {
       stubAiInterface, 120000);
   });
 
-
   describe('game.run()', () => {
     it('calls checkPaddleCollision on the paddle object', () => {
       pongGame.checkPaddleCollision = jest.fn();
@@ -72,6 +71,26 @@ describe('Game', () => {
       pongGame.ball.accelerationAct = jest.fn();
       pongGame.run();
       expect(pongGame.ball.accelerationAct).toHaveBeenCalledTimes(1);
+    });
+
+    describe('when interval remaining = 0', () => {
+      it('calls all of the game over functions', () => {
+        pongGame.isGameOver = jest.fn();
+        pongGame.intervalRemaining = 0;
+        pongGame.run();
+        expect(pongGame.isGameOver).toHaveBeenCalledTimes(1);
+        expect(stubCanvas.clear).toHaveBeenCalledTimes(1);
+        expect(stubCanvas.drawGameOverPage).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('when interval remaining < 0 ', () => {
+      it('does nothing', () => {
+        pongGame.isGameOver = jest.fn();
+        pongGame.intervalRemaining = -1;
+        pongGame.run();
+        expect(pongGame.isGameOver).toHaveBeenCalledTimes(0)
+      });
     });
   });
 
@@ -203,11 +222,13 @@ describe('Game', () => {
   describe('isGameOver', () => {
     it('should be false when number of intervals is positive', () => {
       pongGame.gameOver = false;
-      pongGame.run();
+      pongGame.intervalRemaining = 1;
+      pongGame.isGameOver();
       expect(pongGame.gameOver).toEqual(false);
     });
 
     it('should be true when number of intervals is 0 or negative', () => {
+      pongGame.gameOver = false;
       pongGame.intervalRemaining = 0;
       pongGame.run();
       expect(pongGame.gameOver).toEqual(true);
