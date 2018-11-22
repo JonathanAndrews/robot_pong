@@ -23,7 +23,7 @@ class NetworkTest(unittest.TestCase):
 
     def test_batch_train(self):
         input = np.array([[1,2]])
-        first_prediction = self.network.single_prediction(input)
+        first_prediction = self.network.batch_prediction(input)
         training_inputs = np.array([[1, 2], [3, 4]])
         training_outputs = np.array([[0.1, 0.12], [0.323, 0.984]])
         self.network.batch_train(training_inputs, training_outputs)
