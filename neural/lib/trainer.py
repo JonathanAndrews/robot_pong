@@ -7,7 +7,7 @@ class Trainer:
 
     def __init__(self, game, memory, champion, competitor, max_epsilon, min_epsilon,
                  epsilon_decay, gamma, returns_decay, winners_growth, returns_parameter=1 ,
-                 winners_parameter=1, batch_size=32, display_reward=False):
+                 winners_parameter=1, batch_size=32):
         self.game = game
         self.memory = memory
         self.champion = champion
@@ -21,7 +21,6 @@ class Trainer:
         self.total_reward = 0
         self.batch_size = batch_size
         self.current_score = 0
-        self.display_reward = display_reward
         self.returns_parameter = returns_parameter
         self.winners_parameter = winners_parameter
         self.returns_decay = returns_decay
@@ -42,9 +41,7 @@ class Trainer:
             new_champion_state = self.game.return_champion_state()
             reward = self.calculate_reward(new_champion_state)
             done = self.game.game_over
-            if reward != 0 or random.random() > 0.95:
-                if not done:
-                    self.add_sample(champion_state, new_champion_state, reward, champion_action, done)
+            self.add_sample(champion_state, new_champion_state, reward, champion_action, done)
 
             self.update_epsilon()
             if len(self.memory.buffer) > 0:
@@ -55,8 +52,6 @@ class Trainer:
             if done:
                 self.current_score = 0
                 print(self.epsilon)
-                if self.display_reward:
-                    print(self.total_reward)
                 break
 
     def test_game(self):

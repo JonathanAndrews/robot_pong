@@ -69,14 +69,14 @@ class GameTest(unittest.TestCase):
         output = self.game.return_champion_state()
         expected_output = {
             'champion-paddle-y': 1,
-            'champion-paddle-dy': 6,
+            # 'champion-paddle-dy': 6,
             'competitor-paddle-y': 1,
-            'competitor-paddle-dy': 6,
+            # 'competitor-paddle-dy': 6,
             'ball-position-x': 0,
             'ball-position-y': 1,
             'ball-velocity-dx': 1,
             'ball-velocity-dy': 6,
-            'time-remaining': 1,
+            # 'time-remaining': 1,
             'score': 0
         }
         self.assertDictEqual(output, expected_output)
@@ -89,14 +89,14 @@ class GameTest(unittest.TestCase):
         output = self.game.return_competitor_state()
         expected_output = {
             'champion-paddle-y': 1,
-            'champion-paddle-dy': 6,
+            # 'champion-paddle-dy': 6,
             'competitor-paddle-y': 1,
-            'competitor-paddle-dy': 6,
+            # 'competitor-paddle-dy': 6,
             'ball-position-x': 1,
             'ball-position-y': 1,
             'ball-velocity-dx': -1,
             'ball-velocity-dy': 6,
-            'time-remaining': 1,
+            # 'time-remaining': 1,
             'score': 0
         }
         self.assertDictEqual(output, expected_output)
