@@ -22,11 +22,13 @@ class NetworkTest(unittest.TestCase):
         self.assertEqual(len(array), len(prediction))
 
     def test_batch_train(self):
+        self.network.define_model()
         input = np.array([[1,2]])
         first_prediction = self.network.batch_prediction(input)
         training_inputs = np.array([[1, 2], [3, 4]])
         training_outputs = np.array([[0.1, 0.12], [0.323, 0.984]])
-        self.network.batch_train(training_inputs, training_outputs)
+        for i in range(100):
+            self.network.batch_train(training_inputs, training_outputs)
         second_prediction = self.network.batch_prediction(input)
         self.assertTrue((first_prediction != second_prediction).any())
 
