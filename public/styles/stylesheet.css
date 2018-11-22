@@ -1,0 +1,27 @@
+body {
+  padding: 0; 
+  margin: 0;
+  background: #012
+}
+
+canvas {
+  background: #123;
+  display: block;
+  margin: 0 auto;
+}
+
+.game {
+  padding-top: 40px
+}
+
+button {
+  display: block;
+  margin: 0 auto;
+}
+
+#instructions {
+  color: #FFF;
+  text-align: center;
+  font-family: Arial;
+  font-size: 22px;
+}
