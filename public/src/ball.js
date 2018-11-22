@@ -51,6 +51,7 @@ Ball.prototype.accelerationAct = function accelerationAct(gravity) {
   }
 };
 
+/* istanbul ignore next */
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
   module.exports = Ball;
 }

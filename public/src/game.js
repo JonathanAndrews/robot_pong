@@ -177,8 +177,7 @@ Game.prototype._isBallWithinUpperBoundOfAiPaddle = function _isBallWithinUpperBo
 };
 
 
+/* istanbul ignore next */
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
   module.exports = Game;
-} else {
-  //
 }

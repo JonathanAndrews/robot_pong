@@ -192,6 +192,7 @@ CanvasDisplay.prototype.drawRobot = function drawRobot() {
   this.context.stroke();
 };
 
+/* istanbul ignore next */
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
   module.exports = CanvasDisplay;
 }
