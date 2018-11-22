@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import Mock
 import numpy as np
 from lib.network import Network
 
@@ -22,15 +23,11 @@ class NetworkTest(unittest.TestCase):
         self.assertEqual(len(array), len(prediction))
 
     def test_batch_train(self):
-        self.network.define_model()
-        input = np.array([[1,2]])
-        first_prediction = self.network.batch_prediction(input)
         training_inputs = np.array([[1, 2], [3, 4]])
         training_outputs = np.array([[0.1, 0.12], [0.323, 0.984]])
-        for i in range(100):
-            self.network.batch_train(training_inputs, training_outputs)
-        second_prediction = self.network.batch_prediction(input)
-        self.assertTrue((first_prediction[0] != second_prediction[0]).any())
+        self.network.model = Mock()
+        self.network.batch_train(training_inputs, training_outputs)
+        self.network.model.fit.assert_called()
 
     def test_save_and_load_model(self):
         self.network.define_model()
