@@ -14,8 +14,9 @@ class Ball:
         self.check_collisions()
 
     def check_collisions(self):
-        if (self.position[1] + self.radius >= self.canvas[1]) or (
-                self.position[1] - self.radius <= 0):
+        if (self.position[1] + self.radius >= self.canvas[1]) and (self.velocity[1] > 0): 
+            self.velocity[1] *= -1
+        elif (self.position[1] - self.radius <= 0) and (self.velocity[1] < 0):
             self.velocity[1] *= -1
 
     def check_for_goals(self):
