@@ -1,5 +1,5 @@
 const Game = function Game(playerPaddle, aiPaddle, ball, canvasDisplay,
-  aiInterface, totalIntervals = 60) {
+  aiInterface, totalIntervals = 600) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
@@ -94,9 +94,11 @@ Game.prototype.keyUpHandler = function keyUpHandler(e) {
     that.downButton = false;
   } else if (e.keyCode === 71) {
     if (gravity === false) {
-      that.addGravity()
+      that.addGravity();
+      gravity = true;
     } else {
-      that.removeGravity()
+      that.removeGravity();
+      gravity = false;
     }
   }
 };
