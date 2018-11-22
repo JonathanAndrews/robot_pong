@@ -9,6 +9,7 @@ class BallTest(unittest.TestCase):
         self.ball_left_goal = Ball(595, 20, 1, 1, 10, 600, 900)
         self.ball_right_goal = Ball(3, 20, -1, 1, 10, 600, 900)
         self.colliding_ball = Ball(300, 889, 1, 1, 10, 600, 900)
+        self.colliding_ball_top = Ball(300, 3, 1, -1, 10, 600, 900)
 
     def test_step(self):
         self.ball.step()
@@ -21,6 +22,10 @@ class BallTest(unittest.TestCase):
     def test_check_collisions_colliding_ball(self):
         self.colliding_ball.step()
         self.assertTrue((self.colliding_ball.velocity == np.array([1, -1])).all())
+
+    def test_check_collisions_colliding_ball_top(self):
+        self.colliding_ball_top.step()
+        self.assertTrue((self.colliding_ball_top.velocity == np.array([1, 1])).all())
 
     def test_reset_position(self):
         self.ball.reset_position()

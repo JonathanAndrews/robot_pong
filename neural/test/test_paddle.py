@@ -14,4 +14,4 @@ class PaddleTest(unittest.TestCase):
 
     def test_check_boundaries(self):
         self.colliding_paddle.step(action=1)
-        self.assertTrue((self.colliding_paddle.position == np.array([10, 540])).all())
+        self.assertTrue((self.colliding_paddle.position == np.array([10, 500])).all())
