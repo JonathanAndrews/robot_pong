@@ -1,4 +1,4 @@
-const Game = function Game(playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 6000) {
+const Game = function Game(playerPaddle, aiPaddle, ball, canvasDisplay, aiInterface, totalIntervals = 12000) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
