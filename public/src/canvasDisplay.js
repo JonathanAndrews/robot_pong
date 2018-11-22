@@ -59,20 +59,23 @@ CanvasDisplay.prototype.drawGameOverPage = function drawGameOverPage(score) {
   this.context.textAlign = 'center';
   this.context.fillText(`${score[0]}    -    ${score[1]}`, 450, 500);
 
-  document.getElementById('myCanvas').addEventListener('click', (e) => {
-    if (game.gameOver && ((e.offsetX > 350 && e.offsetX < 550)
-    && (e.offsetY > 300 && e.offsetY < 350))) {
-      canvasDisplay.gameOverPage = false;
-      canvasDisplay.clear();
-      canvasDisplay.setUpStartPage();
-      game.gameOver = true;
-      game.intervalRemaining = game.totalIntervals;
-      canvasDisplay.gameOverPage = false;
-      game.score = [0, 0];
-    }
-  });
+  document.getElementById('myCanvas').addEventListener('click', this.gameOverCallback.bind(this));
   this.credits();
 };
+
+CanvasDisplay.prototype.gameOverCallback = function (e) {
+  if ((e.offsetX > 350 && e.offsetX < 550)
+  && (e.offsetY > 300 && e.offsetY < 350)) {
+    this.gameOverPage = false;
+    this.clear();
+    this.setUpStartPage();
+    game.intervalRemaining = game.totalIntervals;
+    this.gameOverPage = false;
+    game.score = [0, 0];
+  } else {
+    //
+  }
+}
 
 CanvasDisplay.prototype.clear = function clear() {
   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);

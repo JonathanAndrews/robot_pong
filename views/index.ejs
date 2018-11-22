@@ -21,16 +21,16 @@
         <script src='../src/paddle.js'></script>
         <script src='../src/game.js'></script>
         <script>
-          let audio_paddle = document.createElement("audio");
-          audio_paddle.src = "soundFX/Bounce_Paddle.mp3"
-          let audio_wall = document.createElement("audio");
-          audio_wall.src = "soundFX/Bounce_Wall.mp3"
-          let audio_goal = document.createElement("audio");
-          audio_goal.src = "soundFX/Goal_Sound.wav"
+          let audioPaddle = document.createElement("audio");
+          audioPaddle.src = "soundFX/Bounce_Paddle.mp3"
+          let audioWall = document.createElement("audio");
+          audioWall.src = "soundFX/Bounce_Wall.mp3"
+          let audioGoal = document.createElement("audio");
+          audioGoal.src = "soundFX/Goal_Sound.wav"
           let audio = {
-            audio_paddle: audio_paddle,
-            audio_wall: audio_wall,
-            audio_goal: audio_goal
+            audioPaddle: audioPaddle,
+            audioWall: audioWall,
+            audioGoal: audioGoal
           }
 
           ai_interface = new AiInterface()
@@ -42,7 +42,6 @@
 
           var game = new Game(player_paddle, ai_paddle, ball, canvasDisplay, ai_interface);
           var eventListenerBug = true;
-          var gravity = false;
 
           let game_runner;
           setInterval(() => {
@@ -76,11 +75,11 @@
           <p>You are playing Pong against an AI that was taught using Reinforcement Learning. Reinforcement learning is a type of Machine Learning where an AI learns to choose actions based on its environment and some notion of a 'reward'.</p>
           <p>This means that the AI has played against itself repeatedly, trying to learn the game of Pong. When it started it didn't know the rules of Pong - only that it got 'rewarded' for scoring goals and 'penalised' for conceding. Later versions have had more time to learn a strategy to win and so perform better.</p>
           <p>Our AI's brain is a type of neural network: thousands of nodes which 'fire' when they receive a strong enough signal. Over time, some nodes fire more easily and some require greater input. This is the outcome of our AI's learning process. The way our AI performs could be compared to muscle memory.</p>
-          
+
           <p>Unfortunately, our AI is still not strong enough to beat a human - unlike the rest of us it hasn't got years of experience playing video games, only a few hours. We hope that with more time to learn our AI might eventually be unbeatable.</p>
           <p>The Github repo for this project is available <a href="https://github.com/JonathanAndrews/robot_pong">here</a>, to find out more about Reinforcement Learning and Machine Learning visit <a href='https://www.kaggle.com/learn/machine-learning'> Kaggle</a>.</p>
         </div>
-      </div>  
+      </div>
     </div>
     <div class='col-sm'></div>
   </div>

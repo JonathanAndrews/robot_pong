@@ -1,6 +1,7 @@
 
 const Game = function Game(playerPaddle, aiPaddle, ball, canvasDisplay,
-  aiInterface, totalIntervals = 600) {
+  aiInterface,
+  totalIntervals = 60) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
@@ -94,13 +95,15 @@ Game.prototype.keyUpHandler = function keyUpHandler(e) {
   } else if (e.keyCode === 83) {
     that.downButton = false;
   } else if (e.keyCode === 71) {
-    if (gravity === false) {
+    if (that.gravity === false) {
       that.addGravity();
-      gravity = true;
+      that.gravity = true;
     } else {
       that.removeGravity();
-      gravity = false;
+      that.gravity = false;
     }
+  } else {
+    //
   }
 };
 
@@ -176,4 +179,6 @@ Game.prototype._isBallWithinUpperBoundOfAiPaddle = function _isBallWithinUpperBo
 
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
   module.exports = Game;
+} else {
+  //
 }
