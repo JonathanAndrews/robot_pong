@@ -1,5 +1,6 @@
 body {
-  padding: 0; margin: 0;
+  padding: 0; 
+  margin: 0;
   background: #012
 }
 
@@ -16,4 +17,11 @@ canvas {
 button {
   display: block;
   margin: 0 auto;
-ß}
+}
+
+#instructions {
+  color: #FFF;
+  text-align: center;
+  font-family: Arial;
+  font-size: 22px;
+}

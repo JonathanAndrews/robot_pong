@@ -80,17 +80,17 @@ Game.prototype.removeGravity = function removeGravity() {
 };
 
 Game.prototype.keyDownHandler = function keyDownHandler(e) {
-  if (e.keyCode === 38) {
+  if (e.keyCode === 87) {
     that.upButton = true;
-  } else if (e.keyCode === 40) {
+  } else if (e.keyCode === 83) {
     that.downButton = true;
   }
 };
 
 Game.prototype.keyUpHandler = function keyUpHandler(e) {
-  if (e.keyCode === 38) {
+  if (e.keyCode === 87) {
     that.upButton = false;
-  } else if (e.keyCode === 40) {
+  } else if (e.keyCode === 83) {
     that.downButton = false;
   } else if (e.keyCode === 71) {
     if (gravity === false) {
