@@ -24,8 +24,8 @@ Ball.prototype.moveBall = function moveBall() {
 };
 
 Ball.prototype.wallCollision = function wallCollision() {
-  if ((this.position.y - this.RADIUS) <= 0
-        || (this.position.y + this.RADIUS) >= 600) {
+  if (((this.position.y - this.RADIUS) <= 0 && this.velocity.dy < 0)
+        || ((this.position.y + this.RADIUS) >= 600 && this.velocity.dy > 0)) {
     this.velocity.dy *= -1;
     this.audio.audio_wall.play()
   }

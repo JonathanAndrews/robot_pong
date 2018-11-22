@@ -74,13 +74,17 @@ describe('Canvas Display', () => {
   describe('drawGameOverPage', () => {
     it('draws the game over page', () => {
       document.body.innerHTML = "<div id='myCanvas'></div>";
-      document.getElementById('myCanvas').click();
       const canvasDisplay = new CanvasDisplay(stubCanvas);
       canvasDisplay.drawGameOverPage([0,1]);
       expect(stubContext.fillText).toHaveBeenCalledTimes(5)
       expect(stubContext.rect).toHaveBeenCalledTimes(1)
       expect(stubContext.fill).toHaveBeenCalledTimes(1)
       expect(stubContext.beginPath).toHaveBeenCalledTimes(1)
+    })
+
+    it('event listener is clicked', () => {
+      const canvasDisplay = new CanvasDisplay(stubCanvas);
+      canvasDisplay.drawGameOverPage([0,1]);
     })
   })
 
