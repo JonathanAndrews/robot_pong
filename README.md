@@ -48,12 +48,23 @@ Describe and show how to run the tests with code examples.
 If people like your project they’ll want to learn how they can use it. To do so include step by step guide to use your project.
 
 ## Contribute
+We welcome contributions to this project.
+Please:
+Open a pull request
+Your pull request will then be reviewed from one of the project collaborators and we will try to respond quickly
+If you have any suggestions, or notice any bugs, please open an issue
+
 Let people know how they can contribute into your project. A contributing guideline will be a big plus.
 
 ## Credits
 Give proper credits. This could be a link to any repo which inspired you to build this project, any blogposts or links to people who contrbuted in this project.
 
-Anything else that seems useful
+## By
+- [Jonathan Andrews](https://github.com/JonathanAndrews)
+- [James Rodney](https://github.com/jlrodney)
+- [Cameron Whitehead](https://github.com/camjw)
+- [Aidan Faria](https://github.com/NadiaAiraf)
+
 ## License
 A short snippet describing the license (MIT, Apache etc)
 
