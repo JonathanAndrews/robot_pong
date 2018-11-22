@@ -11,14 +11,14 @@ describe('Ball', () => {
   let goal_sound;
 
   beforeEach(() => {
-    paddle_sound = { play: jest.fn() }
-    wall_sound = { play: jest.fn() }
-    goal_sound = { play: jest.fn() }
+    paddle_sound = { play: jest.fn() };
+    wall_sound = { play: jest.fn() };
+    goal_sound = { play: jest.fn() };
     audio = {
       audio_paddle: paddle_sound,
       audio_wall: wall_sound,
       audio_goal: goal_sound,
-    }
+    };
     stubContext = {
       beginPath: jest.fn(),
       arc: jest.fn(),
@@ -125,23 +125,23 @@ describe('Ball', () => {
 
   describe('Audio Effects', () => {
     it('Paddle Collision plays Bounce_Paddle sound', () => {
-      velocityY = ball.velocity.dy
-      expect(paddle_sound.play).toHaveBeenCalledTimes(0)     
+      velocityY = ball.velocity.dy;
+      expect(paddle_sound.play).toHaveBeenCalledTimes(0);
       ball.paddleCollision(12, PADDLEHEIGHT);
-      expect(paddle_sound.play).toHaveBeenCalledTimes(1)
+      expect(paddle_sound.play).toHaveBeenCalledTimes(1);
     });
 
     it('Paddle Collision plays Bounce_Wall sound', () => {
       ball.position.y = 595;
-      expect(wall_sound.play).toHaveBeenCalledTimes(0)     
+      expect(wall_sound.play).toHaveBeenCalledTimes(0);
       ball.moveBall();
-      expect(wall_sound.play).toHaveBeenCalledTimes(1)
+      expect(wall_sound.play).toHaveBeenCalledTimes(1);
     });
 
     it('Paddle Collision plays Goal_Sound sound', () => {
-      expect(goal_sound.play).toHaveBeenCalledTimes(0)     
+      expect(goal_sound.play).toHaveBeenCalledTimes(0);
       ball.reset();
-      expect(goal_sound.play).toHaveBeenCalledTimes(1)
+      expect(goal_sound.play).toHaveBeenCalledTimes(1);
     });
   });
 });
