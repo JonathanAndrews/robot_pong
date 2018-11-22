@@ -126,23 +126,14 @@ class Trainer:
 
     def train_model(self):
         batch = self.memory.sample_memory(self.batch_size)
-        # print('batch')
-        # print(batch)
         states = np.array([entry[0] for entry in batch])
-        # print("\nstates")
-        # print(states)
+
         new_states = [entry[1] for entry in batch]
         new_states = [[None] * self.champion.no_inputs if v is None else v for v in new_states]
         new_states = np.array(new_states)
-        # print("\nnew states")
-        # print(new_states)
 
         reward_predictions, next_reward_predictions = self.reward_predictions(states, new_states)
 
-        # print("\n reward predictions")
-        # print(reward_predictions)
-        # print("\n next reward predictions")
-        # print(next_reward_predictions)
         champion_input_array = np.zeros([min(self.batch_size, len(batch)), self.champion.no_inputs])
         champion_output_array = np.zeros([min(self.batch_size, len(batch)), self.champion.no_actions])
 
@@ -158,10 +149,6 @@ class Trainer:
             champion_input_array[index] = state
             champion_output_array[index] = current_reward
 
-        # print("\n input array")
-        # print(champion_input_array)
-        # print("\n output array")
-        # print(champion_output_array)
         self.champion.batch_train(champion_input_array, champion_output_array)
 
     def reward_predictions(self, states, new_states):
