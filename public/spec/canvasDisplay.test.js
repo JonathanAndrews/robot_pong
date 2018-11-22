@@ -3,6 +3,7 @@ const CanvasDisplay = require('../src/canvasDisplay');
 describe('Canvas Display', () => {
   let stubContext;
   let stubCanvas;
+  let document;
 
   beforeEach(() => {
     stubContext = {
@@ -68,6 +69,18 @@ describe('Canvas Display', () => {
       expect(stubContext.stroke).toHaveBeenCalledTimes(10);
       expect(stubContext.rect).toHaveBeenCalledTimes(7);
       expect(stubContext.arc).toHaveBeenCalledTimes(5);
+    })
+  })
+
+  describe('drawGameOverPage', () => {
+    it('draws the game over page', () => {
+      document.body.innerHTML = "<div id='final-div'></div>";
+      const canvasDisplay = new CanvasDisplay(stubCanvas);
+      canvasDisplay.drawGameOverPage([0,1]);
+      expect(stubContext.fillText).toHaveBeenCalledTimes(4)
+      expect(stubContext.rect).toHaveBeenCalledTimes(1)
+      expect(stubContext.fill).toHaveBeenCalledTimes(1)
+      expect(stubContext.beginPath).toHaveBeenCalledTimes(1)
     })
   })
 

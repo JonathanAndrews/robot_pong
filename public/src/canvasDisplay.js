@@ -74,7 +74,6 @@ CanvasDisplay.prototype.drawGameOverPage = function drawGameOverPage(score) {
       game.score = [0, 0];
     }
   });
-
   this.credits();
 };
 
