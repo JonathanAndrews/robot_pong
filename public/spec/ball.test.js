@@ -6,18 +6,18 @@ describe('Ball', () => {
   let ball;
   let PADDLEHEIGHT;
   let audio;
-  let paddle_sound;
-  let wall_sound;
-  let goal_sound;
+  let paddleSound;
+  let wallSound;
+  let goalSound;
 
   beforeEach(() => {
-    paddle_sound = { play: jest.fn() };
-    wall_sound = { play: jest.fn() };
-    goal_sound = { play: jest.fn() };
+    paddleSound = { play: jest.fn() };
+    wallSound = { play: jest.fn() };
+    goalSound = { play: jest.fn() };
     audio = {
-      audio_paddle: paddle_sound,
-      audio_wall: wall_sound,
-      audio_goal: goal_sound,
+      audioPaddle: paddleSound,
+      audioWall: wallSound,
+      audioGoal: goalSound,
     };
     stubContext = {
       beginPath: jest.fn(),
@@ -124,24 +124,24 @@ describe('Ball', () => {
   });
 
   describe('Audio Effects', () => {
-    it('Paddle Collision plays Bounce_Paddle sound', () => {
+    it('Paddle Collision plays BouncePaddle sound', () => {
       velocityY = ball.velocity.dy;
-      expect(paddle_sound.play).toHaveBeenCalledTimes(0);
+      expect(paddleSound.play).toHaveBeenCalledTimes(0);
       ball.paddleCollision(12, PADDLEHEIGHT);
-      expect(paddle_sound.play).toHaveBeenCalledTimes(1);
+      expect(paddleSound.play).toHaveBeenCalledTimes(1);
     });
 
-    it('Paddle Collision plays Bounce_Wall sound', () => {
+    it('Paddle Collision plays BounceWall sound', () => {
       ball.position.y = 595;
-      expect(wall_sound.play).toHaveBeenCalledTimes(0);
+      expect(wallSound.play).toHaveBeenCalledTimes(0);
       ball.moveBall();
-      expect(wall_sound.play).toHaveBeenCalledTimes(1);
+      expect(wallSound.play).toHaveBeenCalledTimes(1);
     });
 
-    it('Paddle Collision plays Goal_Sound sound', () => {
-      expect(goal_sound.play).toHaveBeenCalledTimes(0);
+    it('Paddle Collision plays GoalSound sound', () => {
+      expect(goalSound.play).toHaveBeenCalledTimes(0);
       ball.reset();
-      expect(goal_sound.play).toHaveBeenCalledTimes(1);
+      expect(goalSound.play).toHaveBeenCalledTimes(1);
     });
   });
 });
