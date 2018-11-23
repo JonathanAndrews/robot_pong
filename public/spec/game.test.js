@@ -56,6 +56,12 @@ describe('Game', () => {
       stubAiInterface, 120000);
   });
 
+  describe('default settings', () =>  {
+    it('has a totalIntervals', () => {
+      pongGameDefault = new Game(stubPlayerPaddle, stubAiPaddle, stubBall, stubCanvas, stubAiInterface)
+      expect(pongGameDefault.totalIntervals).not.toBe(null)
+    })
+  })
   describe('game.run()', () => {
     it('calls checkPaddleCollision on the paddle object', () => {
       pongGame.checkPaddleCollision = jest.fn();
@@ -191,6 +197,32 @@ describe('Game', () => {
       pongGame.keyUpHandler(mockE);
       expect(pongGame.downButton).toEqual(false);
     });
+
+    it('should change gravity to true if keyCode is 71 and gravity is false', () => {
+      const mockE = {
+        keyCode: 71,
+      };
+      pongGame.gravity = false;
+      expect(pongGame.gravity).toEqual(false);
+      pongGame.keyUpHandler(mockE);
+      expect(pongGame.gravity).toEqual(true);
+    });
+
+    it('should change gravity to true if keyCode is 71 and gravity is true', () => {
+      const mockE = {
+        keyCode: 71,
+      };
+      pongGame.gravity = true;
+      expect(pongGame.gravity).toEqual(true);
+      pongGame.keyUpHandler(mockE);
+      expect(pongGame.gravity).toEqual(false);
+    });
+    it('shold do nothing otherwise', () => {
+      const mockE = {
+        keyCode: 1171,
+      };
+      expect(pongGame.keyUpHandler(mockE)).toBe(undefined)
+    })
   });
 
   describe('checkForGoal', () => {

@@ -34,7 +34,7 @@ Ball.prototype.wallCollision = function wallCollision() {
 Ball.prototype.paddleCollision = function paddleCollision(paddleLocationY, paddleHeight) {
   this.velocity.dx *= -1;
   const whereOnPaddle = (this.position.y - paddleLocationY) / paddleHeight;
-  this.velocity.dy = -6 * 4 * (0.5 - whereOnPaddle);
+  this.velocity.dy = -6 * 3 * (0.5 - whereOnPaddle);
   this.audio.audioPaddle.play();
 };
 
@@ -51,6 +51,7 @@ Ball.prototype.accelerationAct = function accelerationAct(gravity) {
   }
 };
 
+/* istanbul ignore next */
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
   module.exports = Ball;
 }

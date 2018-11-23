@@ -38,6 +38,8 @@
   },
   "homepage": "https://github.com/camjw/robot_pong#readme",
   "jest": {
-    "verbose": true
+    "verbose": true,
+    "collectCoverage": true,
+    "coverageReporters": ["json", "html", "lcov", "text"]
   }
 }

@@ -31,6 +31,7 @@ AiInterface.prototype._choosesBestMove = function _choosesBestMove(inputs) {
   return move;
 };
 
+/* istanbul ignore next */
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
   module.exports = AiInterface;
 }
