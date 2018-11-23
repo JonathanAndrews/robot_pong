@@ -1,13 +1,13 @@
 const Paddle = function Paddle(canvas, playerType) {
   this.SPEED = 6;
-  this.DIMENSIONS = { height: 100, width: 10 };
+  this.DIMENSIONS = { height: 120, width: 10 };
   this.yPosition = 420;
   this.canvas = canvas;
   this.context = this.canvas.getContext('2d');
   if (playerType === 0) {
     this.xPosition = 10;
   } else {
-    this.DIMENSIONS = { height: 100, width: 10 };
+    this.DIMENSIONS = { height: 120, width: 10 };
     this.yPosition = 10;
     this.xPosition = 880;
   }
