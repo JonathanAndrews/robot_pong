@@ -1,7 +1,7 @@
 
 const Game = function Game(playerPaddle, aiPaddle, ball, canvasDisplay,
   aiInterface,
-  totalIntervals = 600) {
+  totalIntervals = 6000) {
   this.playerPaddle = playerPaddle;
   this.aiPaddle = aiPaddle;
   this.ball = ball;
