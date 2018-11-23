@@ -25,7 +25,7 @@ Robot Face Pong - The pong game with AI opponent is currently deployed at https:
 - TensorFlow - for building a neural network
 - Keras - converted our Python neural network into javascript
 - TensorFlowJS - allowed us to store our neural network that had been converted from Python
-- expresJS - hosting our front end game, hosting an API that uploaded different AI models
+- expressJS - hosting our front end game, hosting an API that serves different AI models
 
 
 ## Features
@@ -47,12 +47,12 @@ Then go on to http://localhost:3000 in browser.
 
 #### Train your AI
 
-Many of the python requirements can be found in the `python_instructions.md` file. In order to set your AI running, first install the correct version of Python:
+Many of the python instructions can be found in the `python_instructions.md` file. In order to set your AI running, first install the correct version of Python:
 ```
 brew unlink python
 brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/f2a764ef944b1080be64bd88dca9a1d80130c558/Formula/python.rb
 ```
-then navigate to the /neural/ directory and install the requirements
+then navigate to the /neural/ directory and install the requirements:
 ```
 pip3 install -r requirements.txt
 ```
@@ -61,7 +61,7 @@ Finally to set your AI running:
 python3 run_training.py
 ```
 
-If you open up the run_training.py file you'll be able to see many different variables that control different aspects of how the AI learns. Feel free to adjust them yourself in an attempt to get a smarter AI.
+If you open up the run_training.py file you'll be able to see many different variables that control different aspects of how the AI learns. Feel free to adjust them yourself if you want to attempt to get a smarter AI.
 
 ## API Reference
 
@@ -71,7 +71,7 @@ The url for model 0 is https://burninglake.herokuapp.com/model/version_0 and in 
 
 ## Tests
 
-The javascript tests are all written using jest, to see all tests + coverage enter the following command:
+The javascript tests are all written using jest, to see all tests and coverage enter the following command:
 ```
 npm test
 ```
@@ -85,10 +85,8 @@ coverage run --source=lib -m unittest && coverage report
 We welcome contributions to this project.
 Please:
 Open a pull request
-Your pull request will then be reviewed from one of the project collaborators and we will try to respond quickly
-If you have any suggestions, or notice any bugs, please open an issue
-
-Let people know how they can contribute into your project. A contributing guideline will be a big plus.
+Your pull request will then be reviewed by one of the project collaborators and we will try to respond quickly.
+If you have any suggestions or notice any bugs, please open an issue.
 
 ## By
 - [Jonathan Andrews](https://github.com/JonathanAndrews)
@@ -97,6 +95,5 @@ Let people know how they can contribute into your project. A contributing guidel
 - [Aidan Faria](https://github.com/NadiaAiraf)
 
 ## License
-A short snippet describing the license (MIT, Apache etc)
 
 MIT © RobotFace 🤖
