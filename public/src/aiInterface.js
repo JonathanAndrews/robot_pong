@@ -1,5 +1,5 @@
 const AiInterface = function AiInterface() {
-  this.MODELURL = 'http://localhost:5000/model/version_';
+  this.MODELURL = 'https://burninglake.herokuapp.com/model/version_';
   this.model = {};
 };
 
