@@ -17,7 +17,7 @@ CanvasDisplay.prototype.setUpStartPage = function setUpStartPage() {
   this.context.fillText('Which version would you like to play against?', 450, 180);
 
   for (let x = 0; x < 5; x++) {
-    for (let y = 0; y < 5; y++) {
+    for (let y = 2; y < 3; y++) {
       this.context.beginPath();
       this.context.rect(x * 70 + 300, y * 50 + 240, 40, 30);
       this.context.fillStyle = '#FFFFFF';
@@ -26,7 +26,7 @@ CanvasDisplay.prototype.setUpStartPage = function setUpStartPage() {
       this.context.font = '15px Arial';
       this.context.fillStyle = 'black';
       this.context.textAlign = 'center';
-      this.context.fillText(x + y * 5, x * 70 + 320, y * 50 + 260);
+      this.context.fillText(x + 1, x * 70 + 320, y * 50 + 260);
     }
   }
 };

@@ -100,10 +100,10 @@ describe('Canvas Display', () => {
     it('draws the starting page', () => {
       const canvasDisplay = new CanvasDisplay(stubCanvas);
       canvasDisplay.setUpStartPage();
-      expect(stubContext.fillText).toHaveBeenCalledTimes(29);
-      expect(stubContext.fill).toHaveBeenCalledTimes(25);
-      expect(stubContext.rect).toHaveBeenCalledTimes(25);
-      expect(stubContext.beginPath).toHaveBeenCalledTimes(25);
+      expect(stubContext.fillText).toHaveBeenCalledTimes(9);
+      expect(stubContext.fill).toHaveBeenCalledTimes(5);
+      expect(stubContext.rect).toHaveBeenCalledTimes(5);
+      expect(stubContext.beginPath).toHaveBeenCalledTimes(5);
     })
   })
   describe('gameOverCallback', () => {

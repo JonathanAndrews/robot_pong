@@ -83,7 +83,7 @@ describe('Ball', () => {
       ball.velocity.dy = 2;
       expect(ball.velocity.dy).toEqual(2);
       ball.paddleCollision(12, PADDLEHEIGHT);
-      expect(ball.velocity.dy).toBeCloseTo(2.4, 1);
+      expect(ball.velocity.dy).toBeCloseTo(1.8, 1);
     });
 
     it('changes the vertical velocity in a different way', () => {
@@ -91,7 +91,7 @@ describe('Ball', () => {
       ball.velocity.dy = 2;
       expect(ball.velocity.dy).toEqual(2);
       ball.paddleCollision(16, PADDLEHEIGHT);
-      expect(ball.velocity.dy).toBeCloseTo(-7.2, 1);
+      expect(ball.velocity.dy).toBeCloseTo(-5.4, 1);
     });
   });
 
