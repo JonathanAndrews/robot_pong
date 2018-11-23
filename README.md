@@ -17,15 +17,15 @@ Robot Face Pong - The pong game with AI opponent is currently deployed at https:
 
 ### Languages
 
-Python - AI training
-Javascript - front end game UI
+- Python - AI training
+- Javascript - front end game UI
 
 ### Frameworks
 
-TensorFlow - for building a neural network
-Keras - converted our Python neural network into javascript
-TensorFlowJS - allowed us to store our neural network that had been converted from Python
-expresJS - hosting our front end game, hosting an API that uploaded different AI models
+- TensorFlow - for building a neural network
+- Keras - converted our Python neural network into javascript
+- TensorFlowJS - allowed us to store our neural network that had been converted from Python
+- expresJS - hosting our front end game, hosting an API that uploaded different AI models
 
 
 ## Features
@@ -65,11 +65,13 @@ If you open up the run_training.py file you'll be able to see many different var
 
 ## API Reference
 
-The API that holds all of our TensorFlowJS AI models can be found in this repository https://github.com/camjw/RobotPongAPI. The url for model 0 is https://burninglake.herokuapp.com/model/version_0 and in the same way you can find model 1, model 2, etc.
+The API that holds all of our TensorFlowJS AI models can be found in this repository: https://github.com/camjw/RobotPongAPI
+
+The url for model 0 is https://burninglake.herokuapp.com/model/version_0 and in the same way you can find model 1, model 2, etc.
 
 ## Tests
 
-The javascript tests are all written using jest, to see all tests as well as test coverage enter the following command:
+The javascript tests are all written using jest, to see all tests + coverage enter the following command:
 ```
 npm test
 ```
