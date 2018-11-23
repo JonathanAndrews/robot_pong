@@ -57,5 +57,11 @@ describe('AI Interface', () => {
       const inputs = { some: 'hash' };
       expect(aiInterface.getMove(7, inputs)).toEqual(1);
     });
+
+    it('returns a random move if the difficulty is 0', () => {
+      aiInterface.model = allModels;
+      const inputs = { some: 'hash' };
+      expect([-1,0,1]).toContain(aiInterface.getMove(0, inputs));
+    });
   });
 });

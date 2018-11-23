@@ -10,6 +10,9 @@ AiInterface.prototype.fetchModel = async function fetchModel(version) {
 };
 
 AiInterface.prototype.getMove = function getMove(version, hashInput) {
+  if (version === 0) {
+    return this.randomMove()
+  }
   const aiInputArray = this._aiInputArray(hashInput);
   const moveRewards = this._makePredictions(version, aiInputArray);
   return this._choosesBestMove(moveRewards);
@@ -30,6 +33,10 @@ AiInterface.prototype._choosesBestMove = function _choosesBestMove(inputs) {
   const move = indexOfMove - 1;
   return move;
 };
+
+AiInterface.prototype.randomMove = function randomMove() {
+  return [-1, 0, 1][Math.round(Math.random() * 2)]
+}
 
 /* istanbul ignore next */
 if (typeof module !== 'undefined' && Object.prototype.hasOwnProperty.call(module, 'exports')) {
