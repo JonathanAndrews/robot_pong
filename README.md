@@ -1,14 +1,14 @@
 # Robot Face Pong
 
-A single player pong game. Play against increasingly competitive versions of a reinforcement learning AI. 
+A single player pong game. Play against increasingly competitive versions of a reinforcement learning AI, implemented with TensorFlow.
 
 ## Motivation
-This project was undertaken as part of the Makers Academy Software Developer course. We decided to make an AI as our final project to stretch ourselves and learn as much as possible in the two weeks. 
+This project was undertaken as part of the Makers Academy Software Developer course. We decided to make an AI as our final project to stretch ourselves and learn as much as possible in the two weeks.
 
 A short description of the motivation behind the creation and maintenance of the project. This should explain why the project exists.
 
 ## Build status
-Robot Face Pong - The pong game with AI opponent is currently deployed at https://robot-face-pong.herokuapp.com/. Travis is being used to ensure that only high quality code is deployed. 
+Robot Face Pong - The pong game with AI opponent is currently deployed at https://robot-face-pong.herokuapp.com/. Travis is being used to ensure that only high quality code is deployed.
 
 Build status of continus integration i.e. travis, appveyor etc. Ex. -
 
@@ -20,29 +20,75 @@ If you're using any code style like xo, standard etc. That will help others whil
 js-standard-style
 
 ## Screenshots
-Include logo/demo screenshot etc.
 
-## Tech/framework used
-Ex. -
+!['this should be a picture of our game'](./images/gameplay_1.png)
 
-## Built with
+## Tech
 
-- Electron
+### Languages
+
+Python - AI training
+Javascript - front end game UI
+
+### Frameworks
+
+TensorFlow - for building a neural network
+Keras - converted our Python neural network into javascript
+TensorFlowJS - allowed us to store our neural network that had been converted from Python
+expresJS - hosting our front end game, hosting an API that uploaded different AI models
+
 
 ## Features
-What makes your project stand out?
 
-## Code Example
-Show what the library does as concisely as possible, developers should be able to figure out how your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+- You can select various versions of AI to play against, ranging from random to 'better than random'.
+- Time counts down as you play
+- It will keep track of scores as you play
 
 ## Installation
-Provide step by step series of examples and explanations about how to get a development env running.
+
+#### Play Pong
+
+to run the game of pong on your localhost, follow these steps from the root of the repo on the CL:
+```
+$ npm install
+$ npm start
+```
+Then go on to http://localhost:3000 in browser.
+
+#### Train your AI
+
+Many of the python requirements can be found in the `python_instructions.md` file. In order to set your AI running, first install the correct version of Python:
+```
+brew unlink python
+brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/f2a764ef944b1080be64bd88dca9a1d80130c558/Formula/python.rb
+```
+then navigate to the /neural/ directory and install the requirements
+```
+pip3 install -r requirements.txt
+```
+Finally to set your AI running:
+```
+python3 run_training.py
+```
+
+If you open up the run_training.py file you'll be able to see many different variables that control different aspects of how the AI learns. Feel free to adjust them yourself in an attempt to get a smarter AI.
 
 ## API Reference
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+
+The API that holds all of our TensorFlowJS AI models can be found in this repository https://github.com/camjw/RobotPongAPI. The url for model 0 is https://burninglake.herokuapp.com/model/version_0 and in the same way you can find model 1, model 2, etc.
 
 ## Tests
-Describe and show how to run the tests with code examples.
+
+The javascript tests are all written using jest, to see all tests as well as test coverage enter the following command:
+```
+npm test
+```
+
+All python tests have been written using Unittest, to run the tests navigate to the /neural folder and run the following command:
+```
+coverage run --source=lib -m unittest && coverage report
+```
+
 
 ## How to use?
 If people like your project they’ll want to learn how they can use it. To do so include step by step guide to use your project.
