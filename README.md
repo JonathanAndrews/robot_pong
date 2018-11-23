@@ -1,23 +1,13 @@
 # Robot Face Pong
+[![Build Status](https://travis-ci.com/JonathanAndrews/robot_pong.svg?branch=master)](https://travis-ci.com/JonathanAndrews/robot_pong)
 
 A single player pong game. Play against increasingly competitive versions of a reinforcement learning AI, implemented with TensorFlow.
 
 ## Motivation
 This project was undertaken as part of the Makers Academy Software Developer course. We decided to make an AI as our final project to stretch ourselves and learn as much as possible in the two weeks.
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain why the project exists.
-
 ## Build status
 Robot Face Pong - The pong game with AI opponent is currently deployed at https://robot-face-pong.herokuapp.com/. Travis is being used to ensure that only high quality code is deployed.
-
-Build status of continus integration i.e. travis, appveyor etc. Ex. -
-
-Build Status Windows Build Status
-
-## Code style
-If you're using any code style like xo, standard etc. That will help others while contributing to your project. Ex. -
-
-js-standard-style
 
 ## Screenshots
 
@@ -89,10 +79,6 @@ All python tests have been written using Unittest, to run the tests navigate to 
 coverage run --source=lib -m unittest && coverage report
 ```
 
-
-## How to use?
-If people like your project they’ll want to learn how they can use it. To do so include step by step guide to use your project.
-
 ## Contribute
 We welcome contributions to this project.
 Please:
@@ -101,9 +87,6 @@ Your pull request will then be reviewed from one of the project collaborators an
 If you have any suggestions, or notice any bugs, please open an issue
 
 Let people know how they can contribute into your project. A contributing guideline will be a big plus.
-
-## Credits
-Give proper credits. This could be a link to any repo which inspired you to build this project, any blogposts or links to people who contrbuted in this project.
 
 ## By
 - [Jonathan Andrews](https://github.com/JonathanAndrews)
@@ -114,4 +97,4 @@ Give proper credits. This could be a link to any repo which inspired you to buil
 ## License
 A short snippet describing the license (MIT, Apache etc)
 
-MIT © Yourname
+MIT © RobotFace 🤖
