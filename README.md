@@ -13,6 +13,11 @@ Robot Face Pong - The pong game with AI opponent is currently deployed at https:
 
 !['this should be a picture of our game'](./images/gameplay_1.png)
 
+## Code Snippets
+
+!['python'](./images/python_snippet.png)
+!['javscript'](./images/JSsnippet.png)
+
 ## Tech
 
 ### Languages
